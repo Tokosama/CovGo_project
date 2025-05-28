@@ -1,16 +1,27 @@
 import express from "express";
+import {
+  register,
+  verifyOTP,
+  resendOTP,
+  login,
+  logout,
+  checkAuth,
+} from "../controllers/auth.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
+//register 
+router.post("/register", register); // étape 1
+router.post("/verify", verifyOTP); // étape 2
+router.post("/resend-otp", resendOTP); // étape 2
+//login
+router.post("/login", login);
+//logout
+router.post("/logout", logout);
 
-router.post("/signup", (req, res) => {
-  res.send("signup route");
-});
+router.post("/updateProfile", protectRoute,);
 
-router.post("/login", (req, res) => {
-  res.send("login route");
-});
+router.get("/check", protectRoute, checkAuth);
 
-router.get("/logout", (req, res) => {
-  res.send("logout route");
-});
+
 export default router;
