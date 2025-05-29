@@ -5,6 +5,7 @@ import {
   demarrerTrajet,
   getAllTrajets,
   getMyTrajets,
+  getReservationsByTrajet,
   getTrajetById,
   getTrajetsWithFilters,
   terminerTrajet,
@@ -18,7 +19,6 @@ router.post("/create", protectRoute, isDriver, createTrajetController);
 router.get("/all", protectRoute, getAllTrajets);
 router.get("/me", protectRoute, isDriver, getMyTrajets); // accessible uniquement à l'utilisateur connecté
 router.get("/:id", protectRoute, getTrajetById); // accessible uniquement à l'utilisateur connecté
-
 router.get("/filter", protectRoute, getTrajetsWithFilters); // 🌟 nouvelle route
 router.put(
   "/:id/annuler",
@@ -40,5 +40,7 @@ router.put(
   verifyConducteurOwnership,
   terminerTrajet
 );
+router.get("/:trajetId/reservations", protectRoute, getReservationsByTrajet);
+
 
 export default router;

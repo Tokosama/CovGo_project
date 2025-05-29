@@ -40,3 +40,10 @@ export const isDriver = (req, res, next) => {
     next(error);
   }
 };
+
+export const isPassenger = (req, res, next) => {
+  if (req.user.role !== "passager") {
+    return res.status(403).json({ message: "Accès interdit : seuls les passagers peuvent effectuer cette action." });
+  }
+  next();
+};

@@ -1,5 +1,4 @@
-import { annulerTrajetService, createTrajetService, demarrerTrajetService, getAllTrajetsService,  getFilteredTrajetsService, getTrajetByIdService, getTrajetsByUserId, terminerTrajetService } from "../services/trajet.service.js";
-import { trajetValidation } from "../lib/validators/trajet.validator.js";
+import { annulerTrajetService, createTrajetService, demarrerTrajetService, getAllTrajetsService,  getFilteredTrajetsService, getTrajetByIdService, getTrajetsByUserId, getReservationsByTrajetService } from "../services/trajet.service.js";
 
 export const createTrajetController = async (req, res) => {
   try {
@@ -98,6 +97,18 @@ export const terminerTrajet = async (req, res) => {
 
     const trajet = await terminerTrajetService(id, userId);
     res.status(200).json({ message: "Trajet terminé avec succès", trajet });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getReservationsByTrajet = async (req, res) => {
+  try {
+    const { trajetId } = req.params;
+    const userId = req.user._id;
+
+    const reservations = await getReservationsByTrajetService(trajetId, userId);
+    res.status(200).json(reservations);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

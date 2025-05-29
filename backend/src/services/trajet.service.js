@@ -1,4 +1,5 @@
 import Trajet from "../models/trajet.model.js";
+import Reservation from "../models/reservation.model.js";
 
 export const createTrajetService = async (trajetData) => {
   const newTrajet = new Trajet(trajetData);
@@ -123,4 +124,24 @@ if (trajet.status === "termine") {
   await trajet.save();
 
   return trajet;
+};
+
+export const getReservationsByTrajetService = async (trajetId, userId) => {
+  // Vérifier que le trajet existe
+  const trajet = await Trajet.findById(trajetId);
+  if (!trajet) {
+    throw new Error("Trajet introuvable");
+  }
+
+  // Vérifier que l'utilisateur connecté est le conducteur
+  if (trajet.conducteur_id.toString() !== userId.toString()) {
+    throw new Error("Accès non autorisé aux réservations de ce trajet");
+  }
+
+  // Récupérer les réservations liées à ce trajet
+  const reservations = await Reservation.find({ trajet_id: trajetId })
+    .populate("passager_id", "nom email telephone") // limiter les champs
+    .sort({ createdAt: -1 });
+
+  return reservations;
 };
