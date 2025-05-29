@@ -128,3 +128,27 @@ export const loginService = async (data, res) => {
     role: user.role,
   };
 };
+
+
+
+import cloudinary, { uploadToCloudinary } from "../lib/cloudinary.js";
+
+export const updateProfileService = async (userId, profileData, photoFile) => {
+  const updateData = {};
+
+  // Si une photo est uploadée, upload sur Cloudinary
+  if (photoFile) {
+    const photoUrl = await uploadToCloudinary(photoFile.buffer);
+    updateData.photo = photoUrl;
+  }
+
+  // Ajout des autres champs s'ils existent
+  if (profileData.bio) updateData.bio = profileData.bio;
+
+  // Ajoute ici tous les champs modifiables
+
+  // Mise à jour de l'utilisateur
+  const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+
+  return updatedUser;
+};

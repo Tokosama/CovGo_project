@@ -26,3 +26,17 @@ export const protectRoute = async (req, res, next) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const isDriver = (req, res, next) => {
+  try {
+    if (req.user && req.user.role === "conducteur") {
+      return next();
+    } else {
+      return res.status(403).json({
+        message: "Accès interdit : seuls les conducteurs peuvent effectuer cette action.",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
