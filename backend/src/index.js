@@ -5,6 +5,7 @@ import justificatifRoutes from "./routes/justificatif.route.js";
 import vehiculeRoutes from "./routes/vehicule.route.js";
 import trajetRoutes from "./routes/trajet.route.js";
 import reservationRoutes from "./routes/reservation.route.js";
+import messageRoutes from "./routes/message.route.js";
 
 
 import { connectDB } from "./lib/db.js";
@@ -31,6 +32,7 @@ app.use("/api/justificatif", justificatifRoutes);
 app.use("/api/vehicule", vehiculeRoutes);
 app.use("/api/trajet", trajetRoutes);
 app.use("/api/reservation", reservationRoutes);
+app.use("/api/message", messageRoutes);
 
 
 app.listen(PORT, () => {
