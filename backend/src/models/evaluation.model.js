@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const reservationSchema = new mongoose.Schema(
+const evaluationSchema = new mongoose.Schema(
   {
     trajet_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -12,27 +12,24 @@ const reservationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    places: {
-      type: Number,
+    conducteur_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
+    },
+    note: {
+      type: Number,
       min: 1,
-    },
-    prix_total: {
-      type: Number,
+      max: 5,
       required: true,
-      min: 0,
     },
-    status: {
+    commentaire: {
       type: String,
-      enum: ["en attente", "accepte", "confirme", "rejete", "annulee"],
-      default: "en attente",
+      trim: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-const Reservation = mongoose.model("Reservation", reservationSchema);
-
-export default Reservation;
+const Evaluation = mongoose.model("Evaluation", evaluationSchema);
+export default Evaluation;

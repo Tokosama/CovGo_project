@@ -96,6 +96,33 @@ export const updateReservationStatusService = async (reservationId, conducteurId
   return reservation;
 };
 
+
+export const annulerReservationService = async (reservationId, userId) => {
+  const reservation = await Reservation.findById(reservationId);
+
+  if (!reservation) {
+    throw new Error("Réservation introuvable.");
+  }
+
+  if (!reservation.passager_id.equals(userId)) {
+    throw new Error("Vous n'êtes pas autorisé à annuler cette réservation.");
+  }
+
+  if (reservation.status === "confirme") {
+    throw new Error("Une réservation confirmée ne peut pas être annulée.");
+  }
+
+  if (["annulee", "rejete"].includes(reservation.status)) {
+    throw new Error("Cette réservation est déjà annulée ou rejetée.");
+  }
+
+  reservation.status = "annulee";
+  await reservation.save();
+
+  return reservation;
+};
+
+
 export const confirmerReservationService = async (reservationId, passagerId) => {
   const reservation = await Reservation.findById(reservationId);
   if (!reservation) {

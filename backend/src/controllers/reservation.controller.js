@@ -1,4 +1,4 @@
-import { confirmerReservationService, createReservationService, updateReservationStatusService } from "../services/reservation.service.js";
+import { annulerReservationService, confirmerReservationService, createReservationService, updateReservationStatusService } from "../services/reservation.service.js";
 
 export const createReservation = async (req, res) => {
   try {
@@ -36,6 +36,19 @@ export const updateReservationStatus = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const annulerReservation = async (req, res) => {
+  try {
+    const reservationId = req.params.id;
+    const userId = req.user._id; // utilisateur connecté
+    const reservation = await annulerReservationService(reservationId, userId);
+    return res.status(200).json({ message: "Réservation annulée avec succès.", reservation });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+
 
 export const confirmerReservation = async (req, res) => {
   try {

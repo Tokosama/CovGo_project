@@ -2,11 +2,14 @@ import mongoose from "mongoose";
 
 const notificationSchema = new mongoose.Schema(
   {
-    userId: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+    type: { type: String, required: true }, // ex: "reservation_confirmed", "trajet_annule"
+    message: { type: String, required: true },
+    read: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

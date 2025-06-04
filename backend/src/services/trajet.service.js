@@ -20,8 +20,6 @@ export const getTrajetByIdService = async (trajetId) => {
   return trajet;
 };
 
-
-
 export const getFilteredTrajetsService = async (filters) => {
   const query = {};
 

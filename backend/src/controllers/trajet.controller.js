@@ -1,3 +1,4 @@
+import { trajetValidation } from "../lib/validators/trajet.validator.js";
 import { annulerTrajetService, createTrajetService, demarrerTrajetService, getAllTrajetsService,  getFilteredTrajetsService, getTrajetByIdService, getTrajetsByUserId, getReservationsByTrajetService } from "../services/trajet.service.js";
 
 export const createTrajetController = async (req, res) => {

@@ -10,8 +10,9 @@ import {
   getTrajetsWithFilters,
   terminerTrajet,
 } from "../controllers/trajet.controller.js";
-import { isDriver, protectRoute } from "../middleware/auth.middleware.js";
+import { isDriver, isPassenger, protectRoute } from "../middleware/auth.middleware.js";
 import { verifyConducteurOwnership } from "../middleware/trajet.middleware.js";
+import { createEvaluationController } from "../controllers/evaluation.controller.js";
 
 const router = express.Router();
 
@@ -41,6 +42,7 @@ router.put(
   terminerTrajet
 );
 router.get("/:trajetId/reservations", protectRoute, getReservationsByTrajet);
+router.get("/:trajetId/evaluations", protectRoute,isPassenger, createEvaluationController);
 
 
 export default router;
