@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.route.js";
+import adminRoutes from "./routes/admin.route.js";
+
 import justificatifRoutes from "./routes/justificatif.route.js";
 import vehiculeRoutes from "./routes/vehicule.route.js";
 import trajetRoutes from "./routes/trajet.route.js";
@@ -30,6 +32,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/justificatif", justificatifRoutes);
 app.use("/api/vehicule", vehiculeRoutes);
 app.use("/api/trajet", trajetRoutes);

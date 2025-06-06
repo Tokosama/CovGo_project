@@ -65,3 +65,16 @@ export const confirmerReservation = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const getMyReservationsController = async (req, res) => {
+  try {
+    const reservations = await getMyReservationsService(req.user._id);
+    res.status(200).json({ success: true, data: reservations });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur lors de la récupération des réservations",
+    });
+  }
+};

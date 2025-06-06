@@ -142,3 +142,9 @@ export const confirmerReservationService = async (reservationId, passagerId) => 
 
   return reservation;
 };
+
+export const getMyReservationsService = async (userId) => {
+  return await Reservation.find({ passager_id: userId })
+    .populate("trajet_id") // facultatif
+    .sort({ createdAt: -1 });
+};

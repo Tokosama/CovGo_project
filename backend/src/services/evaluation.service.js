@@ -8,8 +8,13 @@ export const createEvaluationService = async (
   note,
   commentaire
 ) => {
+   console.log(trajet_id)
   const trajet = await Trajet.findById(trajet_id);
-  if (!trajet || trajet.status !== "termine") {
+  if(!trajet){
+    throw new Error("Trajet inexistant.");
+
+  }
+  if (trajet.status !== "termine") {
     throw new Error("Trajet non terminé ou inexistant.");
   }
 
