@@ -11,4 +11,5 @@ router.get("/users/unverified", protectRoute, isAdmin, getUnverifiedUsersControl
 router.get("/users/:id", protectRoute, isAdmin, getSingleUserController);
 router.put("/users/:id/verify", protectRoute, isAdmin, verifyUserController);
 
+
 export default router;
