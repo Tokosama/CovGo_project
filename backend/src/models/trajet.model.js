@@ -59,10 +59,32 @@ const trajetSchema = new mongoose.Schema(
       enum: ["ponctuel", "reccurent"],
       required: true,
     },
-     status: {
+    status: {
       type: String,
       enum: ["en cours", "termine", "annulee", "disponible", "complet"],
       default: "disponible",
+    },
+    
+    point_depart_lat: {
+      type: Number,
+      default: null,
+    },
+    point_depart_lng: {
+      type: Number,
+      default: null,
+    },
+    destination_lat: {
+      type: Number,
+      default: null,
+    },
+    destination_lng: {
+      type: Number,
+      default: null,
+    },
+    itineraire_estime: {
+      type: String,
+      default: null,
+      trim: true,
     },
   },
   {
@@ -74,4 +96,4 @@ const Trajet = mongoose.model("Trajet", trajetSchema);
 
 export default Trajet;
 
-"en cours, termine , annulee, disponible,complet "
+("en cours, termine , annulee, disponible,complet ");

@@ -8,8 +8,8 @@ const notificationSchema = new mongoose.Schema(
       required: true,
     },
     type: { type: String, required: true }, // ex: "reservation_confirmed", "trajet_annule"
-    message: { type: String, required: true },
-    read: { type: Boolean, default: false },
+    contenue: { type: String, required: true },
+    vue: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
