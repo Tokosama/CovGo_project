@@ -2,7 +2,12 @@ import PendingUser from "../models/pendingUser.model.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateOTP, sendOTP, generateToken } from "../lib/utils.js";
-import { UserValidator,LoginValidator } from "../lib/validators/auth.validator.js";
+import {
+  UserValidator,
+  LoginValidator,
+} from "../lib/validators/auth.validator.js";
+import { sendOTPByEmail } from "../lib/email.js";
+import cloudinary, { uploadToCloudinary } from "../lib/cloudinary.js";
 
 
 export const registerUser = async (data, session) => {
@@ -26,26 +31,45 @@ export const registerUser = async (data, session) => {
   await PendingUser.deleteOne({ telephone });
 
   const pending = new PendingUser({
-    nom, prenom, email, telephone, adresse, role,
+    nom,
+    prenom,
+    email,
+    telephone,
+    adresse,
+    role,
     password: hashedPassword,
-    otpCode, otpExpires,
-    statut: "inactif", verifie: false,
+    otpCode,
+    otpExpires,
+    statut: "inactif",
+    verifie: false,
   });
 
   await pending.save();
-  await sendOTP(telephone, otpCode);
+  //await sendOTP(telephone, otpCode);
+  await sendOTPByEmail(email, otpCode);
 
-  session.telephone = telephone;
+  //session.telephone = telephone;
+  session.email = email;
+
   return { message: "OTP envoyé avec succès" };
 };
 
 export const verifyOTPCode = async (otp, session, res) => {
-  const telephone = session.telephone;
-  if (!telephone) {
-    throw { status: 400, message: "Session expirée. Recommencez l'inscription." };
+  // const telephone = session.telephone;
+  // if (!telephone) {
+  //   throw { status: 400, message: "Session expirée. Recommencez l'inscription." };
+  // }
+  const email = session.email;
+  if (!email) {
+    throw {
+      status: 400,
+      message: "Session expirée. Recommencez l'inscription.",
+    };
   }
 
-  const pending = await PendingUser.findOne({ telephone });
+  //const pending = await PendingUser.findOne({ telephone });
+  const pending = await PendingUser.findOne({ email });
+
   if (!pending) {
     throw { status: 400, message: "Utilisateur temporaire non trouvé" };
   }
@@ -55,40 +79,65 @@ export const verifyOTPCode = async (otp, session, res) => {
   }
 
   const user = new User({
-    nom: pending.nom, prenom: pending.prenom, email: pending.email,
-    telephone: pending.telephone, adresse: pending.adresse, role: pending.role,
-    photo: "", statut: "inactif", verifie: false, password: pending.password,
+    nom: pending.nom,
+    prenom: pending.prenom,
+    email: pending.email,
+    telephone: pending.telephone,
+    adresse: pending.adresse,
+    role: pending.role,
+    photo: "",
+    statut: "inactif",
+    verifie: false,
+    password: pending.password,
   });
 
   await user.save();
   await PendingUser.deleteOne({ _id: pending._id });
-  session.telephone = null;
+  //session.telephone = null;
+  session.mail = null;
 
   generateToken(user._id, res);
 
   return {
-    _id: user._id, nom: user.nom, prenom: user.prenom,
-    email: user.email, telephone: user.telephone, role: user.role,
+    _id: user._id,
+    nom: user.nom,
+    prenom: user.prenom,
+    email: user.email,
+    telephone: user.telephone,
+    role: user.role,
   };
 };
 
 export const resendOTPCode = async (session) => {
-  const telephone = session?.telephone;
-  if (!telephone) {
-    throw { status: 401, message: "Session expirée. Veuillez recommencer l'inscription." };
-  }
+  // const telephone = session?.telephone;
+  // if (!telephone) {
+  //   throw { status: 401, message: "Session expirée. Veuillez recommencer l'inscription." };
+  // }
 
-  const pending = await PendingUser.findOne({ telephone });
+  const email = session.email;
+  if (!email) {
+    throw {
+      status: 400,
+      message: "Session expirée. Recommencez l'inscription.",
+    };
+  }
+  //const pending = await PendingUser.findOne({ telephone });
+  const pending = await PendingUser.findOne({ email });
   if (!pending) {
-    throw { status: 404, message: "Aucun compte en attente trouvé pour ce numéro" };
+    throw {
+      status: 404,
+      message: "Aucun compte en attente trouvé pour ce numéro",
+    };
   }
 
   const { otpCode, otpExpires } = generateOTP();
   pending.otpCode = otpCode;
   pending.otpExpires = otpExpires;
   await pending.save();
-console.log(telephone)
-  await sendOTP(telephone, otpCode);
+  console.log(email);
+  // await sendOTP(telephone, otpCode);
+  await sendOTPByEmail(email, otpCode);
+
   return { message: "Nouveau code OTP envoyé" };
 };
 
@@ -130,9 +179,6 @@ export const loginService = async (data, res) => {
 };
 
 
-
-import cloudinary, { uploadToCloudinary } from "../lib/cloudinary.js";
-
 export const updateProfileService = async (userId, profileData, photoFile) => {
   const updateData = {};
 
@@ -148,7 +194,9 @@ export const updateProfileService = async (userId, profileData, photoFile) => {
   // Ajoute ici tous les champs modifiables
 
   // Mise à jour de l'utilisateur
-  const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+  const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+    new: true,
+  });
 
   return updatedUser;
 };
