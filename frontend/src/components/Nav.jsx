@@ -8,7 +8,7 @@ export default function Nav({ activeMenu = 'home' }) {
   const isHome = activeMenu === 'home' || activeMenu === 'list-trips' || activeMenu === 'details';
   const navigate = useNavigate();
   return (
-    <div className="fixed bottom-0 left-0 w-full max-w-[400px] mx-auto bg-[#a7a7a7] border-t border-gray-300 flex justify-between items-center px-2 py-1 rounded-b-2xl" style={{boxShadow: '0px -2px 8px #0001'}}>
+    <div className="fixed bottom-0 left-0 w-full bg-[#a7a7a7] border-t border-gray-300 flex justify-between items-center px-2 py-1" style={{boxShadow: '0px -2px 8px #0001'}}>
       <div className="flex flex-col items-center flex-1 transition cursor-pointer" onClick={() => navigate('/home')}>
         <span className="rounded-xl p-1">
           <FontAwesomeIcon icon={faHome} className={`text-xl transition ${isHome ? 'text-gray-300' : 'hover:text-gray-300 text-gray-700'}`} />

@@ -10,7 +10,7 @@ export default function Trips() {
   const navigate = useNavigate();
   const [tab, setTab] = useState('reservations');
   return (
-    <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto">
+    <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto flex flex-col items-center">
       {/* En-tête */}
       <div
         className="w-full bg-[#D9D9D9] flex items-center justify-center px-2 py-4 relative"
@@ -27,7 +27,7 @@ export default function Trips() {
         <h1 className="flex-1 text-center text-[20px] font-bold text-black">Vos trajets</h1>
       </div>
       {/* Onglets */}
-      <div className="flex gap-2 text-black mt-6 mb-4 px-4">
+      <div className="flex gap-2 text-black mt-6 mb-4 px-4 w-full justify-center">
         <button
           className={`px-4 py-2 rounded-t-lg font-bold text-[16px] shadow ${tab === 'reservations' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
           style={{ minWidth: 140 }}
@@ -45,7 +45,7 @@ export default function Trips() {
       </div>
       {/* Carte de réservation */}
       {tab === 'reservations' && (
-        <div className="bg-[#D9D9D9] text-black border border-black rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-auto" style={{minWidth: 0}}>
+        <div className="bg-[#D9D9D9] text-black border border-black rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-[95%] max-w-[600px]" style={{minWidth: 0}}>
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserCircle} className="text-[28px] text-black" />
@@ -79,7 +79,7 @@ export default function Trips() {
       )}
       {/* Carte d'historique */}
       {tab === 'historique' && (
-        <div className="bg-[#D9D9D9] text-black border-2 border-[#000000] rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-auto" style={{minWidth: 0}}>
+        <div className="bg-[#D9D9D9] text-black border-2 border-[#000000] rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-[95%] max-w-[600px]" style={{minWidth: 0}}>
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserCircle} className="text-[28px] text-black" />
