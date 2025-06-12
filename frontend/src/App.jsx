@@ -1,5 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home"
+import Welcome from "./pages/Welcome"
+import About from "./pages/About";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -7,8 +11,24 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Home />}
+          element={<Welcome />}
         />
+          <Route
+            path="/about"
+            element={<About />}
+          />
+          <Route
+            path="/register"
+            element={<Register />}
+          />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
+          <Route
+            path="/home"
+            element={<Home />}
+          />
       </Routes>
     </Router>
   );
