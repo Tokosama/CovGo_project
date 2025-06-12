@@ -7,7 +7,7 @@ export default function Login() {
       <div className="w-full max-w-[400px] rounded-b-2xl overflow-hidden">
         <div className="relative w-full h-[280px] bg-[#EDEDED]">
           {/* Overlay gris léger */}
-          <div className="absolute inset-0 bg-[#EDEDED] opacity-40 z-10" />
+          <div className="absolute inset-0 bg-[#D9D9D9] opacity-40 z-10" />
           {/* Illustration */}
           <img src="/illustration_3.svg" alt="Connexion" className="absolute inset-0 w-full h-full object-contain z-0" />
           {/* Texte centré */}
