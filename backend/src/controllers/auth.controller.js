@@ -9,7 +9,7 @@ import {
 export const register = async (req, res) => {
   try {
     const result = await registerUser(req.body, req.session);
-    res.status(200).json({result, message:"verifier votre numero de telephone"});
+    res.status(200).json({result, message:"verifier votre numero de mail"});
   } catch (err) {
     res.status(err.status || 500).json({ message: err.message || "Erreur interne" });
   }

@@ -9,7 +9,6 @@ import {
 import { sendOTPByEmail } from "../lib/email.js";
 import cloudinary, { uploadToCloudinary } from "../lib/cloudinary.js";
 
-
 export const registerUser = async (data, session) => {
   const { error } = UserValidator.validate(data, { abortEarly: false });
   if (error) {
@@ -178,7 +177,6 @@ export const loginService = async (data, res) => {
   };
 };
 
-
 export const updateProfileService = async (userId, profileData, photoFile) => {
   const updateData = {};
 
@@ -189,13 +187,16 @@ export const updateProfileService = async (userId, profileData, photoFile) => {
   }
 
   // Ajout des autres champs s'ils existent
+  if (profileData.nom) updateData.nom = profileData.nom;
+  if (profileData.prenom) updateData.prenom = profileData.prenom;
+  if (profileData.telephone) updateData.telephone = profileData.telephone;
+  if (profileData.adresse) updateData.adresse = profileData.adresse;
   if (profileData.bio) updateData.bio = profileData.bio;
-
-  // Ajoute ici tous les champs modifiables
 
   // Mise à jour de l'utilisateur
   const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
     new: true,
+    runValidators: true, // ⚠️ pour appliquer les règles du schéma (ex: minLength, etc.)
   });
 
   return updatedUser;

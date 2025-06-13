@@ -23,7 +23,7 @@ const router = express.Router();
 router.post("/create", protectRoute, isDriver, createTrajetController);
 //recuperer tous les trajets
 router.get("/all", protectRoute, getAllTrajets);
-//recupere tous les trajets de l'user connectee
+//recupere tous les trajets du connecteur connectee
 router.get("/me", protectRoute, isDriver, getMyTrajets); // accessible uniquement à l'utilisateur connecté
 //recuperer un trajet precis
 router.get("/:id", protectRoute, getTrajetById); // accessible uniquement à l'utilisateur connecté
