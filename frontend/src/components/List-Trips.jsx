@@ -15,12 +15,12 @@ export default function ListTrips({ onBack, onTripClick }) {
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
           onClick={onBack}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 focus:outline-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none"
           aria-label="Retour"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
         </motion.button>
-        <h1 className="flex-1 text-center text-[20px] font-bold text-black">Trajets trouves</h1>
+        <h1 className="flex-1 text-center text-[24px] font-bold text-black">Trajets trouves</h1>
       </div>
       {/* Liste des trajets */}
       <div className="flex flex-col gap-4 mt-4 w-full px-2">
