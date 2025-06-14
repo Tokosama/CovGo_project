@@ -19,24 +19,24 @@ export default function Trips() {
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
           onClick={() => navigate('/home')}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 focus:outline-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none"
           aria-label="Retour"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
         </motion.button>
-        <h1 className="flex-1 text-center text-[20px] font-bold text-black">Vos trajets</h1>
+        <h1 className="flex-1 text-center text-[24px] font-bold text-black">Vos trajets</h1>
       </div>
       {/* Onglets */}
       <div className="flex gap-2 text-black mt-6 mb-4 px-4 w-full justify-center">
         <button
-          className={`px-4 py-2 rounded-t-lg font-bold text-[16px] shadow ${tab === 'reservations' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
+          className={`px-4 py-2 rounded-t-lg font-bold text-[21px] shadow ${tab === 'reservations' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
           style={{ minWidth: 140 }}
           onClick={() => setTab('reservations')}
         >
           Mes Reservations
         </button>
         <button
-          className={`px-4 py-2 rounded-t-lg font-bold text-[16px] ${tab === 'historique' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
+          className={`px-4 py-2 rounded-t-lg font-bold text-[21px] ${tab === 'historique' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
           style={{ minWidth: 120 }}
           onClick={() => setTab('historique')}
         >
@@ -49,16 +49,16 @@ export default function Trips() {
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserCircle} className="text-[28px] text-black" />
-              <span className="font-bold text-[15px] text-black">toko Sama</span>
+              <span className="font-bold text-[16px] text-black">toko Sama</span>
               <span className="flex items-center gap-1 ml-2">
                 <FontAwesomeIcon icon={faUserFriends} className="text-gray-700 text-base" />
-                <span className="text-[13px] text-black">2</span>
+                <span className="text-[16px] text-black">2</span>
               </span>
             </div>
-            <span className="font-bold text-[13px] text-black">PRIX 2000 xof</span>
+            <span className="font-bold text-[16px] text-black">PRIX 2000 xof</span>
           </div>
           <div className="flex flex-col gap-1 mb-2 ml-1">
-            <div className="flex items-center gap-2 text-[13px]">
+            <div className="flex items-center gap-2 text-[16px]">
               <span className="font-bold">Trajet:</span>
               <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-700 text-xs ml-1" />
               <span>20juin | 10h10min</span>
@@ -72,8 +72,8 @@ export default function Trips() {
             <button className="flex items-center justify-center bg-[#D9D9D9] border border-black rounded-lg px-2 py-1">
               <FontAwesomeIcon icon={faCommentDots} className="text-[#2196F3] text-base" />
             </button>
-            <button className="flex-1 border border-black rounded-lg py-1 bg-white text-black font-bold text-[15px] mx-2 hover:bg-[#f0f0f0] transition">Rejeter</button>
-            <button className="flex-1 border border-black rounded-lg py-1 bg-white text-black font-bold text-[15px] hover:bg-[#f0f0f0] transition">Accepter</button>
+            <button className="flex-1 border border-black rounded-lg py-1 bg-white text-black font-bold text-[16px] mx-2 hover:bg-[#f0f0f0] transition">Rejeter</button>
+            <button className="flex-1 border border-black rounded-lg py-1 bg-white text-black font-bold text-[16px] hover:bg-[#f0f0f0] transition">Accepter</button>
           </div>
         </div>
       )}
@@ -83,14 +83,14 @@ export default function Trips() {
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserCircle} className="text-[28px] text-black" />
-              <span className="font-bold text-[15px] text-black">toko Sama</span>
+              <span className="font-bold text-[16px] text-black">toko Sama</span>
               <span className="flex gap-1 ml-1">
                 {[...Array(5)].map((_, i) => (
                   <FontAwesomeIcon key={i} icon={faStar} className="text-gray-400 text-xs" />
                 ))}
               </span>
             </div>
-            <span className="font-bold text-[13px] text-black">PRIX 2000 xof</span>
+            <span className="font-bold text-[16px] text-black">PRIX 2000 xof</span>
           </div>
           <div className="flex flex-col gap-1 mb-2">
             <div className="flex items-center gap-2">
@@ -105,11 +105,11 @@ export default function Trips() {
           <div className="flex items-center justify-between border border-black rounded-lg bg-[#EDEDED] px-2 py-1 mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faCarSide} className="text-gray-700 text-base" />
-              <span className="text-[13px] text-black">Toyota rav4</span>
+              <span className="text-[16px] text-black">Toyota rav4</span>
             </div>
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserFriends} className="text-gray-700 text-base" />
-              <span className="text-[13px] text-black">4</span>
+              <span className="text-[16px] text-black">4</span>
             </div>
           </div>
           <div className="flex items-center justify-between mt-1">

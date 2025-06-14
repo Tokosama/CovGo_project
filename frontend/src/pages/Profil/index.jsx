@@ -5,7 +5,6 @@ import SectionInitiale from '../../components/SectionInitiale';
 import FormVehicule from '../../components/FormVehicule';
 import FormPiece from '../../components/FormPiece';
 import RecapProfil from '../../components/RecapProfil';
-import { motion } from 'framer-motion';
 
 
 export default function Profil() {

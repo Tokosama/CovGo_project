@@ -6,11 +6,11 @@ import { useNavigate } from 'react-router-dom';
 export default function Index() {
   const navigate = useNavigate();
   return (
-    <div className="relative bg-white text-black min-h-screen font-itim flex flex-col items-center justify-start px-6 pt-6">
+    <div className="relative bg-white text-black min-h-screen font-itim flex flex-col items-center justify-start px-6 pt-10 pb-10">
       {/* Bouton "À Propos" */}
       <div className="absolute top-3 left-3">
         <button
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-[11px] rounded-lg px-2 py-1 w-[70px] h-[26px] font-normal shadow-sm tracking-wide"
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-[14px] rounded-lg px-2 py-1 w-[80px] h-[36px] font-semibold shadow-sm tracking-wide"
           onClick={() => navigate('/about')}
         >
           A Propos
@@ -23,10 +23,10 @@ export default function Index() {
       </div>
 
       {/* Titre principal */}
-      <h1 className="text-[22px] font-bold mb-1 text-center">CovGo</h1>
+      <h1 className="text-[32px] font-bold mb-6 text-center">CovGo</h1>
 
       {/* Sous-titre */}
-      <p className="text-[20px] font-bold text-center mb-6 leading-tight">
+      <p className="text-[25px] font-semibold text-center mb-6 leading-tight">
         Votre plateforme de covoiture
       </p>
 
@@ -38,13 +38,13 @@ export default function Index() {
       />
 
       {/* Description */}
-      <p className="text-[15px] text-gray-400 text-center px-2 leading-relaxed mb-10 font-light">
+      <p className="text-[24px] text-gray-400 text-center px-2 leading-relaxed mb-10 font-light">
         Publier ou Réserver des trajets à moindre coût, gagner de l'argent sur vos trajets du quotidien
       </p>
 
       {/* Bouton d'inscription */}
       <button
-        className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-[15px] font-normal px-4 py-2 rounded-lg w-[210px] h-[40px] shadow-sm"
+        className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-[16px] font-semibold px-4 py-2 rounded-lg w-[210px] h-[40px] shadow-sm"
         onClick={() => navigate('/register')}
       >
         Passez à l'inscription
