@@ -236,8 +236,8 @@ export default function Home() {
             {/* Bouton rechercher */}
             <button 
               type="submit" 
-              disabled={isLoading || Object.keys(errors).length > 0}
-              className={`w-full bg-[#b1b0b0] text-black text-[24px] font-bold rounded-md py-2 mt-2 border border-black shadow-sm hover:bg-[#d1d1d1] transition ${(isLoading || Object.keys(errors).length > 0) ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isLoading}
+              className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span className="flex items-center justify-center">
                 {isLoading ? (
@@ -257,17 +257,18 @@ export default function Home() {
         </>
       )}
       {showListTrips && !showDetails && (
-        <div className="w-full">
-          <ListTrips onBack={() => {
-            setShowListTrips(false);
-            setIsLoading(false);
-          }} onTripClick={handleTripClick} />
-        </div>
+        <ListTrips 
+          onBack={() => setShowListTrips(false)}
+          onTripClick={handleTripClick}
+        />
       )}
       {showDetails && (
-        <Details onBack={handleBackFromDetails} trip={selectedTrip} />
+        <Details 
+          trip={selectedTrip}
+          onBack={handleBackFromDetails}
+        />
       )}
-      <Nav className="fixed bottom-0 left-0 right-0 z-50" />
+      <Nav />
       <style>{`
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {

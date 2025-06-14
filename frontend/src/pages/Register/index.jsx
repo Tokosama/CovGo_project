@@ -18,6 +18,7 @@ export default function Register() {
     email: '',
     telephone: '',
     adresse: '',
+    mot_de_passe: '',
     biographie: '',
     role: ''
   });
@@ -49,6 +50,9 @@ export default function Register() {
     }
     if (!formData.role) {
       newErrors.role = 'Le rôle est requis';
+    }
+    if (!formData.mot_de_passe) {
+      newErrors.mot_de_passe = 'Le mot de passe est requis';
     }
     if (!photo) {
       setPhotoError(true);
@@ -301,6 +305,17 @@ export default function Register() {
             className={`w-full border ${errors.adresse ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
           />
           {errors.adresse && <p className="text-red-500 text-sm mb-2">{errors.adresse}</p>}
+        </div>
+        <div className="w-full">
+          <input 
+            type="password" 
+            name="mot_de_passe"
+            value={formData.mot_de_passe}
+            onChange={handleChange}
+            placeholder="Mot de passe" 
+            className={`w-full border ${errors.mot_de_passe ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+          />
+          {errors.mot_de_passe && <p className="text-red-500 text-sm mb-2">{errors.mot_de_passe}</p>}
         </div>
         <div className="w-full">
           <input 
