@@ -6,7 +6,6 @@ import FormVehicule from '../../components/FormVehicule';
 import FormPiece from '../../components/FormPiece';
 import RecapProfil from '../../components/RecapProfil';
 
-
 export default function Profil() {
   const permisInputRef = useRef(null);
   const photoPermisInputRef = useRef(null);
@@ -19,9 +18,9 @@ export default function Profil() {
   const [pieceFile, setPieceFile] = useState(null);
   const pieceInputRef = useRef(null);
   const [showProfileRecap, setShowProfileRecap] = useState(false);
-  const [bio, setBio] = useState("Bonjour je suis tokoSama , bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla");
-  // Centralisation de l'étape du profil
+  const [bio, setBio] = useState(() => localStorage.getItem('bio') || '');
   const [step, setStep] = useState('initial'); // 'initial', 'vehicule', 'piece', 'recap'
+  const [errors, setErrors] = useState({});
 
   const handlePermisClick = () => permisInputRef.current && permisInputRef.current.click();
   const handlePhotoPermisClick = () => photoPermisInputRef.current && photoPermisInputRef.current.click();
@@ -62,6 +61,9 @@ export default function Profil() {
     setVehicule({ marque: '', modele: '', couleur: '', immat: '' });
     setPieceType('CIP');
     setPieceFile(null);
+    setPermis(null);
+    setPhotoPermis(null);
+    setErrors({});
   };
 
   return (
@@ -78,6 +80,8 @@ export default function Profil() {
           photoPermisInputRef={photoPermisInputRef}
           handlePhotoPermisChange={handlePhotoPermisChange}
           onSoumettre={() => setStep('vehicule')}
+          errors={errors}
+          setErrors={setErrors}
         />
       )}
       {step === 'vehicule' && (
@@ -85,6 +89,8 @@ export default function Profil() {
           vehicule={vehicule}
           setVehicule={setVehicule}
           onEnregistrer={() => setStep('piece')}
+          errors={errors}
+          setErrors={setErrors}
         />
       )}
       {step === 'piece' && (
@@ -95,12 +101,17 @@ export default function Profil() {
           pieceInputRef={pieceInputRef}
           setPieceFile={setPieceFile}
           onSoumettre={() => setStep('recap')}
+          errors={errors}
+          setErrors={setErrors}
         />
       )}
       {step === 'recap' && (
         <RecapProfil
           bio={bio}
           onUpdate={resetProfil}
+          errors={errors}
+          setErrors={setErrors}
+          onBioChange={setBio}
         />
       )}
       <Nav activeMenu="profil" />

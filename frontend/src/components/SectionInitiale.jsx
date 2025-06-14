@@ -12,8 +12,30 @@ export default function SectionInitiale({
   handlePhotoPermisClick,
   photoPermisInputRef,
   handlePhotoPermisChange,
-  onSoumettre
+  onSoumettre,
+  errors = {},
+  setErrors = () => {}
 }) {
+  // Validation locale avant soumission
+  const validate = () => {
+    const newErrors = {};
+    if (!permis) {
+      newErrors.permis = 'Le fichier du permis est requis (PNG, JPG ou PDF, max 2 Mo).';
+    }
+    if (!photoPermis) {
+      newErrors.photoPermis = 'La photo avec le permis est requise (PNG ou JPG, max 2 Mo).';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      onSoumettre();
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -35,6 +57,7 @@ export default function SectionInitiale({
             onChange={handlePermisChange}
           />
         </div>
+        {errors.permis && <p className="text-red-500 text-sm mb-1">{errors.permis}</p>}
       </div>
       {/* Bloc photo permis */}
       <div className="w-full max-w-[300px] mx-auto flex flex-col gap-2 mb-2 mt-2">
@@ -53,12 +76,13 @@ export default function SectionInitiale({
             onChange={handlePhotoPermisChange}
           />
         </div>
+        {errors.photoPermis && <p className="text-red-500 text-sm mb-1">{errors.photoPermis}</p>}
       </div>
       {/* Bouton soumettre */}
       <div className="w-full flex justify-center mt-4 mb-6">
         <button
           className="bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
-          onClick={onSoumettre}
+          onClick={handleSubmit}
           type="button"
         >
           Soumettre
