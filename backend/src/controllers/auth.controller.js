@@ -2,13 +2,14 @@ import {
   registerUser,
   verifyOTPCode,
   resendOTPCode,
-  loginService
+  loginService,
+  updateProfileService
 } from "../services/auth.service.js";
 
 export const register = async (req, res) => {
   try {
     const result = await registerUser(req.body, req.session);
-    res.status(200).json({result, message:"verifier votre numero de telephone"});
+    res.status(200).json({result, message:"verifier votre numero de mail"});
   } catch (err) {
     res.status(err.status || 500).json({ message: err.message || "Erreur interne" });
   }
@@ -66,3 +67,21 @@ export const checkAuth = async (req,res) =>{
     res.status(500).json({message: "Internal Server Error"});
   }
 }
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const photoFile = req.file;
+    const profileData = req.body;
+
+    const updatedUser = await updateProfileService(userId, profileData, photoFile);
+
+    res.status(200).json({
+      message: "Profil mis à jour avec succès",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur lors de la mise à jour du profil" });
+  }
+};

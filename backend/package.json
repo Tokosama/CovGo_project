@@ -17,9 +17,12 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "fedapay": "^1.2.4",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
+    "multer": "^2.0.0",
+    "nodemailer": "^7.0.3",
     "socket.io": "^4.8.1",
     "twilio": "^5.6.1"
   },

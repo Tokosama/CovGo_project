@@ -6,8 +6,10 @@ import {
   login,
   logout,
   checkAuth,
+  updateProfile,
 } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
+import upload from "../middleware/upload.middleware.js";
 
 const router = express.Router();
 //register 
@@ -19,9 +21,7 @@ router.post("/login", login);
 //logout
 router.post("/logout", logout);
 
-router.post("/updateProfile", protectRoute,);
+router.patch("/updateProfile", protectRoute,upload.single("photo"),updateProfile);
 
 router.get("/check", protectRoute, checkAuth);
-
-
 export default router;
