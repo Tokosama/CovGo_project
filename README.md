@@ -1,78 +1,101 @@
-# 🛠️ CovGo Backend
+# 🚗 CovGo - Modern Carpooling Made Simple
 
-Welcome to the **CovGo Backend**! This is the API and business logic core of CovGo, the modern carpooling platform that connects drivers and passengers for eco-friendly, affordable, and easy travel.
+<div align="center">
+  <img src="https://img.shields.io/badge/Frontend-React%2019-blue?logo=react&style=for-the-badge" alt="Frontend React"/>
+  <img src="https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-green?logo=node.js&style=for-the-badge" alt="Backend Node.js"/>
+  <img src="https://img.shields.io/badge/Database-MongoDB-brightgreen?logo=mongodb&style=for-the-badge" alt="MongoDB"/>
+  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License"/>
+  <img src="https://img.shields.io/badge/Status-Active%20Development-orange?style=for-the-badge" alt="Status"/>
+</div>
+
+---
+
+**CovGo** is a next-generation carpooling platform designed to connect drivers and passengers for eco-friendly, cost-effective, and convenient travel. Our mission is to make shared mobility accessible, secure, and enjoyable for everyone.
 
 ---
 
 ## 🌱 Principle
-- **Connect** people for shared journeys
-- **Reduce** environmental impact
-- **Make** carpooling simple, secure, and accessible
+
+- **Connect** drivers and passengers for shared journeys
+- **Reduce** carbon footprint and traffic congestion
+- **Save** money and resources by sharing rides
+- **Empower** communities with a simple, secure, and modern platform
 
 ---
 
-## ✨ Features
-- Secure JWT authentication
-- Trip management (create, update, delete, search)
-- Booking system
-- Real-time messaging (Socket.IO)
-- User and vehicle management
-- Admin features
+## ✨ Key Features
+- Secure user authentication
+- Advanced trip search and publication
+- Real-time messaging and notifications
+- Mobile-first, PWA-ready design
+- Admin dashboard and user management
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# 1. Install dependencies
-$ npm install
+# 1. Clone the repository
+$ git clone <REPO_URL>
+$ cd CovGo_project
 
-# 2. Configure environment variables
-$ cp .env.example .env
-# Edit .env with your settings
+# 2. Install dependencies
+$ cd backend && npm install
+$ cd ../frontend && npm install
 
-# 3. Start the backend server
-$ npm run dev
+# 3. Start the servers
+$ cd ../backend && npm run dev
+$ cd ../frontend && npm run dev
 ```
 
 ---
 
-## 🗂️ Structure
+## 🗂️ Project Structure
 
 ```
-backend/
-├── src/
-│   ├── controllers/    # Business logic
-│   ├── models/         # Data models
-│   ├── routes/         # API routes
-│   ├── middleware/     # Custom middleware
-│   ├── services/       # Business services
-│   ├── lib/            # Utilities & config
-│   └── index.js        # Entry point
+CovGo_project/
+├── backend/   # API, business logic, database
+├── frontend/  # React SPA, user interface
 ```
+
+- [Backend Documentation](./backend/README.md)
+- [Frontend Documentation](./frontend/README.md)
 
 ---
 
-## 📚 API Endpoints (Examples)
+## 🔗 Quick Access
 
-### Authentication
-- `POST /api/auth/register` — Register a new user
-- `POST /api/auth/login` — User login
-
-### Trips
-- `GET /api/trajet` — List all trips
-- `POST /api/trajet` — Create a trip
-
-### Bookings
-- `POST /api/reservation` — Create a booking
-- `GET /api/reservation/user` — User's bookings
+<p align="center">
+  <a href="./frontend/README.md"><img src="https://img.shields.io/badge/🚀%20Frontend-React%20App-blue?style=for-the-badge" alt="Frontend"/></a>
+  <a href="./backend/README.md"><img src="https://img.shields.io/badge/🛠️%20Backend-Node.js%20API-green?style=for-the-badge" alt="Backend"/></a>
+</p>
 
 ---
 
-## 👤 Author
-- Tokosama (Backend Developer)
+## 🛡️ Security & Best Practices
+- JWT authentication
+- XSS & CSRF protection
+- Secure password handling
+- Clean code & modern standards
+
+## 📱 Mobile & PWA
+- Fully responsive, mobile-first design
+- PWA support & offline mode
+
+## 🤝 Contributing
+1. Fork this repo
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request 🚀
+
+---
+
+## 👤 Authors
+- Orelson14 (Frontend)
+- Tokosama (Backend)
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the `LICENSE` file for details. 
