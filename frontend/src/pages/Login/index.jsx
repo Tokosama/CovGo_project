@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuthStore } from '../../store/useAuthStore';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,6 +12,8 @@ export default function Login() {
     password: ''
   });
   const [errors, setErrors] = useState({});
+
+  const{login, isLoggingIn} = useAuthStore();
 
   const validateForm = () => {
     const newErrors = {};
@@ -34,36 +37,7 @@ export default function Login() {
     
     if (Object.keys(newErrors).length === 0) {
       try {
-        setIsLoading(true);
-        
-        // TODO: Décommenter et adapter cette partie une fois le backend prêt
-        /*
-        // Envoi de la requête au backend
-        const response = await axios.post('http://localhost:3000/api/login', formData, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.data.success) {
-          // Stockage du token
-          if (response.data.token) {
-            localStorage.setItem('token', response.data.token);
-          }
-          
-          // Redirection vers la page d'accueil
-          window.location.replace('/home');
-        } else {
-          setAlertMessage('Email ou mot de passe incorrect');
-          setIsLoading(false);
-        }
-        */
-
-        // Simulation d'un délai de chargement de 3 secondes
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // Redirection vers la page d'accueil
-        window.location.replace('/home');
+        login(formData);
 
       } catch (error) {
         console.error('Erreur:', error);
