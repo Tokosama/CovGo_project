@@ -1,139 +1,92 @@
-import React, { useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera, faXmark } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera, faXmark } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Register() {
+
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [photo, setPhoto] = useState(null);
   const [photoError, setPhotoError] = useState(false);
-  const [photoErrorMessage, setPhotoErrorMessage] = useState('');
+  const [photoErrorMessage, setPhotoErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
+
   const [formData, setFormData] = useState({
-    nom: '',
-    prenom: '',
-    email: '',
-    telephone: '',
-    adresse: '',
-    mot_de_passe: '',
-    biographie: '',
-    role: ''
+    nom: "",
+    prenom: "",
+    email: "",
+    telephone: "",
+    adresse: "",
+    password: "",
+    bio: "",
+    role: "",
   });
+
+  const { signup, isSigningUp } = useAuthStore();
+
   const [errors, setErrors] = useState({});
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.nom) {
-      newErrors.nom = 'Le nom est requis';
+      newErrors.nom = "Le nom est requis";
     }
     if (!formData.prenom) {
-      newErrors.prenom = 'Le prénom est requis';
+      newErrors.prenom = "Le prénom est requis";
     }
     if (!formData.email) {
-      newErrors.email = 'L\'email est requis';
+      newErrors.email = "L'email est requis";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Format d\'email invalide';
+      newErrors.email = "Format d'email invalide";
     }
-    if (!formData.telephone) {
-      newErrors.telephone = 'Le numéro de téléphone est requis';
-    } else if (!/^\+229[0-9]{10}$/.test(formData.telephone.replace(/\s/g, ''))) {
-      newErrors.telephone = 'Format invalide. Exemple: +2290157222709';
-    }
+    // if (!formData.telephone) {
+    //   newErrors.telephone = "Le numéro de téléphone est requis";
+    // } else if (
+    //   !/^\+229[0-9]{10}$/.test(formData.telephone.replace(/\s/g, ""))
+    // ) {
+    //   newErrors.telephone = "Format invalide. Exemple: +2290157222709";
+    // }
     if (!formData.adresse) {
-      newErrors.adresse = 'L\'adresse est requise';
+      newErrors.adresse = "L'adresse est requise";
     }
-    if (!formData.biographie) {
-      newErrors.biographie = 'La biographie est requise';
-    }
+    // if (!formData.bio) {
+    //   newErrors.bio = "La bio est requise";
+    // }
     if (!formData.role) {
-      newErrors.role = 'Le rôle est requis';
+      newErrors.role = "Le rôle est requis";
     }
-    if (!formData.mot_de_passe) {
-      newErrors.mot_de_passe = 'Le mot de passe est requis';
+    if (!formData.password) {
+      newErrors.password = "Le mot de passe est requis";
     }
-    if (!photo) {
-      setPhotoError(true);
-      setPhotoErrorMessage('Photo requise');
-    } else {
-      setPhotoError(false);
-      setPhotoErrorMessage('');
-    }
+    // if (!photo) {
+    //   setPhotoError(true);
+    //   setPhotoErrorMessage("Photo requise");
+    // } else {
+    //   setPhotoError(false);
+    //   setPhotoErrorMessage("");
+    // }
+
+    console.log(newErrors);
     return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newErrors = validateForm();
-    setAlertMessage(''); // Réinitialiser le message d'alerte
-    
+
+    setAlertMessage(""); // Réinitialiser le message d'alerte
+
     if (Object.keys(newErrors).length === 0 && !photoError) {
-      try {
-        setIsLoading(true);
-        
-        // TODO: Décommenter et adapter cette partie une fois le backend prêt
-        /*
-        // Création d'un objet FormData pour envoyer les données et la photo
-        const formDataToSend = new FormData();
-        Object.keys(formData).forEach(key => {
-          formDataToSend.append(key, formData[key]);
-        });
-        
-        // Conversion de la photo en Blob
-        const photoBlob = await fetch(photo).then(r => r.blob());
-        formDataToSend.append('photo', photoBlob, 'photo.jpg');
+    console.log("Let'ssssssssssssssssssssssssss gooooooooo");
+    console.log(formData);
 
-        // Envoi de la requête au backend
-        const response = await axios.post('http://localhost:3000/api/register', formDataToSend, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-
-        if (response.data.success) {
-          // Stockage du token si nécessaire
-          if (response.data.token) {
-            localStorage.setItem('token', response.data.token);
-          }
-        }
-        */
-
-        // Simulation d'un délai de chargement de 3 secondes
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        // Sauvegarde de la biographie dans le localStorage
-        localStorage.setItem('bio', formData.biographie);
-        
-        // Redirection vers la page d'accueil sans changer l'état
-        window.location.replace('/home');
-      } catch (error) {
-        console.error('Erreur:', error);
-        setIsLoading(false);
-        // TODO: Décommenter et adapter cette partie une fois le backend prêt
-        /*
-        if (error.response) {
-          // Gestion des erreurs du serveur
-          const serverError = error.response.data;
-          if (serverError.email) {
-            setErrors(prev => ({ ...prev, email: serverError.email }));
-          }
-          if (serverError.telephone) {
-            setErrors(prev => ({ ...prev, telephone: serverError.telephone }));
-          }
-          if (serverError.message) {
-            setAlertMessage(serverError.message);
-          }
-        } else if (error.request) {
-          // Le serveur n'a pas répondu
-          setAlertMessage('Le serveur ne répond pas. Veuillez vérifier votre connexion internet.');
-        } else {
-          // Erreur de configuration de la requête
-          setAlertMessage('Impossible de se connecter au serveur. Veuillez réessayer plus tard.');
-        }
-        */
-      }
+      signup(formData);
     } else {
       setErrors(newErrors);
     }
@@ -144,35 +97,35 @@ export default function Register() {
     let processedValue = value;
 
     // Traitement spécial pour le numéro de téléphone
-    if (name === 'telephone') {
+    if (name === "telephone") {
       // Supprime tous les caractères non numériques sauf le +
-      processedValue = value.replace(/[^\d+]/g, '');
-      
+      processedValue = value.replace(/[^\d+]/g, "");
+
       // S'assure que le numéro commence par +229
-      if (!processedValue.startsWith('+229')) {
-        if (processedValue.startsWith('+')) {
-          processedValue = '+229' + processedValue.substring(1);
-        } else {
-          processedValue = '+229' + processedValue;
-        }
-      }
-      
+      // if (!processedValue.startsWith("+229")) {
+      //   if (processedValue.startsWith("+")) {
+      //     processedValue = "+229" + processedValue.substring(1);
+      //   } else {
+      //     processedValue = "+229" + processedValue;
+      //   }
+      // }
+
       // Limite la longueur totale à 14 caractères (+229 + 10 chiffres)
       if (processedValue.length > 14) {
         processedValue = processedValue.substring(0, 14);
       }
     }
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: processedValue
+      [name]: processedValue,
     }));
-    
+
     // Effacer l'erreur quand l'utilisateur commence à taper
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -186,27 +139,29 @@ export default function Register() {
     if (!file) return;
 
     // Vérification de l'extension
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-    if (!['png', 'jpg'].includes(fileExtension)) {
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    if (!["png", "jpg"].includes(fileExtension)) {
       setPhotoError(true);
-      setPhotoErrorMessage('Format non supporté. Choisissez un fichier .png ou .jpg');
+      setPhotoErrorMessage(
+        "Format non supporté. Choisissez un fichier .png ou .jpg"
+      );
       return;
     }
 
     // Vérification de la taille (2Mo = 2 * 1024 * 1024 octets)
     if (file.size > 2 * 1024 * 1024) {
       setPhotoError(true);
-      setPhotoErrorMessage('Fichier trop volumineux (max 2 Mo)');
+      setPhotoErrorMessage("Fichier trop volumineux (max 2 Mo)");
       return;
     }
 
     setPhotoError(false);
-    setPhotoErrorMessage('');
+    setPhotoErrorMessage("");
     const reader = new FileReader();
     reader.onload = (ev) => setPhoto(ev.target.result);
     reader.readAsDataURL(file);
   };
-
+  //Integration
   return (
     <div className="min-h-screen bg-white flex flex-col items-center font-itim">
       {/* Illustration et titre */}
@@ -215,136 +170,201 @@ export default function Register() {
           {/* Overlay gris léger */}
           <div className="absolute inset-0 bg-[#D9D9D9] opacity-40 z-10" />
           {/* Illustration */}
-          <img src="/illustration_3.svg" alt="Créer un compte" className="absolute inset-0 w-full h-full object-contain z-0" />
+          <img
+            src="/illustration_3.svg"
+            alt="Créer un compte"
+            className="absolute inset-0 w-full h-full object-contain z-0"
+          />
           {/* Texte centré */}
           <div className="absolute inset-0 flex items-start justify-center z-20">
-            <span className="text-[32px] font-extrabold text-black " style={{fontFamily: 'Itim, cursive', textShadow: '2px 2px 6px #0008', letterSpacing: 1, marginTop: '10rem'}}>
+            <span
+              className="text-[32px] font-extrabold text-black "
+              style={{
+                fontFamily: "Itim, cursive",
+                textShadow: "2px 2px 6px #0008",
+                letterSpacing: 1,
+                marginTop: "10rem",
+              }}
+            >
               Creer votre Compte
             </span>
           </div>
         </div>
       </div>
       {/* Formulaire */}
-      <form onSubmit={handleSubmit} className="w-full max-w-[400px] flex flex-col items-center px-4 pt-4">
-        <h2 className="text-[24px] font-bold text-center mb-4 mt-2 text-[#000000]">Renseigner vos informations</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-[400px] flex flex-col items-center px-4 pt-4"
+      >
+        <h2 className="text-[24px] font-bold text-center mb-4 mt-2 text-[#000000]">
+          Renseigner vos informations
+        </h2>
         <div className="flex w-full gap-2 mb-2">
           <div className="flex-1">
-            <input 
-              type="text" 
+            <input
+              type="text"
               name="nom"
               value={formData.nom}
               onChange={handleChange}
-              placeholder="Nom" 
-              className={`w-full border ${errors.nom ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none text-black placeholder:text-gray-400 bg-white`} 
+              placeholder="Nom"
+              className={`w-full border ${
+                errors.nom ? "border-red-500" : "border-black"
+              } rounded-full px-4 py-2 text-[16px] outline-none text-black placeholder:text-gray-400 bg-white`}
             />
-            {errors.nom && <p className="text-red-500 text-sm mt-1">{errors.nom}</p>}
+            {errors.nom && (
+              <p className="text-red-500 text-sm mt-1">{errors.nom}</p>
+            )}
           </div>
-          <div 
-            className={`w-[35px] h-[35px] bg-[#EDEDED] rounded-xl flex items-center justify-center border ${photoError ? 'border-red-500' : 'border-[#D9D9D9]'} cursor-pointer relative`} 
+          <div
+            className={`w-[35px] h-[35px] bg-[#EDEDED] rounded-xl flex items-center justify-center border ${
+              photoError ? "border-red-500" : "border-[#D9D9D9]"
+            } cursor-pointer relative`}
             onClick={handleCameraClick}
           >
             {photo ? (
-              <img src={photo} alt="Aperçu" className="w-full h-full object-cover rounded-xl" />
+              <img
+                src={photo}
+                alt="Aperçu"
+                className="w-full h-full object-cover rounded-xl"
+              />
             ) : photoError ? (
-              <FontAwesomeIcon icon={faXmark} className="text-red-500 text-2xl" />
+              <FontAwesomeIcon
+                icon={faXmark}
+                className="text-red-500 text-2xl"
+              />
             ) : (
-              <FontAwesomeIcon icon={faCamera} className="text-gray-500 text-2xl" />
+              <FontAwesomeIcon
+                icon={faCamera}
+                className="text-gray-500 text-2xl"
+              />
             )}
             <input
               type="file"
               accept="image/png, image/jpeg"
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               ref={fileInputRef}
               onChange={handleFileChange}
             />
           </div>
         </div>
         {photoErrorMessage && (
-          <p className="text-red-500 text-sm mb-2 w-full">{photoErrorMessage}</p>
+          <p className="text-red-500 text-sm mb-2 w-full">
+            {photoErrorMessage}
+          </p>
         )}
         <div className="w-full">
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="prenom"
             value={formData.prenom}
             onChange={handleChange}
-            placeholder="Prenom" 
-            className={`w-full border ${errors.prenom ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            placeholder="Prenom"
+            className={`w-full border ${
+              errors.prenom ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
-          {errors.prenom && <p className="text-red-500 text-sm mb-2">{errors.prenom}</p>}
+          {errors.prenom && (
+            <p className="text-red-500 text-sm mb-2">{errors.prenom}</p>
+          )}
         </div>
         <div className="w-full">
-          <input 
-            type="email" 
+          <input
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="Email" 
-            className={`w-full border ${errors.email ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            placeholder="Email"
+            className={`w-full border ${
+              errors.email ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
-          {errors.email && <p className="text-red-500 text-sm mb-2">{errors.email}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm mb-2">{errors.email}</p>
+          )}
         </div>
         <div className="w-full">
-          <input 
-            type="tel" 
+          <input
+            type="tel"
             name="telephone"
             value={formData.telephone}
             onChange={handleChange}
-            placeholder="Telephone" 
-            className={`w-full border ${errors.telephone ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            placeholder="Telephone"
+            className={`w-full border ${
+              errors.telephone ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
-          {errors.telephone && <p className="text-red-500 text-sm mb-2">{errors.telephone}</p>}
+          {errors.telephone && (
+            <p className="text-red-500 text-sm mb-2">{errors.telephone}</p>
+          )}
         </div>
         <div className="w-full">
-          <input 
-            type="text" 
+          <input
+            type="text"
             name="adresse"
             value={formData.adresse}
             onChange={handleChange}
-            placeholder="Adresse" 
-            className={`w-full border ${errors.adresse ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            placeholder="Adresse"
+            className={`w-full border ${
+              errors.adresse ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
-          {errors.adresse && <p className="text-red-500 text-sm mb-2">{errors.adresse}</p>}
+          {errors.adresse && (
+            <p className="text-red-500 text-sm mb-2">{errors.adresse}</p>
+          )}
         </div>
         <div className="w-full">
-          <input 
-            type="password" 
-            name="mot_de_passe"
-            value={formData.mot_de_passe}
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
             onChange={handleChange}
-            placeholder="Mot de passe" 
-            className={`w-full border ${errors.mot_de_passe ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            placeholder="Mot de passe"
+            className={`w-full border ${
+              errors.password ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
-          {errors.mot_de_passe && <p className="text-red-500 text-sm mb-2">{errors.mot_de_passe}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-sm mb-2">{errors.password}</p>
+          )}
         </div>
         <div className="w-full">
-          <input 
-            type="text" 
-            name="biographie"
-            value={formData.biographie}
+          <input
+            type="text"
+            name="bio"
+            value={formData.bio}
             onChange={handleChange}
-            placeholder="Biographie" 
-            className={`w-full border ${errors.biographie ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            placeholder="bio"
+            className={`w-full border ${
+              errors.bio ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
-          {errors.biographie && <p className="text-red-500 text-sm mb-2">{errors.biographie}</p>}
+          {errors.bio && (
+            <p className="text-red-500 text-sm mb-2">{errors.bio}</p>
+          )}
         </div>
         <div className="w-full">
-          <select 
+          <select
             name="role"
             value={formData.role}
             onChange={handleChange}
-            className={`w-full border ${errors.role ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-4 bg-white text-black`}
+            className={`w-full border ${
+              errors.role ? "border-red-500" : "border-black"
+            } rounded-full px-4 py-2 text-[16px] outline-none mb-4 bg-white text-black`}
           >
             <option value="">Role</option>
             <option value="conducteur">Conducteur</option>
             <option value="passager">Passager</option>
           </select>
-          {errors.role && <p className="text-red-500 text-sm mb-2">{errors.role}</p>}
+          {errors.role && (
+            <p className="text-red-500 text-sm mb-2">{errors.role}</p>
+          )}
         </div>
-        <button 
-          type="submit" 
-          disabled={isLoading}
-          className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        <button
+          type="submit"
+          // disabled={isLoading}
+          className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 active:bg-amber-700 hover:bg-[#bdbdbd] transition ${
+            isLoading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           <span className="flex items-center justify-center">
             {isLoading ? (
@@ -353,13 +373,20 @@ export default function Register() {
                 <span className="spinner ml-2"></span>
               </>
             ) : (
-              'S\'inscrire'
+              "S'inscrire"
             )}
           </span>
         </button>
         <div className="w-full text-center mt-2 mb-6">
-          <span className="text-[16px] font-bold text-black">Deja un Compte? </span>
-          <span className="text-[16px] text-[#a5a5a5] font-bold cursor-pointer hover:underline" onClick={() => navigate('/login')}>se connecter</span>
+          <span className="text-[16px] font-bold text-black">
+            Deja un Compte?{" "}
+          </span>
+          <span
+            className="text-[16px] text-[#a5a5a5] font-bold cursor-pointer hover:underline"
+            onClick={() => navigate("/login")}
+          >
+            se connecter
+          </span>
         </div>
       </form>
 

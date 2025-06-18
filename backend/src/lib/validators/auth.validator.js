@@ -41,8 +41,8 @@ export const UserValidator = Joi.object({
     "string.min": "Le mot de passe doit contenir au moins 6 caractères",
     "any.required": "Le mot de passe est obligatoire",
   }),
-});
-
+  bio: Joi.string().trim().allow("").optional(), // ✅ Ajouté
+}).unknown(true);
 
 export const LoginValidator = Joi.object({
   email: Joi.string().email().required().label("Email"),

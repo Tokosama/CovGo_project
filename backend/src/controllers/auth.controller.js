@@ -7,6 +7,8 @@ import {
 } from "../services/auth.service.js";
 
 export const register = async (req, res) => {
+  console.log("workingggggggggggggggggg")
+  console.log(req.body)
   try {
     const result = await registerUser(req.body, req.session);
     res.status(200).json({result, message:"verifier votre numero de mail"});

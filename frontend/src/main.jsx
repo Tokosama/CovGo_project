@@ -4,17 +4,23 @@ import { motion, AnimatePresence } from 'framer-motion'
 import './index.css'
 import LoadingSpinner from './components/LoadingSpinner'
 
-const App = lazy(() => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(import('./App.jsx'));
-    }, 4000);
-  });
-});
+// const App = lazy(() => {
+//   return new Promise(resolve => {
+//     setTimeout(() => {
+//       resolve(import('./App.jsx'));
+//     }, 4000);
+//   });
+// });
+
+import App from './App.jsx'
 
 const Root = () => {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense
+    
+    fallback={<LoadingSpinner />}
+    
+    >
       <motion.div
         initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 10, y: 0 }}
