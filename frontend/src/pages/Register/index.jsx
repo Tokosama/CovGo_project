@@ -29,7 +29,7 @@ export default function Register() {
 
   const { signup, isSigningUp } = useAuthStore();
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState("");
 
   const validateForm = () => {
     const newErrors = {};
@@ -77,16 +77,18 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newErrors = validateForm();
-
-    setAlertMessage(""); // Réinitialiser le message d'alerte
-
+    setAlertMessage("");
     if (Object.keys(newErrors).length === 0 && !photoError) {
-    console.log("Let'ssssssssssssssssssssssssss gooooooooo");
-    console.log(formData);
-
-      signup(formData);
+      try {
+        setIsLoading(true);
+        await signup(formData);
+        // Redirection directe après inscription réussie
+        navigate("/home");
+      } catch (error) {
+        setIsLoading(false);
+        setAlertMessage("Erreur lors de l'inscription. Veuillez réessayer.");
+      }
     } else {
       setErrors(newErrors);
     }
@@ -161,7 +163,7 @@ export default function Register() {
     reader.onload = (ev) => setPhoto(ev.target.result);
     reader.readAsDataURL(file);
   };
-  //Integration
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center font-itim">
       {/* Illustration et titre */}
@@ -361,8 +363,8 @@ export default function Register() {
         </div>
         <button
           type="submit"
-          // disabled={isLoading}
-          className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 active:bg-amber-700 hover:bg-[#bdbdbd] transition ${
+          disabled={isLoading}
+          className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
@@ -389,7 +391,6 @@ export default function Register() {
           </span>
         </div>
       </form>
-
       <style jsx>{`
         .spinner {
           width: 20px;

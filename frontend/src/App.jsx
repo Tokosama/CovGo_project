@@ -54,7 +54,7 @@ function App() {
         />
         <Route
           path="/home"
-          element={authUser ? <home /> : <Navigate to="/login" />}
+          element={authUser ? <Home /> : <Navigate to="/login" />}
         />
         <Route
           path="/trips"

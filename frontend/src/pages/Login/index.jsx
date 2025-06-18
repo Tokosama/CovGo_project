@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import OtpModal from "../../components/OtpModal";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,6 +13,9 @@ export default function Login() {
     password: ''
   });
   const [errors, setErrors] = useState({});
+  const [showOtp, setShowOtp] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [otpError, setOtpError] = useState('');
 
   const validateForm = () => {
     const newErrors = {};
@@ -30,67 +35,30 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
-    setAlertMessage(''); // Réinitialiser le message d'alerte
+    setAlertMessage('');
+    setOtpError('');
     
     if (Object.keys(newErrors).length === 0) {
       try {
         setIsLoading(true);
         
-        // TODO: Décommenter et adapter cette partie une fois le backend prêt
-        /*
-        // Envoi de la requête au backend
-        const response = await axios.post('http://localhost:3000/api/login', formData, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.data.success) {
-          // Stockage du token
-          if (response.data.token) {
-            localStorage.setItem('token', response.data.token);
-          }
-          
-          // Redirection vers la page d'accueil
-          window.location.replace('/home');
-        } else {
-          setAlertMessage('Email ou mot de passe incorrect');
-          setIsLoading(false);
-        }
-        */
-
-        // Simulation d'un délai de chargement de 3 secondes
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        // TODO: Remplacer par l'appel API réel
+        // const response = await axios.post('/api/login', formData);
+        // if (response.data.requiresOtp) {
+        //   setShowOtp(true);
+        // } else {
+        //   navigate('/home');
+        // }
         
-        // Redirection vers la page d'accueil
-        window.location.replace('/home');
-
+        // Simulation pour le moment
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setShowOtp(true);
+        
       } catch (error) {
-        console.error('Erreur:', error);
+        console.error('Erreur de connexion:', error);
+        setAlertMessage('Email ou mot de passe incorrect');
+      } finally {
         setIsLoading(false);
-        
-        // TODO: Décommenter et adapter cette partie une fois le backend prêt
-        /*
-        if (error.response) {
-          // Gestion des erreurs du serveur
-          const serverError = error.response.data;
-          if (serverError.email) {
-            setErrors(prev => ({ ...prev, email: serverError.email }));
-          }
-          if (serverError.password) {
-            setErrors(prev => ({ ...prev, password: serverError.password }));
-          }
-          if (serverError.message) {
-            setAlertMessage(serverError.message);
-          }
-        } else if (error.request) {
-          // Le serveur n'a pas répondu
-          setAlertMessage('Le serveur ne répond pas. Veuillez vérifier votre connexion internet.');
-        } else {
-          // Erreur de configuration de la requête
-          setAlertMessage('Impossible de se connecter au serveur. Veuillez réessayer plus tard.');
-        }
-        */
       }
     } else {
       setErrors(newErrors);
@@ -109,6 +77,71 @@ export default function Login() {
         ...prev,
         [name]: ''
       }));
+    }
+  };
+
+  const handleOtpValidate = async (code) => {
+    setOtpLoading(true);
+    setOtpError('');
+    
+    try {
+      // TODO: Remplacer par l'appel API réel
+      // const response = await axios.post('/api/verify-otp', {
+      //   code,
+      //   email: formData.email
+      // });
+      // if (response.data.success) {
+      //   navigate('/home');
+      // }
+      
+      // Simulation pour le moment
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setShowOtp(false);
+      toast.success('Connexion réussie !', {
+        duration: 3000,
+        style: {
+          fontFamily: 'Itim, cursive',
+          background: '#FFFFFF',
+          color: '#000000',
+          fontSize: '16px',
+          fontWeight: 'semibold',
+          borderRadius: '8px',
+          padding: '12px 16px',
+        },
+      });
+      navigate('/home');
+      
+    } catch (error) {
+      console.error('Erreur OTP:', error);
+      setOtpError('Code OTP incorrect. Veuillez réessayer.');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const handleResendOtp = async (email) => {
+    try {
+      // TODO: Remplacer par l'appel API réel
+      // await axios.post('/api/resend-otp', { email });
+      
+      // Simulation pour le moment
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success('Code OTP renvoyé !', {
+        duration: 2500,
+        style: {
+          fontFamily: 'Itim, cursive',
+          background: '#FFFFFF',
+          color: '#000000',
+          fontSize: '16px',
+          fontWeight: 'semibold',
+          borderRadius: '8px',
+          padding: '10px 14px',
+        },
+      });
+      
+    } catch (error) {
+      console.error('Erreur renvoi OTP:', error);
+      throw new Error('Erreur lors du renvoi du code OTP');
     }
   };
 
@@ -173,12 +206,21 @@ export default function Login() {
         {alertMessage && (
           <p className="text-red-500 text-sm mb-4 w-full text-center">{alertMessage}</p>
         )}
-        <div className="w-full text-center mb-6">
+        <div className="w-full text-center mt-5 mb-6">
           <span className="text-[16px] font-bold text-black">Nouveau? </span>
           <span className="text-[16px] text-[#a5a5a5] font-bold cursor-pointer hover:underline" onClick={() => navigate('/register')}>s'inscrire</span>
         </div>
       </form>
-
+      
+      <OtpModal 
+        visible={showOtp} 
+        onValidate={handleOtpValidate} 
+        onResendCode={handleResendOtp}
+        isLoading={otpLoading}
+        error={otpError}
+        email={formData.email}
+      />
+      
       <style jsx>{`
         .spinner {
           width: 20px;
