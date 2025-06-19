@@ -8,7 +8,6 @@ import {
 import Nav from "../../components/Nav";
 import ListTrips from "../../components/List-Trips";
 import Details from "../../components/Details";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
@@ -163,12 +162,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center font-itim relative pb-20">
+    <div className="min-h-screen bg-white flex flex-col items-center font-itim relative pb-5">
       {!showListTrips && !showDetails && (
         <>
           {/* Illustration et titre */}
-          <div className="w-full max-w-[1000px] overflow-hidden">
-            <div className="w-full h-[450px] bg-[#90E0EF] flex items-center justify-center blur-[1px] relative">
+          <div className="w-full max-w-[1000px]  overflow-hidden">
+            <div className="w-full h-[450px] hadow-custom bg-[#90E0EF] flex items-center justify-center blur-[1px] relative">
               <img
                 src="/illustration_8.png"
                 alt="Illustration d'une recherche de trajet"
@@ -189,18 +188,18 @@ export default function Home() {
           </h1>
           {/* Carte de recherche */}
           <form
-            className="w-full z-50 max-w-[340px] bg-[#00B4D8] rounded-[24px] shadow-2xl border border-[#0096C7] flex flex-col items-center px-4 pt-4 pb-6 mb-4
+            className="w-full  z-50 max-w-[340px] bg-[#00B4D8] rounded-2xl shadow-custom border border-[#0096C7] flex flex-col items-center   pb-6 mb-24
               sm:max-w-[340px] sm:px-4 sm:pt-4 sm:pb-6
-              max-[400px]:max-w-[95vw] max-[400px]:px-2 max-[400px]:pt-2 max-[400px]:pb-4
-              max-[340px]:max-w-[98vw] max-[340px]:px-1 max-[340px]:pt-1 max-[340px]:pb-2"
-            style={{ boxShadow: "2px 4px 8px #0002" }}
+              max-[400px]:max-w-[95vw] max-[400px]:px-5 max-[400px]:pt-8 max-[400px]:pb-5
+              max-[340px]:max-w-[98vw] max-[340px]:px-5 max-[340px]:pt-8 max-[340px]:pb-5"
+           
             onSubmit={handleSubmit}
           >
             {/* Point de départ */}
             <label htmlFor="depart" className="sr-only">
               Point de départ
             </label>
-            <div className="w-full flex items-center border border-black rounded-lg bg-[#ffffff] px-4 py-2 mb-3">
+            <div className="w-full flex items-center border border-black rounded-2xl bg-[#ffffff] px-4 py-2 mb-3">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 className="text-green-600 mr-2"
@@ -212,7 +211,7 @@ export default function Home() {
                 value={formData.depart}
                 onChange={handleChange}
                 placeholder="Point de depart"
-                className={`flex-1 bg-transparent outline-none text-[14px] text-black placeholder:text-black ${errors.depart ? "border-red-500" : ""
+                className={`flex-1 bg-transparent outline-none text-[20px] text-black placeholder:text-gray-400 ${errors.depart ? "border-red-500" : ""
                   }`}
               />
             </div>
@@ -226,7 +225,7 @@ export default function Home() {
             <label htmlFor="destination" className="sr-only">
               Point de destination
             </label>
-            <div className="w-full flex items-center border border-black rounded-lg bg-[#ffffff] px-4 py-2 mb-3">
+            <div className="w-full flex items-center border border-black rounded-2xl bg-[#ffffff] px-4 py-2 mb-3">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 className="text-red-600 mr-2"
@@ -238,7 +237,7 @@ export default function Home() {
                 value={formData.destination}
                 onChange={handleChange}
                 placeholder="Point de destination"
-                className={`flex-1 bg-transparent outline-none text-[14px] text-black placeholder:text-black ${errors.destination ? "border-red-500" : ""
+                className={`flex-1 bg-transparent outline-none text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
                   }`}
               />
             </div>
@@ -254,7 +253,7 @@ export default function Home() {
                 Date et heure
               </label>
               <div
-                className="flex items-center border border-black rounded-lg bg-[#ffffff] px-2 py-2"
+                className="flex items-center border border-black rounded-2xl bg-[#ffffff] px-2 py-2"
                 style={{ flexBasis: "65%", maxWidth: "220px" }}
               >
                 <FontAwesomeIcon
@@ -268,7 +267,7 @@ export default function Home() {
                   value={formData.datetime}
                   onChange={handleChange}
                   min={new Date().toISOString().slice(0, 16)}
-                  className={`w-full bg-transparent outline-none text-[14px] text-black placeholder:text-black ${errors.datetime ? "border-red-500" : ""
+                  className={`w-full bg-transparent outline-none text-[20px] text-black placeholder:text-gray-400 ${errors.datetime ? "border-red-500" : ""
                     }`}
                   style={{ minWidth: 0 }}
                 />
@@ -277,12 +276,12 @@ export default function Home() {
                 Nombre de places
               </label>
               <div
-                className="flex items-center border border-black rounded-lg bg-[#ffffff] px-2 py-2 justify-center"
+                className="flex items-center border border-black rounded-2xl bg-[#ffffff] px-2 py-2 justify-center"
                 style={{ flexBasis: "35%", minWidth: "70px" }}
               >
                 <FontAwesomeIcon
                   icon={faUserFriends}
-                  className="mr-1 text-black text-[14px]"
+                  className="mr-1 text-black text-[20px]"
                 />
                 <input
                   id="places"
@@ -294,7 +293,7 @@ export default function Home() {
                   onChange={handleChange}
                   placeholder="Nbr"
                   inputMode="numeric"
-                  className={`w-full bg-transparent outline-none text-[15px] font-bold text-black placeholder:text-black text-center ${errors.places ? "border-red-500" : ""
+                  className={`w-full bg-transparent outline-none text-[15px] font-bold text-black placeholder:text-gray-400 text-center ${errors.places ? "border-red-500" : ""
                     }`}
                   style={{
                     MozAppearance: "textfield",
@@ -320,7 +319,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+              className={`w-full bg-[#3B82F6]  text-white text-[24px] rounded-2xl py-2 mb-2 shadow-custom border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
               <span className="flex items-center justify-center">
@@ -339,13 +338,6 @@ export default function Home() {
                 {alertMessage}
               </p>
             )}
-            {/* Bouton Publier un trajet */}
-            <button
-              className="text-[#000000] font-bold text-[16px] mt-4 px-6 underline"
-              onClick={() => navigate('/publier-trajet')}
-            >
-              Publier un trajet
-            </button>
           </form>
         </>
       )}

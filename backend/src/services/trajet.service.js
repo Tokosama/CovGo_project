@@ -29,7 +29,7 @@ export const getFilteredTrajetsService = async (filters) => {
   if (filters.date_depart) query.date_depart = { $gte: new Date(filters.date_depart) };
   if (filters.prix) query.prix = { $lte: Number(filters.prix) };
 
-  return await Trajet.find(query);
+  return await Trajet.find(query).populate('conducteur_id', 'nom prenom email photo role');
 };
 
 export const annulerTrajetService = async (trajetId) => {

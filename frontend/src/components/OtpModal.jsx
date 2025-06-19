@@ -119,9 +119,9 @@ export default function OtpModal({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -100, opacity: 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="bg-[#FFFFFF] rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 w-[calc(100%-2rem)] max-w-[340px] min-w-[280px] flex flex-col items-center mx-4 will-change-transform"
+        className="bg-[#FFFFFF] rounded-2xl shadow-custom py-6 px-4 sm:p-6 md:p-8 w-[calc(100%-2rem)] max-w-[340px] min-w-[280px] flex flex-col items-center mx-4 will-change-transform"
       >
-        <h2 className="text-black text-[24px] font-bold mb-2 text-center">Vérification OTP</h2>
+        <h2 className="text-black text-[24px]  mb-2 text-center">Vérification OTP</h2>
         <p className="text-[16px] sm:text-base text-gray-600 mb-4 text-center">
           Veuillez entrer le code reçu par email ou SMS
         </p>
@@ -142,7 +142,7 @@ export default function OtpModal({
                 value={digit}
                 onChange={e => handleChange(e, idx)}
                 onKeyDown={e => handleKeyDown(e, idx)}
-                className="w-8 h-10 sm:w-10 sm:h-12 text-center text-black text-lg sm:text-xl border border-[#00B4D8] rounded-md focus:border-[#90E0EF] outline-none bg-[#90E0EF]"
+                className="w-8 h-10 sm:w-10 sm:h-12 text-center text-black text-lg sm:text-xl  shadow-custom  rounded-md focus:border-[#90E0EF] outline-none bg-[#white]"
                 autoFocus={idx === 0}
               />
             ))}
@@ -150,7 +150,7 @@ export default function OtpModal({
           {error && <p className="text-red-500 text-sm mb-2 text-center">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mt-2 transition-all duration-300 ease-in-out hover:bg-[#3B82F6]/80 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
+            className="w-full bg-[#3B82F6] text-white text-[24px]  rounded-md py-2 mt-2 transition-all duration-300 ease-in-out shadow-custom hover:bg-[#3B82F6]/80 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
             disabled={isLoading}
           >
             <span className="flex items-center justify-center">
@@ -165,12 +165,12 @@ export default function OtpModal({
             </span>
           </button>
           <div className="w-full text-center mt-7 mb-2">
-            <span className="text-[16px] font-bold text-black">
+            <span className="text-[16px] text-black">
               Un problème ?{" "}
             </span>
             {canResend ? (
               <span
-                className={`text-[16px] font-bold cursor-pointer hover:underline ${
+                className={`text-[16px] font-bold text-[#3B82F6] cursor-pointer hover:underline ${
                   isResending ? 'text-gray-400' : 'text-[#a5a5a5]'
                 }`}
                 onClick={handleResendCode}
@@ -178,7 +178,7 @@ export default function OtpModal({
                 {isResending ? "Envoi en cours..." : "Renvoyer le code OTP"}
               </span>
             ) : (
-              <span className="text-[16px] text-[#90E0EF] font-bold">
+              <span className="text-[16px]  text-[#3B82F6]">
                 Renvoyer le code OTP dans {formatTime(timeLeft)}
               </span>
             )}

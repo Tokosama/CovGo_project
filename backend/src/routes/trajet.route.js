@@ -25,10 +25,10 @@ router.post("/create", protectRoute, isDriver, createTrajetController);
 router.get("/all", protectRoute, getAllTrajets);
 //recupere tous les trajets du connecteur connectee
 router.get("/me", protectRoute, isDriver, getMyTrajets); // accessible uniquement à l'utilisateur connecté
+router.get("/filter", protectRoute, getTrajetsWithFilters); // 🌟 nouvelle route
 //recuperer un trajet precis
 router.get("/:id", protectRoute, getTrajetById); // accessible uniquement à l'utilisateur connecté
 //filtrer les trajets
-router.get("/filter", protectRoute, getTrajetsWithFilters); // 🌟 nouvelle route
 //annuler un trajet
 router.put(
   "/:id/annuler",
@@ -53,9 +53,9 @@ router.put(
   verifyConducteurOwnership,
   terminerTrajet
 );
-
 //recuperer les reservations du trajet
 router.get("/:trajetId/reservations", protectRoute, getReservationsByTrajet);
+
 //evaluer un trajet
 router.post(
   "/:trajet_id/evaluation",

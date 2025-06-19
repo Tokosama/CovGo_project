@@ -46,8 +46,8 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
       onSubmit={handleUpdate}
     >
       <div className="w-full max-w-[350px] mx-auto">
-        <div className="w-[90%] text-center items-center justify-center mx-auto text-[21px] font-bold text-[#FF1D1D] mt-[-30px] mb-4">
-          Renseignez vos nouvelles informations
+        <div className="w-[90%] text-center items-center justify-center mx-auto text-[24px]  text-[#FF1D1D] mt-[-30px] mb-4">
+          Renseignez vos nouvelles Informations
         </div>
         <input
           name="nom"
@@ -55,7 +55,7 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
           placeholder="Nom"
           value={localForm.nom}
           onChange={handleChange}
-          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow text-[16px]"
+          className="w-full text-[#6B7280] mb-3 px-4 shadow-custom py-2 rounded-xl border border-gray-300 s text-[20px]"
         />
         {errors.nom && <p className="text-red-500 text-sm mb-1">{errors.nom}</p>}
         <input
@@ -64,7 +64,7 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
           placeholder="Prenom"
           value={localForm.prenom}
           onChange={handleChange}
-          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow text-[16px]"
+          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px]"
         />
         {errors.prenom && <p className="text-red-500 text-sm mb-1">{errors.prenom}</p>}
         <input
@@ -73,7 +73,7 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
           placeholder="telephone"
           value={localForm.telephone}
           onChange={handleChange}
-          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow text-[16px]"
+          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px]"
         />
         {errors.telephone && <p className="text-red-500 text-sm mb-1">{errors.telephone}</p>}
         <input
@@ -82,7 +82,7 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
           placeholder="adresse"
           value={localForm.adresse}
           onChange={handleChange}
-          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow text-[16px]"
+          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px]"
         />
         {errors.adresse && <p className="text-red-500 text-sm mb-1">{errors.adresse}</p>}
         <textarea
@@ -90,13 +90,13 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
           placeholder="Bio"
           value={localForm.bio}
           onChange={handleChange}
-          className="w-full text-[#000000] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow text-[16px] min-h-[80px]"
+          className="w-full text-[#000000] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px] min-h-[80px]"
         />
         {errors.bio && <p className="text-red-500 text-sm mb-1">{errors.bio}</p>}
         <div className="flex justify-center w-full">
           <button
             type="submit"
-            className="w-[60%] bg-[#FFE082] text-black font-bold text-[16px] rounded-md py-2 mt-2 shadow hover:bg-[#ffe082cc] transition"
+            className="w-[60%] bg-[#FFE082] text-black  text-[24px] rounded-md py-2 mt-2 shadow-custom hover:bg-[#ffe082cc] transition"
           >
             Mettre a jour
           </button>

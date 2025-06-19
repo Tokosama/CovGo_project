@@ -11,8 +11,6 @@ import reservationRoutes from "./routes/reservation.route.js";
 import messageRoutes from "./routes/message.route.js";
 import evaluationRoutes from "./routes/evaluation.route.js";
 
-
-
 import { connectDB } from "./lib/db.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
@@ -31,11 +29,12 @@ app.use(
 const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin:"http://localhost:5173",
-  credentials: true
-
-}))
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
@@ -46,8 +45,7 @@ app.use("/api/reservation", reservationRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/evaluation", evaluationRoutes);
 
-
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log("server is running on port:" + PORT);
   connectDB();
 });

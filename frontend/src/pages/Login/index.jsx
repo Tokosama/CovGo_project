@@ -148,7 +148,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center font-itim">
       {/* Illustration et titre */}
-      <div className="w-full max-w-[1000px] rounded-b-2xl overflow-hidden">
+      <div className="w-full max-w-[1000px] shadow-custom rounded-b-4xl overflow-hidden">
         <div className="relative w-full h-[280px] bg-[#00B4D8]">
           {/* Overlay gris léger */}
           <div className="absolute inset-0 bg-[#D9D9D9] opacity-0 z-10" />
@@ -156,7 +156,7 @@ export default function Login() {
           <img src="/illustration_7.png" alt="Connexion" className="absolute inset-0 w-full h-full object-contain z-0" />
           {/* Texte centré */}
           <div className="absolute inset-0 flex items-center justify-center z-20">
-            <span className="text-[32px] font-extrabold text-white" style={{fontFamily: 'Itim, cursive', textShadow: '2px 2px 6px #0008', letterSpacing: 1, marginTop: '14rem'}}>
+            <span className="text-[36px] font-extrabold text-white" style={{fontFamily: 'Itim, cursive', textShadow: '2px 2px 6px #0008', letterSpacing: 1, marginTop: '14rem'}}>
               Connecter-vous
             </span>
           </div>
@@ -164,7 +164,7 @@ export default function Login() {
       </div>
       {/* Formulaire */}
       <form onSubmit={handleSubmit} className="w-full max-w-[400px] flex flex-col items-center px-4 pt-4">
-        <h2 className="text-[24px] font-bold text-center mb-4 mt-2 text-[#000000]">Renseigner vos informations</h2>
+        <h2 className="text-[28px]  text-center mb-4 mt-2 text-[#1F2937]">Renseigner vos informations</h2>
         <div className="w-full">
           <input 
             type="email" 
@@ -172,25 +172,25 @@ export default function Login() {
             value={formData.email}
             onChange={handleChange}
             placeholder="Email" 
-            className={`w-full border ${errors.email ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
+            className={`w-full border ${errors.email ? 'border-red-500' : 'border-black'} rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
           />
           {errors.email && <p className="text-red-500 text-sm mb-2">{errors.email}</p>}
         </div>
-        <div className="w-full">
+        <div className="w-full mt-2">
           <input 
             type="password" 
             name="password"
             value={formData.password}
             onChange={handleChange}
             placeholder="Password" 
-            className={`w-full border ${errors.password ? 'border-red-500' : 'border-black'} rounded-full px-4 py-2 text-[16px] outline-none mb-3 text-black placeholder:text-gray-400 bg-white`} 
+            className={`w-full border ${errors.password ? 'border-red-500' : 'border-black'} rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`} 
           />
           {errors.password && <p className="text-red-500 text-sm mb-2">{errors.password}</p>}
         </div>
         <button 
           type="submit" 
           disabled={isLoading}
-          className={`w-full bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`w-full bg-[#3B82F6] text-white text-[24px]  rounded-md mt-10 py-2 mb-2 shadow-custom border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           <span className="flex items-center justify-center">
             {isLoading ? (
@@ -208,7 +208,7 @@ export default function Login() {
         )}
         <div className="w-full text-center mt-5 mb-6">
           <span className="text-[16px] font-bold text-black">Nouveau? </span>
-          <span className="text-[16px] text-[#90E0EF] font-bold cursor-pointer hover:underline" onClick={() => navigate('/register')}>s'inscrire</span>
+          <span className="text-[16px] text-[#3B82F6] font-bold cursor-pointer hover:underline" onClick={() => navigate('/register')}>s'inscrire</span>
         </div>
       </form>
       

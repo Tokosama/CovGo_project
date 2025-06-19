@@ -69,7 +69,7 @@ export default function FormPiece({
               <label className="block text-[16px] text-gray-600 mb-1">Choix de la piece</label>
               <div className="relative">
                 <select
-                  className="appearance-none w-full rounded-full bg-[#EDEDED] px-4 py-2 text-[16px] text-black border border-gray-200 focus:border-blue-400 font-itim pr-8 z-10 cursor-pointer"
+                  className="border border-gray-200 focus:border-blue-400 font-itim  rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white"
                   value={pieceType}
                   onChange={handlePieceTypeChange}
                   style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
@@ -85,7 +85,7 @@ export default function FormPiece({
             <div className="mb-4">
               <label className="block text-[16px] text-gray-600 mb-1">Ajoutez la piece</label>
               <div
-                className="flex items-center bg-[#EDEDED] rounded-full border border-gray-300 px-3 py-2 cursor-pointer hover:shadow-md transition"
+                className="flex border border-gray-200 focus:border-blue-400 font-itim  rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white"
                 onClick={() => pieceInputRef.current && pieceInputRef.current.click()}
               >
                 <FontAwesomeIcon icon={faIdCard} className="text-gray-500 text-xl mr-2" />

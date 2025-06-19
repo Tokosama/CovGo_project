@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const NavItem = memo(({ icon, label, isActive, onClick }) => (
   <div className="flex flex-col items-center flex-1 transition cursor-pointer" onClick={onClick}>
     <span className="rounded-xl p-0.5">
-      <FontAwesomeIcon icon={icon} className={`text-lg transition ${isActive ? 'text-white' : 'hover:text-white text-black'}`} />
+      <FontAwesomeIcon icon={icon} className={`text-lg transition ${isActive ? 'text-[#3B82F6]' : 'hover:text-white text-black'}`} />
     </span>
-    <span className={`text-[10px] ${isActive ? 'text-white' : 'text-black'}`}>{label}</span>
+    <span className={`text-[16px] ${isActive ? 'text-[#3B82F6]' : 'text-black'}`}>{label}</span>
   </div>
 ));
 

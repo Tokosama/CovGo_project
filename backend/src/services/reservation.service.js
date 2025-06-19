@@ -84,9 +84,9 @@ export const updateReservationStatusService = async (reservationId, conducteurId
   }
 
   // Action
-  if (action === "accepter") {
+  if (action === "accepte") {
     reservation.status = "accepte";
-  } else if (action === "rejeter") {
+  } else if (action === "rejete") {
     reservation.status = "rejete";
   } else {
     throw new Error("Action invalide.");
@@ -147,4 +147,34 @@ export const getMyReservationsService = async (userId) => {
   return await Reservation.find({ passager_id: userId })
     .populate("trajet_id") // facultatif
     .sort({ createdAt: -1 });
+};
+
+
+export const getReservationsByUserId = async (userId) => {
+  console.log(userId)
+  return await Reservation.find({ passager_id: userId }) // ou utilisateur_id selon ton modèle
+    .populate('trajet_id') // si tu veux les infos du trajet
+    .sort({ createdAt: -1 }); // optionnel : les plus récentes en premier
+};
+
+
+export const getReservationsForConducteur = async (conducteurId) => {
+  // Étape 1 : trouver les trajets disponibles du conducteur
+  const trajets = await Trajet.find({
+    conducteur_id: conducteurId,
+    status: 'disponible'
+  }).select('_id');
+
+  const trajetIds = trajets.map(t => t._id);
+
+  // Étape 2 : récupérer les réservations associées avec le statut "en_attente"
+  const reservations = await Reservation.find({
+    trajet_id: { $in: trajetIds },
+    status: 'en attente' // <-- Ajout du filtre ici
+  })
+    .populate('trajet_id')
+    .populate('passager_id')
+    .sort({ createdAt: -1 });
+
+  return reservations;
 };

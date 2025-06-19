@@ -10,7 +10,7 @@ export default function ListTrips({ onBack, onTripClick }) {
   return (
     <div className="min-h-screen bg-[#ffffff] pb-24 font-itim w-full">
       {/* En-tête */}
-      <div className="w-full bg-[#00B4D8] flex items-center px-2 h-[90px] relative" style={{borderTopLeftRadius: '0px', borderTopRightRadius: '0px'}}>
+      <div className="w-full bg-[#00B4D8] shadow-custom flex items-center px-2 h-[90px] relative" >
       <motion.button
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
@@ -20,14 +20,14 @@ export default function ListTrips({ onBack, onTripClick }) {
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
         </motion.button>
-        <h1 className="flex-1 text-center text-[24px] font-bold text-black">Trajets trouves</h1>
+        <h1 className="flex-1 text-center text-[24px]  text-black">Trajets trouves</h1>
       </div>
       {/* Liste des trajets */}
       <div className="flex flex-col gap-4 mt-4 w-full px-2">
         {trips.map((_, idx) => (
           <div
             key={idx}
-            className="bg-[#ADE8F4] border border-black rounded-2xl shadow-md px-3 py-2 w-full cursor-pointer transition hover:scale-[1.01]"
+            className="bg-[#ADE8F4]  border-black rounded-2xl shadow-custom px-3 py-5 w-full cursor-pointer transition hover:scale-[1.01]"
             style={{minWidth: 0}}
             onClick={() => onTripClick && onTripClick(idx)}
           >
@@ -65,7 +65,7 @@ export default function ListTrips({ onBack, onTripClick }) {
                 <FontAwesomeIcon icon={faUserFriends} className="text-gray-700 text-base" />
                 <span className="text-[13px] text-black">4</span>
               </div>
-              <button className="flex items-center justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
+              <button className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
                 Contactez
               </button>
             </div>
