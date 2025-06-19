@@ -12,7 +12,7 @@ export default function OtpModal({
 }) {
   const [otp, setOtp] = React.useState(["", "", "", "", "", ""]);
   const [error, setError] = React.useState("");
-  const [timeLeft, setTimeLeft] = useState(180); // 5 minutes en secondes
+  const [timeLeft, setTimeLeft] = useState(180); // 3 minutes en secondes
   const [canResend, setCanResend] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const inputsRef = useRef([]);
@@ -119,7 +119,7 @@ export default function OtpModal({
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -100, opacity: 0 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
-        className="bg-[#FFFFFF] rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 w-[calc(100%-2rem)] max-w-[340px] min-w-[280px] flex flex-col items-center mx-4"
+        className="bg-[#FFFFFF] rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 w-[calc(100%-2rem)] max-w-[340px] min-w-[280px] flex flex-col items-center mx-4 will-change-transform"
       >
         <h2 className="text-black text-[24px] font-bold mb-2 text-center">Vérification OTP</h2>
         <p className="text-[16px] sm:text-base text-gray-600 mb-4 text-center">
@@ -142,7 +142,7 @@ export default function OtpModal({
                 value={digit}
                 onChange={e => handleChange(e, idx)}
                 onKeyDown={e => handleKeyDown(e, idx)}
-                className="w-8 h-10 sm:w-10 sm:h-12 text-center text-black text-lg sm:text-xl border border-gray-300 rounded-md focus:border-black/70 outline-none bg-[#D9D9D9]"
+                className="w-8 h-10 sm:w-10 sm:h-12 text-center text-black text-lg sm:text-xl border border-[#00B4D8] rounded-md focus:border-[#90E0EF] outline-none bg-[#90E0EF]"
                 autoFocus={idx === 0}
               />
             ))}
@@ -150,7 +150,7 @@ export default function OtpModal({
           {error && <p className="text-red-500 text-sm mb-2 text-center">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mt-2 transition-all duration-300 ease-in-out hover:bg-[#a7a6a6] hover:text-black hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 border border-black/20"
+            className="w-full bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mt-2 transition-all duration-300 ease-in-out hover:bg-[#3B82F6]/80 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
             disabled={isLoading}
           >
             <span className="flex items-center justify-center">
@@ -178,7 +178,7 @@ export default function OtpModal({
                 {isResending ? "Envoi en cours..." : "Renvoyer le code OTP"}
               </span>
             ) : (
-              <span className="text-[16px] text-[#a5a5a5] font-bold">
+              <span className="text-[16px] text-[#90E0EF] font-bold">
                 Renvoyer le code OTP dans {formatTime(timeLeft)}
               </span>
             )}
@@ -194,7 +194,7 @@ const styles = `
   .spinner {
     width: 20px;
     height: 20px;
-    border: 3px solid #000;
+    border: 3px solid #ffffff;
     border-radius: 50%;
     border-top-color: transparent;
     animation: spin 1s linear infinite;

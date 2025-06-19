@@ -9,6 +9,7 @@ import Nav from "../../components/Nav";
 import ListTrips from "../../components/List-Trips";
 import Details from "../../components/Details";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [showListTrips, setShowListTrips] = useState(false);
@@ -23,6 +24,7 @@ export default function Home() {
     places: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors = {};
@@ -97,6 +99,7 @@ export default function Home() {
 
         // Mise à jour de l'état sans réinitialiser isLoading
         setShowListTrips(true);
+        setIsLoading(false);
       } catch (error) {
         console.error("Erreur:", error);
         setIsLoading(false);
@@ -154,34 +157,42 @@ export default function Home() {
     setShowDetails(false);
   };
 
+  const handleBackFromList = () => {
+    setShowListTrips(false);
+    setIsLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center font-itim relative pb-20">
       {!showListTrips && !showDetails && (
         <>
           {/* Illustration et titre */}
           <div className="w-full max-w-[1000px] overflow-hidden">
-            <div className="w-full h-[280px] bg-[#D9D9D9] flex items-center justify-center">
+            <div className="w-full h-[450px] bg-[#90E0EF] flex items-center justify-center blur-[1px] relative">
               <img
-                src="/illustration_4.svg"
+                src="/illustration_8.png"
                 alt="Illustration d'une recherche de trajet"
-                className="absolute inset-0 w-full h-[225px] object-contain"
+                className="absolute inset-0 w-full h-[325px] object-contain"
               />
             </div>
           </div>
           <h1
-            className="text-[24px] font-bold text-center text-black mt-2 mb-4"
+            className="text-[32px] font-extrabold text-center text-black mt-2 mb-20 drop-shadow-lg"
             style={{
               fontFamily: "Itim, cursive",
               textShadow: "2px 2px 6px #0008",
               letterSpacing: 1,
-              marginTop: "-4rem",
+              marginTop: "-19rem",
             }}
           >
-            Trouvez Votre trajet
+            Trouvez Votre<br />trajet
           </h1>
           {/* Carte de recherche */}
           <form
-            className="w-full max-w-[310px] bg-[#b1b0b0] rounded-2xl shadow-lg flex flex-col items-center px-4 pt-4 pb-6 mb-4"
+            className="w-full z-50 max-w-[340px] bg-[#00B4D8] rounded-[24px] shadow-2xl border border-[#0096C7] flex flex-col items-center px-4 pt-4 pb-6 mb-4
+              sm:max-w-[340px] sm:px-4 sm:pt-4 sm:pb-6
+              max-[400px]:max-w-[95vw] max-[400px]:px-2 max-[400px]:pt-2 max-[400px]:pb-4
+              max-[340px]:max-w-[98vw] max-[340px]:px-1 max-[340px]:pt-1 max-[340px]:pb-2"
             style={{ boxShadow: "2px 4px 8px #0002" }}
             onSubmit={handleSubmit}
           >
@@ -189,7 +200,7 @@ export default function Home() {
             <label htmlFor="depart" className="sr-only">
               Point de départ
             </label>
-            <div className="w-full flex items-center border border-black rounded-lg bg-[#b1b0b0] px-4 py-2 mb-3">
+            <div className="w-full flex items-center border border-black rounded-lg bg-[#ffffff] px-4 py-2 mb-3">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 className="text-green-600 mr-2"
@@ -215,7 +226,7 @@ export default function Home() {
             <label htmlFor="destination" className="sr-only">
               Point de destination
             </label>
-            <div className="w-full flex items-center border border-black rounded-lg bg-[#b1b0b0] px-4 py-2 mb-3">
+            <div className="w-full flex items-center border border-black rounded-lg bg-[#ffffff] px-4 py-2 mb-3">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 className="text-red-600 mr-2"
@@ -243,12 +254,12 @@ export default function Home() {
                 Date et heure
               </label>
               <div
-                className="flex items-center border border-black rounded-lg bg-[#b1b0b0] px-2 py-2"
+                className="flex items-center border border-black rounded-lg bg-[#ffffff] px-2 py-2"
                 style={{ flexBasis: "65%", maxWidth: "220px" }}
               >
                 <FontAwesomeIcon
                   icon={faCalendarAlt}
-                  className="mr-2 text-[16px]"
+                  className="mr-2 text-black text-[16px]"
                 />
                 <input
                   id="datetime"
@@ -266,12 +277,12 @@ export default function Home() {
                 Nombre de places
               </label>
               <div
-                className="flex items-center border border-black rounded-lg bg-[#b1b0b0] px-2 py-2 justify-center"
+                className="flex items-center border border-black rounded-lg bg-[#ffffff] px-2 py-2 justify-center"
                 style={{ flexBasis: "35%", minWidth: "70px" }}
               >
                 <FontAwesomeIcon
                   icon={faUserFriends}
-                  className="mr-1 text-[14px]"
+                  className="mr-1 text-black text-[14px]"
                 />
                 <input
                   id="places"
@@ -281,7 +292,7 @@ export default function Home() {
                   max="10"
                   value={formData.places}
                   onChange={handleChange}
-                  placeholder="Nb"
+                  placeholder="Nbr"
                   inputMode="numeric"
                   className={`w-full bg-transparent outline-none text-[15px] font-bold text-black placeholder:text-black text-center ${errors.places ? "border-red-500" : ""
                     }`}
@@ -309,7 +320,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+              className={`w-full bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
               <span className="flex items-center justify-center">
@@ -328,18 +339,26 @@ export default function Home() {
                 {alertMessage}
               </p>
             )}
+            {/* Bouton Publier un trajet */}
+            <button
+              className="text-[#000000] font-bold text-[16px] mt-4 px-6 underline"
+              onClick={() => navigate('/publier-trajet')}
+            >
+              Publier un trajet
+            </button>
           </form>
         </>
       )}
-      {showListTrips && !showDetails && (
+      {showListTrips && !showDetails && !isLoading && (
         <ListTrips
-          onBack={() => setShowListTrips(false)}
+          onBack={handleBackFromList}
           onTripClick={handleTripClick}
         />
       )}
       {showDetails && (
         <Details trip={selectedTrip} onBack={handleBackFromDetails} />
       )}
+
       <Nav />
       <style>{`
         input[type=number]::-webkit-inner-spin-button,
@@ -350,7 +369,7 @@ export default function Home() {
         .spinner {
           width: 20px;
           height: 20px;
-          border: 3px solid #000;
+          border: 3px solid #ffffff;
           border-radius: 50%;
           border-top-color: transparent;
           animation: spin 1s linear infinite;

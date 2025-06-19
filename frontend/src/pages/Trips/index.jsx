@@ -13,13 +13,13 @@ export default function Trips() {
     <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto flex flex-col items-center">
       {/* En-tête */}
       <div
-        className="w-full bg-[#D9D9D9] flex items-center justify-center px-2 py-4 relative"
+        className="w-full bg-[#00B4D8] flex items-center justify-center px-2 h-[90px] relative"
       >
         <motion.button
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
           onClick={() => navigate('/home')}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none will-change-transform"
           aria-label="Retour"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
@@ -27,16 +27,16 @@ export default function Trips() {
         <h1 className="flex-1 text-center text-[24px] font-bold text-black">Vos trajets</h1>
       </div>
       {/* Onglets */}
-      <div className="flex gap-2 text-black mt-6 mb-4 px-4 w-full justify-center">
+      <div className="flex gap-2 text-black mt-10 mb-10 px-4 w-full justify-center">
         <button
-          className={`px-4 py-2 rounded-t-lg font-bold text-[21px] shadow ${tab === 'reservations' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
+          className={`w-[50%] py-2 rounded-t-lg font-bold text-[21px] shadow ${tab === 'reservations' ? 'bg-[#00B4D8] border-b-2 border-black' : 'bg-transparent'}`}
           style={{ minWidth: 140 }}
           onClick={() => setTab('reservations')}
         >
           Mes Reservations
         </button>
         <button
-          className={`px-4 py-2 rounded-t-lg font-bold text-[21px] ${tab === 'historique' ? 'bg-[#D9D9D9] border-b-2 border-black' : 'bg-transparent'}`}
+          className={`w-[50%] py-2 rounded-t-lg font-bold text-[21px] ${tab === 'historique' ? 'bg-[#00B4D8] border-b-2 border-black' : 'bg-transparent'}`}
           style={{ minWidth: 120 }}
           onClick={() => setTab('historique')}
         >
@@ -45,7 +45,7 @@ export default function Trips() {
       </div>
       {/* Carte de réservation */}
       {tab === 'reservations' && (
-        <div className="bg-[#D9D9D9] text-black border border-black rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-[95%] max-w-[600px]" style={{minWidth: 0}}>
+        <div className="bg-[#ADE8F4] text-black border border-black rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-[90%] max-w-[600px]" style={{minWidth: 0}}>
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserCircle} className="text-[28px] text-black" />
@@ -69,17 +69,17 @@ export default function Trips() {
             </div>
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <button className="flex items-center justify-center bg-[#D9D9D9] border border-black rounded-lg px-2 py-1">
-              <FontAwesomeIcon icon={faCommentDots} className="text-[#2196F3] text-base" />
+            <button className="flex text-white items-center justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
+              Contactez
             </button>
-            <button className="flex-1 border border-black rounded-lg py-1 bg-white text-black font-bold text-[16px] mx-2 hover:bg-[#f0f0f0] transition">Rejeter</button>
-            <button className="flex-1 border border-black rounded-lg py-1 bg-white text-black font-bold text-[16px] hover:bg-[#f0f0f0] transition">Accepter</button>
+            <button className="flex-1 rounded-lg py-1 bg-[#FF1D1D] text-white font-bold text-[16px] mx-2 hover:bg-[#f0f0f0] transition">Rejeter</button>
+            <button className="flex-1 rounded-lg py-1 bg-[#10B981] text-white font-bold text-[16px] hover:bg-[#2563eb] transition">Accepter</button>
           </div>
         </div>
       )}
       {/* Carte d'historique */}
       {tab === 'historique' && (
-        <div className="bg-[#D9D9D9] text-black border-2 border-[#000000] rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-[95%] max-w-[600px]" style={{minWidth: 0}}>
+        <div className="bg-[#ADE8F4] text-black border-2 border-[#000000] rounded-2xl shadow-md px-3 py-2 mx-4 mb-4 w-[90%] max-w-[600px]" style={{minWidth: 0}}>
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faUserCircle} className="text-[28px] text-black" />
@@ -102,7 +102,7 @@ export default function Trips() {
               <span className="text-[14px] text-black">Cotonou | jericho</span>
             </div>
           </div>
-          <div className="flex items-center justify-between border border-black rounded-lg bg-[#EDEDED] px-2 py-1 mb-1">
+          <div className="flex items-center justify-between border border-black rounded-lg bg-[#FFFFFF] px-2 py-1 mb-1">
             <div className="flex items-center gap-2">
               <FontAwesomeIcon icon={faCarSide} className="text-gray-700 text-base" />
               <span className="text-[16px] text-black">Toyota rav4</span>

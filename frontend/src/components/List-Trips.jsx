@@ -10,12 +10,12 @@ export default function ListTrips({ onBack, onTripClick }) {
   return (
     <div className="min-h-screen bg-[#ffffff] pb-24 font-itim w-full">
       {/* En-tête */}
-      <div className="w-full bg-[#D9D9D9] flex items-center px-2 py-10 relative" style={{borderTopLeftRadius: '0px', borderTopRightRadius: '0px'}}>
+      <div className="w-full bg-[#00B4D8] flex items-center px-2 h-[90px] relative" style={{borderTopLeftRadius: '0px', borderTopRightRadius: '0px'}}>
       <motion.button
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
           onClick={onBack}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none will-change-transform"
           aria-label="Retour"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
@@ -27,7 +27,7 @@ export default function ListTrips({ onBack, onTripClick }) {
         {trips.map((_, idx) => (
           <div
             key={idx}
-            className="bg-[#D9D9D9] border border-black rounded-2xl shadow-md px-3 py-2 w-full cursor-pointer transition hover:scale-[1.01]"
+            className="bg-[#ADE8F4] border border-black rounded-2xl shadow-md px-3 py-2 w-full cursor-pointer transition hover:scale-[1.01]"
             style={{minWidth: 0}}
             onClick={() => onTripClick && onTripClick(idx)}
           >
@@ -56,7 +56,7 @@ export default function ListTrips({ onBack, onTripClick }) {
               </div>
             </div>
             {/* Infos voiture, places, message */}
-            <div className="flex items-center justify-between border border-black rounded-lg bg-[#EDEDED] px-2 py-1 mb-1">
+            <div className="flex items-center justify-between border border-black rounded-lg bg-[#FFFFFF] px-2 py-1 mb-1">
               <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faCarSide} className="text-gray-700 text-base" />
                 <span className="text-[13px] text-black">Toyota rav4</span>
@@ -65,8 +65,8 @@ export default function ListTrips({ onBack, onTripClick }) {
                 <FontAwesomeIcon icon={faUserFriends} className="text-gray-700 text-base" />
                 <span className="text-[13px] text-black">4</span>
               </div>
-              <button className="flex items-center justify-center bg-[#D9D9D9] border border-black rounded-lg px-2 py-1">
-                <FontAwesomeIcon icon={faCommentDots} className="text-[#2196F3] text-base" />
+              <button className="flex items-center justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
+                Contactez
               </button>
             </div>
             {/* Date/heure */}

@@ -168,24 +168,24 @@ export default function Register() {
     <div className="min-h-screen bg-white flex flex-col items-center font-itim">
       {/* Illustration et titre */}
       <div className="w-full max-w-[1000px] rounded-b-2xl overflow-hidden">
-        <div className="relative w-full h-[280px] bg-[#EDEDED]">
+        <div className="relative w-full h-[280px] bg-[#00B4D8]">
           {/* Overlay gris léger */}
-          <div className="absolute inset-0 bg-[#D9D9D9] opacity-40 z-10" />
+          <div className="absolute inset-0 bg-[#D9D9D9] opacity-0 z-10" />
           {/* Illustration */}
           <img
-            src="/illustration_3.svg"
+            src="/illustration_7.png"
             alt="Créer un compte"
             className="absolute inset-0 w-full h-full object-contain z-0"
           />
           {/* Texte centré */}
           <div className="absolute inset-0 flex items-start justify-center z-20">
             <span
-              className="text-[32px] font-extrabold text-black "
+              className="text-[32px] font-extrabold text-white "
               style={{
                 fontFamily: "Itim, cursive",
                 textShadow: "2px 2px 6px #0008",
                 letterSpacing: 1,
-                marginTop: "10rem",
+                marginTop: "14rem",
               }}
             >
               Creer votre Compte
@@ -218,7 +218,7 @@ export default function Register() {
             )}
           </div>
           <div
-            className={`w-[35px] h-[35px] bg-[#EDEDED] rounded-xl flex items-center justify-center border ${
+            className={`w-[35px] h-[35px] bg-[#90E0EF] rounded-xl flex items-center justify-center border ${
               photoError ? "border-red-500" : "border-[#D9D9D9]"
             } cursor-pointer relative`}
             onClick={handleCameraClick}
@@ -364,7 +364,7 @@ export default function Register() {
         <button
           type="submit"
           disabled={isLoading}
-          className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition ${
+          className={`w-full bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 hover:bg-[#3B82F6]/80 transition ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
@@ -384,7 +384,7 @@ export default function Register() {
             Deja un Compte?{" "}
           </span>
           <span
-            className="text-[16px] text-[#a5a5a5] font-bold cursor-pointer hover:underline"
+            className="text-[16px] text-[#90E0EF] font-bold cursor-pointer hover:underline"
             onClick={() => navigate("/login")}
           >
             se connecter
@@ -395,7 +395,7 @@ export default function Register() {
         .spinner {
           width: 20px;
           height: 20px;
-          border: 3px solid #000;
+          border: 3px solid #ffffff;
           border-radius: 50%;
           border-top-color: transparent;
           animation: spin 1s linear infinite;

@@ -10,7 +10,7 @@ export default function Index() {
       {/* Bouton "À Propos" */}
       <div className="absolute top-3 left-3">
         <button
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-[14px] rounded-lg px-2 py-1 w-[80px] h-[36px] font-semibold shadow-sm tracking-wide"
+          className="bg-[#00B4D8] hover:bg-[#00B4D8]/80 text-white text-[14px] rounded-lg px-2 py-1 w-[80px] h-[36px] font-semibold shadow-sm tracking-wide"
           onClick={() => navigate('/about')}
         >
           A Propos
@@ -18,8 +18,8 @@ export default function Index() {
       </div>
 
       {/* Icône dans un cercle */}
-      <div className="mt-8 mb-2 bg-gray-100 rounded-full w-[90px] h-[90px] flex items-center justify-center">
-        <FontAwesomeIcon icon={faCar} className="text-[#3F5EA1] text-[36px]" />
+      <div className="mt-8 mb-2 bg-[#3B82F6] rounded-full w-[95px] h-[90px] flex items-center justify-center shadow-[0_4px_8px_0_rgba(0,0,0,0.22)]">
+        <FontAwesomeIcon icon={faCar} className="text-[#FFFFFF] text-[46px]" />
       </div>
 
       {/* Titre principal */}
@@ -44,7 +44,7 @@ export default function Index() {
 
       {/* Bouton d'inscription */}
       <button
-        className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-[16px] font-semibold px-4 py-2 rounded-lg w-[210px] h-[40px] shadow-sm"
+        className="bg-[#3B82F6] hover:bg-[#3B82F6]/80 text-white text-[16px] font-semibold px-4 py-2 rounded-lg w-[210px] h-[40px] shadow-sm"
         onClick={() => navigate('/register')}
       >
         Passez à l'inscription

@@ -74,7 +74,7 @@ export default function FormVehicule({ vehicule, setVehicule, onEnregistrer, err
           {errors.immat && <p className="text-red-500 text-sm mb-1">{errors.immat}</p>}
           <div className="flex justify-center mt-2">
             <button
-              className="bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
+              className="bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
               type="submit"
             >
               Enregistrer

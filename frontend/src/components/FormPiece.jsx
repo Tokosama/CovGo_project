@@ -11,7 +11,7 @@ export default function FormPiece({
   setPieceFile,
   onSoumettre,
   errors = {},
-  setErrors = () => {}
+  setErrors = () => { }
 }) {
   // Validation locale avant soumission
   const validate = () => {
@@ -58,56 +58,59 @@ export default function FormPiece({
       transition={{ duration: 0.5 }}
       className="w-full flex flex-col items-center mt-8"
     >
-      <hr className="w-[90%] border-t border-gray-400 mb-2" />
-      <div className="w-full max-w-[350px] mx-auto">
-        <div className="w-full text-center text-[21px] font-bold text-black mb-2">Rajouter votre piece</div>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-2">
-            <label className="block text-[16px] text-gray-600 mb-1">Choix de la piece</label>
-            <div className="relative">
-              <select
-                className="appearance-none w-full rounded-full bg-[#EDEDED] px-4 py-2 text-[16px] text-black border border-gray-200 focus:border-blue-400 font-itim pr-8 z-10 cursor-pointer"
-                value={pieceType}
-                onChange={handlePieceTypeChange}
-                style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
-              >
-                <option value="CIP">CIP</option>
-                <option value="CNI">CNI</option>
-                <option value="Passeport">Passeport</option>
-              </select>
-              <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg z-0">▼</span>
-            </div>
-            {errors.pieceType && <p className="text-red-500 text-sm mb-1">{errors.pieceType}</p>}
-          </div>
-          <div className="mb-4">
-            <label className="block text-[16px] text-gray-600 mb-1">Ajoutez la piece</label>
-            <div
-              className="flex items-center bg-[#EDEDED] rounded-full border border-gray-300 px-3 py-2 cursor-pointer hover:shadow-md transition"
-              onClick={() => pieceInputRef.current && pieceInputRef.current.click()}
-            >
-              <FontAwesomeIcon icon={faIdCard} className="text-gray-500 text-xl mr-2" />
-              <span className="flex-1 text-[16px] text-gray-500 truncate">{pieceFile ? pieceFile.name : pieceType}</span>
-              <input
-                type="file"
-                accept="image/png, image/jpeg,application/pdf"
-                style={{ display: 'none' }}
-                ref={pieceInputRef}
-                onChange={handleFileChange}
-              />
-            </div>
-            {errors.pieceFile && <p className="text-red-500 text-sm mb-1">{errors.pieceFile}</p>}
-          </div>
-          <div className="flex justify-center">
-            <button
-              className="bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
-              type="submit"
-            >
-              Soumettre
-            </button>
-          </div>
-        </form>
+      <div className="w-[90%] text-center items-center justify-center mx-auto text-[21px] font-bold text-[#FF1D1D] mb-12">
+        Vérifiez vos Informations avant de publier des trajets
+        <hr className="w-full border-t border-gray-400 mt-7" />
       </div>
-      <hr className="w-[80%] border-t border-gray-400 mt-4" />
+        <div className="w-full max-w-[350px] mx-auto">
+          <div className="w-full text-center text-[21px] font-bold text-black mb-2">Rajouter votre piece</div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-2">
+              <label className="block text-[16px] text-gray-600 mb-1">Choix de la piece</label>
+              <div className="relative">
+                <select
+                  className="appearance-none w-full rounded-full bg-[#EDEDED] px-4 py-2 text-[16px] text-black border border-gray-200 focus:border-blue-400 font-itim pr-8 z-10 cursor-pointer"
+                  value={pieceType}
+                  onChange={handlePieceTypeChange}
+                  style={{ WebkitAppearance: 'none', MozAppearance: 'none', appearance: 'none' }}
+                >
+                  <option value="CIP">CIP</option>
+                  <option value="CNI">CNI</option>
+                  <option value="Passeport">Passeport</option>
+                </select>
+                <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg z-0">▼</span>
+              </div>
+              {errors.pieceType && <p className="text-red-500 text-sm mb-1">{errors.pieceType}</p>}
+            </div>
+            <div className="mb-4">
+              <label className="block text-[16px] text-gray-600 mb-1">Ajoutez la piece</label>
+              <div
+                className="flex items-center bg-[#EDEDED] rounded-full border border-gray-300 px-3 py-2 cursor-pointer hover:shadow-md transition"
+                onClick={() => pieceInputRef.current && pieceInputRef.current.click()}
+              >
+                <FontAwesomeIcon icon={faIdCard} className="text-gray-500 text-xl mr-2" />
+                <span className="flex-1 text-[16px] text-gray-500 truncate">{pieceFile ? pieceFile.name : pieceType}</span>
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg,application/pdf"
+                  style={{ display: 'none' }}
+                  ref={pieceInputRef}
+                  onChange={handleFileChange}
+                />
+              </div>
+              {errors.pieceFile && <p className="text-red-500 text-sm mb-1">{errors.pieceFile}</p>}
+            </div>
+            <div className="flex justify-center">
+              <button
+                className="bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
+                type="submit"
+              >
+                Soumettre
+              </button>
+            </div>
+          </form>
+        </div>
+        <hr className="w-[90%] border-t border-gray-400 mt-4" />
     </motion.div>
   );
 } 

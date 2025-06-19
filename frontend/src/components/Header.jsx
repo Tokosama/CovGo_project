@@ -28,7 +28,7 @@ const Header = memo(({ nom, age, tel, onBack }) => {
   return (
     <>
       {/* En-tête avec flèche de retour */}
-      <div className="w-full bg-[#D9D9D9] flex items-center px-2 py-4 relative shadow-sm">
+      <div className="w-full bg-[#00B4D8] flex items-center px-2 h-[90px] relative shadow-sm">
         <motion.button
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
@@ -55,7 +55,7 @@ const Header = memo(({ nom, age, tel, onBack }) => {
             <StarRating />
           </div>
         </div>
-        <hr className="w-[90%] border-t border-gray-400 mt-2" />
+        <hr className="w-[90%] border-t border-gray-400 mt-7" />
       </div>
     </>
   );
