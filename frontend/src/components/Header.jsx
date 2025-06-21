@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const StarRating = memo(({ count = 5 }) => (
   <span className="flex gap-1">
     {[...Array(count)].map((_, i) => (
-      <FontAwesomeIcon key={i} icon={faStar} className="text-gray-400 text-base" />
+      <FontAwesomeIcon key={i} icon={faStar} className="text-gray-400 text-lg" />
     ))}
   </span>
 ));
@@ -28,7 +28,7 @@ const Header = memo(({ nom, age, tel, onBack }) => {
   return (
     <>
       {/* En-tête avec flèche de retour */}
-      <div className="w-full bg-[#D9D9D9] flex items-center px-2 py-4 relative shadow-sm">
+      <div className="w-full bg-[#00B4D8] flex items-center  px-2 h-[90px] relative shadow-custom">
         <motion.button
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
@@ -36,26 +36,25 @@ const Header = memo(({ nom, age, tel, onBack }) => {
           className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none"
           aria-label="Retour"
         >
-          <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
+          <FontAwesomeIcon icon={faArrowLeft} className="text-[22px]  text-black" />
         </motion.button>
-        <h1 className="flex-1 text-center text-[24px] font-bold text-black">Profils</h1>
+        <h1 className="flex-1 text-center text-[24px] text-black">Profils</h1>
       </div>
       {/* Fiche utilisateur */}
       <div className="w-full bg-[#ffffff] px-0 pt-4 pb-6 flex flex-col items-center">
-        <div className="flex flex-row items-center w-full max-w-[350px] mx-auto px-2">
+        <div className="flex flex-row items-center  w-[95%] mx-auto ">
           {/* Avatar cerclé */}
-          <div className="flex-shrink-0 w-[80px] h-[80px] rounded-full border-2 border-gray-400 flex items-center justify-center bg-white">
-            <FontAwesomeIcon icon={faUserCircle} className="text-[70px] text-black" />
+          <div className="flex-shrink-0 w-[100px] h-[100px] rounded-full border-2 border-gray-400 flex items-center justify-center bg-white">
+            <FontAwesomeIcon icon={faUserCircle} className="text-[100px] text-gray-400" />
           </div>
           {/* Infos */}
           <div className="flex flex-col justify-center ml-4 flex-1">
-            <span className="font-bold text-[18px] text-black">{nom}</span>
-            <span className="text-[14px] text-black leading-tight">{age} ans</span>
-            <span className="text-[14px] text-black leading-tight">{tel}</span>
+            <span className="text-[24px] text-black">{nom}</span>
+            <span className="text-[16px] text-black leading-tight">{tel}</span>
             <StarRating />
           </div>
         </div>
-        <hr className="w-[90%] border-t border-gray-400 mt-2" />
+        <hr className="w-[90%] border-t border-gray-400 mt-7" />
       </div>
     </>
   );

@@ -13,6 +13,7 @@ import Trips from "./pages/Trips";
 import Notifs from "./pages/Notifs";
 import Messages from "./pages/Messages";
 import Profil from "./pages/Profil";
+import PublierTrajet from './pages/PublierTrajet';
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
@@ -46,11 +47,11 @@ function App() {
         />
         <Route
           path="/register"
-          element={!authUser ? <Register /> : <Navigate to="/profil" />}
+          element={<Register />}
         />
         <Route
           path="/login"
-          element={!authUser ? <Login /> : <Navigate to="/profil" />}
+          element={<Login />}
         />
         <Route
           path="/home"
@@ -58,19 +59,23 @@ function App() {
         />
         <Route
           path="/trips"
-          element={authUser ? <Trips /> : <Navigate to="/login" />}
+          element={<Trips />}
         />
         <Route
           path="/notifs"
-          element={authUser ? <Notifs /> : <Navigate to="/login" />}
+          element={<Notifs />}
         />
         <Route
           path="/messages"
-          element={authUser ? <Messages /> : <Navigate to="/login" />}
+          element={<Messages />}
         />
         <Route
           path="/profil"
-          element={authUser ? <Profil /> : <Navigate to="/login" />}
+          element={<Profil />}
+        />
+        <Route
+          path="/publier"
+          element={<PublierTrajet />}
         />
       </Routes>
      <Toaster/>

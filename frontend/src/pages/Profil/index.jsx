@@ -5,6 +5,7 @@ import SectionInitiale from '../../components/SectionInitiale';
 import FormVehicule from '../../components/FormVehicule';
 import FormPiece from '../../components/FormPiece';
 import RecapProfil from '../../components/RecapProfil';
+import TrajetsAVenir from '../../components/TrajetsAVenir';
 
 export default function Profil() {
   const permisInputRef = useRef(null);
@@ -19,8 +20,11 @@ export default function Profil() {
   const pieceInputRef = useRef(null);
   const [showProfileRecap, setShowProfileRecap] = useState(false);
   const [bio, setBio] = useState(() => localStorage.getItem('bio') || '');
-  const [step, setStep] = useState('initial'); // 'initial', 'vehicule', 'piece', 'recap'
+  const [step, setStep] = useState('piece'); // 'initial', 'vehicule', 'piece', 'recap'
   const [errors, setErrors] = useState({});
+  const [showTrajets, setShowTrajets] = useState(() => {
+    return localStorage.getItem('showTrajets') === 'true';
+  });
 
   const handlePermisClick = () => permisInputRef.current && permisInputRef.current.click();
   const handlePhotoPermisClick = () => photoPermisInputRef.current && photoPermisInputRef.current.click();
@@ -57,6 +61,8 @@ export default function Profil() {
 
   // Fonction pour reset le profil à l'état initial
   const resetProfil = () => {
+    setShowTrajets(true);
+    localStorage.setItem('showTrajets', 'true');
     setStep('initial');
     setVehicule({ marque: '', modele: '', couleur: '', immat: '' });
     setPieceType('CIP');
@@ -66,54 +72,65 @@ export default function Profil() {
     setErrors({});
   };
 
+  const handleBackToInitial = () => {
+    setShowTrajets(false);
+    localStorage.setItem('showTrajets', 'false');
+    setStep('initial');
+  };
+
   return (
     <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto">
       <Header nom="toko Sama" age={18} tel="+229 0197000000" />
-      {step === 'initial' && (
-        <SectionInitiale
-          permis={permis}
-          handlePermisClick={handlePermisClick}
-          permisInputRef={permisInputRef}
-          handlePermisChange={handlePermisChange}
-          photoPermis={photoPermis}
-          handlePhotoPermisClick={handlePhotoPermisClick}
-          photoPermisInputRef={photoPermisInputRef}
-          handlePhotoPermisChange={handlePhotoPermisChange}
-          onSoumettre={() => setStep('vehicule')}
-          errors={errors}
-          setErrors={setErrors}
-        />
+      {!showTrajets && (
+        <>
+          {step === 'initial' && (
+            <SectionInitiale
+              permis={permis}
+              handlePermisClick={handlePermisClick}
+              permisInputRef={permisInputRef}
+              handlePermisChange={handlePermisChange}
+              photoPermis={photoPermis}
+              handlePhotoPermisClick={handlePhotoPermisClick}
+              photoPermisInputRef={photoPermisInputRef}
+              handlePhotoPermisChange={handlePhotoPermisChange}
+              onSoumettre={() => setStep('vehicule')}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          )}
+          {step === 'vehicule' && (
+            <FormVehicule
+              vehicule={vehicule}
+              setVehicule={setVehicule}
+              onEnregistrer={() => setStep('piece')}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          )}
+          {step === 'piece' && (
+            <FormPiece
+              pieceType={pieceType}
+              setPieceType={setPieceType}
+              pieceFile={pieceFile}
+              pieceInputRef={pieceInputRef}
+              setPieceFile={setPieceFile}
+              onSoumettre={() => setStep('recap')}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          )}
+          {step === 'recap' && (
+            <RecapProfil
+              bio={bio}
+              onUpdate={resetProfil}
+              errors={errors}
+              setErrors={setErrors}
+              onBioChange={setBio}
+            />
+          )}
+        </>
       )}
-      {step === 'vehicule' && (
-        <FormVehicule
-          vehicule={vehicule}
-          setVehicule={setVehicule}
-          onEnregistrer={() => setStep('piece')}
-          errors={errors}
-          setErrors={setErrors}
-        />
-      )}
-      {step === 'piece' && (
-        <FormPiece
-          pieceType={pieceType}
-          setPieceType={setPieceType}
-          pieceFile={pieceFile}
-          pieceInputRef={pieceInputRef}
-          setPieceFile={setPieceFile}
-          onSoumettre={() => setStep('recap')}
-          errors={errors}
-          setErrors={setErrors}
-        />
-      )}
-      {step === 'recap' && (
-        <RecapProfil
-          bio={bio}
-          onUpdate={resetProfil}
-          errors={errors}
-          setErrors={setErrors}
-          onBioChange={setBio}
-        />
-      )}
+      {showTrajets && <TrajetsAVenir onBack={handleBackToInitial} />}
       <Nav activeMenu="profil" />
     </div>
   );

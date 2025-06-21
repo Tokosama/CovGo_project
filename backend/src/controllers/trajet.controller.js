@@ -61,6 +61,7 @@ export const getTrajetById = async (req, res) => {
 export const getTrajetsWithFilters = async (req, res) => {
   try {
     const filters = req.query;
+    console.log(filters)
     const trajets = await getFilteredTrajetsService(filters);
     res.status(200).json(trajets);
   } catch (error) {

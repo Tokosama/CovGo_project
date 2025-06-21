@@ -1,4 +1,4 @@
-import { annulerReservationService, confirmerReservationService, createReservationService, updateReservationStatusService } from "../services/reservation.service.js";
+import { annulerReservationService, confirmerReservationService, createReservationService,  getMyReservationsService,  getReservationsForConducteur, updateReservationStatusService } from "../services/reservation.service.js";
 
 export const createReservation = async (req, res) => {
   try {
@@ -26,6 +26,7 @@ export const createReservation = async (req, res) => {
 
 export const updateReservationStatus = async (req, res) => {
   try {
+    console.log(req.body)
     const { id } = req.params; // id de la réservation
     const { action } = req.body; // "accepter" ou "rejeter"
     const conducteurId = req.user._id;
@@ -78,3 +79,22 @@ export const getMyReservationsController = async (req, res) => {
     });
   }
 };
+
+
+
+
+export const getReservationsForConducteurController = async (req, res) => {
+  try {
+    const conducteurId = req.user._id;
+    const reservations = await getReservationsForConducteur(conducteurId);
+
+    res.status(200).json({ success: true, reservations });
+  } catch (error) {
+    console.error('Erreur récupération réservations conducteur :', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
+  }
+};
+
+
+
+

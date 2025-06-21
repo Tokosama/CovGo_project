@@ -1,84 +1,107 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-export default function RecapProfil({ bio, onUpdate, errors = {}, setErrors = () => {}, onBioChange }) {
-  const [editing, setEditing] = useState(false);
-  const [localBio, setLocalBio] = useState(bio);
+export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => { }, onFormChange, formData = {} }) {
+  const [localForm, setLocalForm] = useState({
+    nom: formData.nom || '',                                                                
+    prenom: formData.prenom || '',
+    telephone: formData.telephone || '',
+    adresse: formData.adresse || '',
+    bio: formData.bio || '',
+  });
 
   // Validation locale
   const validate = () => {
     const newErrors = {};
-    if (!localBio || localBio.trim().length === 0) {
-      newErrors.bio = 'La biographie est requise';
-    }
+    if (!localForm.nom) newErrors.nom = 'Le nom est requis';
+    if (!localForm.prenom) newErrors.prenom = 'Le prénom est requis';
+    if (!localForm.telephone) newErrors.telephone = 'Le téléphone est requis';
+    if (!localForm.adresse) newErrors.adresse = 'L\'adresse est requise';
+    if (!localForm.bio) newErrors.bio = 'La biographie est requise';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleUpdate = () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLocalForm(prev => ({ ...prev, [name]: value }));
+    setErrors(prev => ({ ...prev, [name]: '' }));
+    if (onFormChange) onFormChange({ ...localForm, [name]: value });
+  };
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
     if (validate()) {
-      setEditing(false);
-      if (onBioChange) onBioChange(localBio);
+      if (onFormChange) onFormChange(localForm);
       onUpdate();
     }
   };
 
   return (
-    <motion.div
+    <motion.form
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className="w-full flex flex-col items-center mt-8"
+      onSubmit={handleUpdate}
     >
       <div className="w-full max-w-[350px] mx-auto">
-        {editing ? (
-          <>
-            <textarea
-              className="bg-[#EDEDED] rounded-md border border-gray-300 px-3 py-2 text-[16px] text-black mb-2 w-full min-h-[80px]"
-              value={localBio}
-              onChange={e => {
-                setLocalBio(e.target.value);
-                setErrors(prev => ({ ...prev, bio: '' }));
-              }}
-              placeholder="Votre biographie..."
-            />
-            {errors.bio && <p className="text-red-500 text-sm mb-1">{errors.bio}</p>}
-            <div className="flex justify-center mb-4 gap-2">
-              <button
-                className="bg-[#D9D9D9] text-black text-[16px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
-                onClick={handleUpdate}
-                type="button"
-              >
-                Sauvegarder
-              </button>
-              <button
-                className="bg-[#eee] text-black text-[16px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#ccc] transition"
-                onClick={() => { setEditing(false); setLocalBio(bio); setErrors(prev => ({ ...prev, bio: '' })); }}
-                type="button"
-              >
-                Annuler
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="bg-[#EDEDED] rounded-md border border-gray-300 px-3 py-2 text-[16px] text-black mb-2">
-              {bio}
-            </div>
-            <div className="flex justify-center mb-4">
-              <button
-                className="bg-[#D9D9D9] text-black text-[16px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
-                onClick={() => setEditing(true)}
-                type="button"
-              >
-                Mettre à jour
-              </button>
-            </div>
-          </>
-        )}
-        <hr className="w-[90%] border-t border-gray-400 mx-auto mt-2 mb-2" />
-        <div className="w-full text-center text-[21px] font-bold text-black mt-2">Trajet a venir</div>
+        <div className="w-[90%] text-center items-center justify-center mx-auto text-[24px]  text-[#FFE082] mt-[-30px] mb-4">
+          Renseignez vos nouvelles Informations
+        </div>
+        <input
+          name="nom"
+          type="text"
+          placeholder="Nom"
+          value={localForm.nom}
+          onChange={handleChange}
+          className="w-full text-[#6B7280] mb-3 px-4 shadow-custom py-2 rounded-xl border border-gray-300 s text-[20px]"
+        />
+        {errors.nom && <p className="text-red-500 text-sm mb-1">{errors.nom}</p>}
+        <input
+          name="prenom"
+          type="text"
+          placeholder="Prenom"
+          value={localForm.prenom}
+          onChange={handleChange}
+          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px]"
+        />
+        {errors.prenom && <p className="text-red-500 text-sm mb-1">{errors.prenom}</p>}
+        <input
+          name="telephone"
+          type="text"
+          placeholder="telephone"
+          value={localForm.telephone}
+          onChange={handleChange}
+          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px]"
+        />
+        {errors.telephone && <p className="text-red-500 text-sm mb-1">{errors.telephone}</p>}
+        <input
+          name="adresse"
+          type="text"
+          placeholder="adresse"
+          value={localForm.adresse}
+          onChange={handleChange}
+          className="w-full text-[#6B7280] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px]"
+        />
+        {errors.adresse && <p className="text-red-500 text-sm mb-1">{errors.adresse}</p>}
+        <textarea
+          name="bio"
+          placeholder="Bio"
+          value={localForm.bio}
+          onChange={handleChange}
+          className="w-full text-[#000000] mb-3 px-4 py-2 rounded-xl border border-gray-300 shadow-custom text-[20px] min-h-[80px]"
+        />
+        {errors.bio && <p className="text-red-500 text-sm mb-1">{errors.bio}</p>}
+        <div className="flex justify-center w-full">
+          <button
+            type="submit"
+            className="w-[60%] bg-[#FFE082] text-white  text-[24px] rounded-md py-2 mt-2 shadow-custom hover:bg-[#ffe082cc] transition"
+          >
+            Mettre a jour
+          </button>
+        </div>
       </div>
-    </motion.div>
+    </motion.form>
   );
 } 

@@ -2,12 +2,14 @@ import { justificatifsValidation } from "../lib/validators/justificatif.validato
 import * as justificatifService from "../services/justificatif.service.js";
 
 export async function createJustificatifs(req, res) {
+  console.log(req.files.length)
   try {
     const userId = req.user.id; // récupéré du middleware d'authentification
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: "Fichiers manquants" });
     }
+    console.log("workinggggggggg")
 
     let justificatifsData;
     try {

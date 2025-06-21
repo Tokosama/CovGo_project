@@ -29,7 +29,7 @@ export default function Register() {
 
   const { signup, isSigningUp } = useAuthStore();
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState("");
 
   const validateForm = () => {
     const newErrors = {};
@@ -77,16 +77,18 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newErrors = validateForm();
-
-    setAlertMessage(""); // Réinitialiser le message d'alerte
-
+    setAlertMessage("");
     if (Object.keys(newErrors).length === 0 && !photoError) {
-    console.log("Let'ssssssssssssssssssssssssss gooooooooo");
-    console.log(formData);
-
-      signup(formData);
+      try {
+        setIsLoading(true);
+        await signup(formData);
+        // Redirection directe après inscription réussie
+        navigate("/home");
+      } catch (error) {
+        setIsLoading(false);
+        setAlertMessage("Erreur lors de l'inscription. Veuillez réessayer.");
+      }
     } else {
       setErrors(newErrors);
     }
@@ -161,29 +163,29 @@ export default function Register() {
     reader.onload = (ev) => setPhoto(ev.target.result);
     reader.readAsDataURL(file);
   };
-  //Integration
+
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center font-itim">
+    <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center font-itim">
       {/* Illustration et titre */}
-      <div className="w-full max-w-[1000px] rounded-b-2xl overflow-hidden">
-        <div className="relative w-full h-[280px] bg-[#EDEDED]">
+      <div className="w-full max-w-[1000px] shadow-custom rounded-b-4xl overflow-hidden">
+        <div className="relative w-full h-[280px] bg-[#00B4D8]">
           {/* Overlay gris léger */}
-          <div className="absolute inset-0 bg-[#D9D9D9] opacity-40 z-10" />
+          <div className="absolute inset-0 bg-[#D9D9D9] opacity-0 z-10" />
           {/* Illustration */}
           <img
-            src="/illustration_3.svg"
+            src="/illustration_7.png"
             alt="Créer un compte"
             className="absolute inset-0 w-full h-full object-contain z-0"
           />
           {/* Texte centré */}
           <div className="absolute inset-0 flex items-start justify-center z-20">
             <span
-              className="text-[32px] font-extrabold text-black "
+              className="text-[36px] font-extrabold text-white "
               style={{
                 fontFamily: "Itim, cursive",
                 textShadow: "2px 2px 6px #0008",
                 letterSpacing: 1,
-                marginTop: "10rem",
+                marginTop: "14rem",
               }}
             >
               Creer votre Compte
@@ -196,7 +198,7 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="w-full max-w-[400px] flex flex-col items-center px-4 pt-4"
       >
-        <h2 className="text-[24px] font-bold text-center mb-4 mt-2 text-[#000000]">
+        <h2 className="text-[28px]   text-center mb-4 mt-2 text-[#1F2937]">
           Renseigner vos informations
         </h2>
         <div className="flex w-full gap-2 mb-2">
@@ -207,16 +209,16 @@ export default function Register() {
               value={formData.nom}
               onChange={handleChange}
               placeholder="Nom"
-              className={`w-full border ${
+              className={`w-full border shadow-custom ${
                 errors.nom ? "border-red-500" : "border-black"
-              } rounded-full px-4 py-2 text-[16px] outline-none text-black placeholder:text-gray-400 bg-white`}
+              } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none text-black placeholder:text-gray-400 bg-white`}
             />
             {errors.nom && (
               <p className="text-red-500 text-sm mt-1">{errors.nom}</p>
             )}
           </div>
           <div
-            className={`w-[35px] h-[35px] bg-[#EDEDED] rounded-xl flex items-center justify-center border ${
+            className={` w-[50px] bg-[#90E0EF] shadow-custom rounded-xl flex items-center justify-center border ${
               photoError ? "border-red-500" : "border-[#D9D9D9]"
             } cursor-pointer relative`}
             onClick={handleCameraClick}
@@ -252,22 +254,22 @@ export default function Register() {
             {photoErrorMessage}
           </p>
         )}
-        <div className="w-full">
+        <div className="w-full mt-2">
           <input
             type="text"
             name="prenom"
             value={formData.prenom}
             onChange={handleChange}
             placeholder="Prenom"
-            className={`w-full border ${
+            className={`w-full border  ${
               errors.prenom ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
           {errors.prenom && (
             <p className="text-red-500 text-sm mb-2">{errors.prenom}</p>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full   mt-2">
           <input
             type="email"
             name="email"
@@ -276,13 +278,13 @@ export default function Register() {
             placeholder="Email"
             className={`w-full border ${
               errors.email ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
           {errors.email && (
             <p className="text-red-500 text-sm mb-2">{errors.email}</p>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full  mt-2">
           <input
             type="tel"
             name="telephone"
@@ -291,13 +293,13 @@ export default function Register() {
             placeholder="Telephone"
             className={`w-full border ${
               errors.telephone ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
           {errors.telephone && (
             <p className="text-red-500 text-sm mb-2">{errors.telephone}</p>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full  mt-2">
           <input
             type="text"
             name="adresse"
@@ -306,13 +308,13 @@ export default function Register() {
             placeholder="Adresse"
             className={`w-full border ${
               errors.adresse ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
           {errors.adresse && (
             <p className="text-red-500 text-sm mb-2">{errors.adresse}</p>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full  mt-2">
           <input
             type="password"
             name="password"
@@ -321,13 +323,13 @@ export default function Register() {
             placeholder="Mot de passe"
             className={`w-full border ${
               errors.password ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
           {errors.password && (
             <p className="text-red-500 text-sm mb-2">{errors.password}</p>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full  mt-2">
           <input
             type="text"
             name="bio"
@@ -336,20 +338,20 @@ export default function Register() {
             placeholder="bio"
             className={`w-full border ${
               errors.bio ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
           />
           {errors.bio && (
             <p className="text-red-500 text-sm mb-2">{errors.bio}</p>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full  mt-2">
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
             className={`w-full border ${
               errors.role ? "border-red-500" : "border-black"
-            } rounded-full px-4 py-2 text-[16px] outline-none mb-4 bg-white text-black`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-4 bg-white text-black`}
           >
             <option value="">Role</option>
             <option value="conducteur">Conducteur</option>
@@ -361,8 +363,8 @@ export default function Register() {
         </div>
         <button
           type="submit"
-          // disabled={isLoading}
-          className={`w-full bg-[#D9D9D9] text-black text-[24px] font-bold rounded-md py-2 mb-2 shadow-sm border border-black/20 active:bg-amber-700 hover:bg-[#bdbdbd] transition ${
+          disabled={isLoading}
+          className={`w-full shadow-custom bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 mb-2  border border-black/20 hover:bg-[#3B82F6]/80 transition ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
@@ -378,23 +380,22 @@ export default function Register() {
           </span>
         </button>
         <div className="w-full text-center mt-2 mb-6">
-          <span className="text-[16px] font-bold text-black">
+          <span className="text-[20px]  text-black">
             Deja un Compte?{" "}
           </span>
           <span
-            className="text-[16px] text-[#a5a5a5] font-bold cursor-pointer hover:underline"
+            className="text-[20px] text-[#3B82F6]  cursor-pointer hover:underline"
             onClick={() => navigate("/login")}
           >
             se connecter
           </span>
         </div>
       </form>
-
       <style jsx>{`
         .spinner {
           width: 20px;
           height: 20px;
-          border: 3px solid #000;
+          border: 3px solid #ffffff;
           border-radius: 50%;
           border-top-color: transparent;
           animation: spin 1s linear infinite;
