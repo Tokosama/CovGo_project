@@ -1,95 +1,124 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faMapMarkerAlt, faCalendarAlt, faUserFriends, faStar, faUserCircle, faChevronRight, faCarSide } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft, faMapMarkerAlt, faCalendarAlt, faUserFriends,
+  faStar, faUserCircle, faChevronRight, faCarSide
+} from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 
-export default function Details({ onBack }) {
+export default function Details({ onBack, trip }) {
+  if (!trip) return <p className="text-center mt-10">Aucun trajet sélectionné</p>;
+
+  const {
+    depart,
+    destination,
+    date_depart,
+    heure_depart,
+    places,
+    prix,
+    description,
+    preferences,
+    conducteur_id
+  } = trip;
+
+  const conducteurNom = `${conducteur_id?.prenom || ''} ${conducteur_id?.nom || ''}`;
+  const formattedDate = new Date(date_depart).toLocaleDateString('fr-FR', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
   return (
     <div className="min-h-screen bg-[#F5F5F5] pb-24 font-itim w-full overflow-y-auto">
       {/* En-tête */}
-      <div
-        className="w-full bg-[#00B4D8] shadow-custom flex items-center justify-center px-2 h-[90px] relative"
-        style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}
-      >
+      <div className="w-full bg-[#00B4D8] shadow-custom flex items-center justify-center px-2 h-[90px] relative">
         <motion.button
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
           onClick={onBack}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full focus:outline-none will-change-transform"
+          className="absolute left-3 top-1/2 -translate-y-1/2 p-1 rounded-full"
           aria-label="Retour"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="text-[22px] text-black" />
         </motion.button>
-        <h1 className="flex-1 text-center text-[24px]  text-black">Detail du trajet</h1>
+        <h1 className="flex-1 text-center text-[24px] text-black">Détail du trajet</h1>
       </div>
 
-      {/* Bloc Départ/Arrivée */}
+      {/* Départ / Destination */}
       <div className="bg-white py-4 border-b border-gray-300">
-        <div className="flex flex-col gap-2 bg-[#ADE8F4]  shadow-custom px-3 py-2">
+        <div className="flex flex-col gap-2 bg-[#ADE8F4] shadow-custom px-3 py-2">
           <div className="flex items-center gap-2">
             <FontAwesomeIcon icon={faMapMarkerAlt} className="text-green-600 text-lg" />
             <span className="text-[16px] text-black font-bold">De:</span>
-            <span className="text-[16px] text-black">Calavie</span>
+            <span className="text-[16px] text-black">{depart}</span>
           </div>
           <div className="flex items-center gap-2">
             <FontAwesomeIcon icon={faMapMarkerAlt} className="text-red-600 text-lg" />
-            <span className="text-[16px] text-black font-bold">A:</span>
-            <span className="text-[16px] text-black">Cotonou</span>
+            <span className="text-[16px] text-black font-bold">À:</span>
+            <span className="text-[16px] text-black">{destination}</span>
           </div>
         </div>
       </div>
 
-      {/* Bloc Date/Heure */}
+      {/* Date et Heure */}
       <div className="bg-[#ADE8F4] px-6 py-3 border-b shadow-custom border-gray-300 flex items-center gap-2">
         <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-700 text-lg" />
-        <span className="text-[16px] text-black font-bold">Prevue Pour:</span>
-        <span className="text-[16px] text-black">Mercredi, 12 Juin 2025 - 12h40</span>
+        <span className="text-[16px] text-black font-bold">Prévu pour :</span>
+        <span className="text-[16px] text-black">{formattedDate} - {heure_depart}</span>
       </div>
 
-      {/* Bloc Places/Prix */}
+      {/* Places / Prix */}
       <div className="bg-[#ADE8F4] px-6 py-3 mt-4 shadow-custom border-b border-gray-300 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <FontAwesomeIcon icon={faUserFriends} className="text-gray-700 text-lg" />
-          <span className="text-[16px] text-black">2/4 place disponible</span>
+          <span className="text-[16px] text-black">{places} place(s) disponible(s)</span>
         </div>
-        <span className="text-[16px] text-black font-bold">Prix : <span className="font-normal">2000</span>xof/place</span>
+        <span className="text-[16px] text-black font-bold">Prix : <span className="font-normal">{prix}</span> xof/place</span>
       </div>
 
-      {/* Bloc Profil Conducteur */}
+      {/* Profil Conducteur */}
       <div className="bg-[#ADE8F4] mt-4 px-4 py-4 border-b shadow-custom border-gray-300">
         <div className="flex items-center gap-2 mb-1">
           <FontAwesomeIcon icon={faUserCircle} className="text-[38px] text-black" />
           <div className="flex flex-col flex-1">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-[16px] text-black">toko Sama</span>
+              <span className="font-bold text-[16px] text-black">{conducteurNom}</span>
               <span className="flex gap-1">
                 {[...Array(5)].map((_, i) => (
                   <FontAwesomeIcon key={i} icon={faStar} className="text-gray-400 text-xs" />
                 ))}
               </span>
             </div>
-            <span className="text-[11px] text-gray-600">Active since: <span className="font-bold">one month</span></span>
+            <span className="text-[11px] text-gray-600">
+              Active depuis : <span className="font-bold">1 mois</span>
+            </span>
           </div>
           <FontAwesomeIcon icon={faChevronRight} className="text-gray-500 text-base" />
         </div>
         <div className="text-[16px] text-black mb-2">
-          Bonjour je vous propose un voyage avec une super Voiture Mercedes classe V tres confortable qui peut accueillir jusqu'à 6 personnes confortablement , n'hesiter pas a me contacter
+          {description || "Aucune description fournie"}
         </div>
-        <div className="text-[16px] text-gray-700 mb-2">
-          <span className="font-bold">Preferences:</span> <br />Pas de fumeur ,pas d'animaux
-        </div>
-        <div className="flex justify-center w-full">  
-          <button className="w-[60%] rounded-lg py-2 bg-[#3B82F6] text-white  shadow-custom text-[20px] mt-2 hover:bg-[#2563eb] transition">Contactez</button>
+        {preferences && (
+          <div className="text-[16px] text-gray-700 mb-2">
+            <span className="font-bold">Préférences :</span><br />{preferences}
+          </div>
+        )}
+        <div className="flex justify-center w-full">
+          <button className="w-[60%] rounded-lg py-2 bg-[#3B82F6] text-white shadow-custom text-[20px] mt-2 hover:bg-[#2563eb] transition">
+            Contactez
+          </button>
         </div>
       </div>
 
-      {/* Bloc Voiture */}
+      {/* Voiture */}
       <div className="bg-[#ADE8F4] shadow-custom px-3 py-3 mt-4 flex items-center gap-2">
         <FontAwesomeIcon icon={faCarSide} className="text-gray-700 text-lg" />
-        <span className="text-[16px]  text-black">Mercebez benz classe V - couleur Gris</span>
+        <span className="text-[16px] text-black">Modèle non précisé - couleur non précisée</span>
       </div>
+
+      {/* Bouton réserver */}
       <div className="flex justify-center w-full">
-        <button className="w-[80%] rounded-lg px-3 py-2 bg-[#3B82F6] text-white  text-[20px] shadow-custom mt-8 hover:bg-[#2563eb] transition">Reserver</button>
+        <button className="w-[80%] rounded-lg px-3 py-2 bg-[#3B82F6] text-white text-[20px] shadow-custom mt-8 hover:bg-[#2563eb] transition">
+          Réserver
+        </button>
       </div>
     </div>
   );

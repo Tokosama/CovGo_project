@@ -1,7 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-
 import {
   faArrowLeft,
   faUserCircle,
@@ -9,13 +8,13 @@ import {
   faMapMarkerAlt,
   faCarSide,
   faUserFriends,
-  faCommentDots,
   faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
-
-const trips = [1, 2, 3, 4];
+import { useTrajetStore } from "../store/useTrajetStore";
 
 export default function ListTrips({ onBack, onTripClick }) {
+  const { trajets } = useTrajetStore();
+
   return (
     <div className="min-h-screen bg-[#ffffff] pb-24 font-itim w-full">
       {/* En-tête */}
@@ -32,242 +31,112 @@ export default function ListTrips({ onBack, onTripClick }) {
             className="text-[22px] text-white"
           />
         </motion.button>
-        <h1 className="flex-1 text-center text-[24px]  text-white">
+        <h1 className="flex-1 text-center text-[24px] text-white">
           Trajets trouvés
         </h1>
       </div>
+
       {/* Liste des trajets */}
       <div className="flex flex-col gap-4 mt-4 w-full px-2">
-        <div
-          className="bg-[#ADE8F4]  border-black rounded-2xl shadow-custom px-3 py-5 w-full cursor-pointer transition hover:scale-[1.01]"
-          style={{ minWidth: 0 }}
-          onClick={() => onTripClick && onTripClick(idx)}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserCircle}
-                className="text-[28px] text-black"
-              />
-              <span className="font-bold text-[15px] text-black">
-                Orelson Sama
-              </span>
-              <span className="flex gap-1 ml-1">
-                {[...Array(5)].map((_, i) => (
+        {trajets.length === 0 ? (
+          <p className="text-center text-gray-500 mt-8">Aucun trajet trouvé</p>
+        ) : (
+          trajets.map((trajet, idx) => (
+            <div
+              key={trajet._id || idx}
+              className="bg-[#ADE8F4] border-black rounded-2xl shadow-custom px-3 py-5 w-full cursor-pointer transition hover:scale-[1.01]"
+              onClick={() => onTripClick(trajet)}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-2">
                   <FontAwesomeIcon
-                    key={i}
-                    icon={faStar}
-                    className="text-gray-400 text-xs"
+                    icon={faUserCircle}
+                    className="text-[28px] text-black"
                   />
-                ))}
-              </span>
-            </div>
-            <span className="font-bold text-[13px] text-black">
-              PRIX 2000 xof
-            </span>
-          </div>
-          {/* Lignes points */}
-          <div className="flex flex-col gap-1 mb-2">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-green-600 text-sm"
-              />
-              <span className="text-[14px] text-black">
-                Zopha 
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-red-600 text-sm"
-              />
-              <span className="text-[14px] text-black">Fifadje</span>
-            </div>
-          </div>
-          {/* Infos voiture, places, message */}
-          <div className="flex items-center justify-between border border-black rounded-lg bg-[#FFFFFF] px-2 py-1 mb-1">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faCarSide}
-                className="text-gray-700 text-base"
-              />
-              <span className="text-[13px] text-black">Mercedenz benz</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserFriends}
-                className="text-gray-700 text-base"
-              />
-              <span className="text-[13px] text-black">2</span>
-            </div>
-            <button className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
-              Contactez
-            </button>
-          </div>
-          {/* Date/heure */}
-          <div className="flex items-center gap-2 mt-1">
-            <FontAwesomeIcon
-              icon={faCalendarAlt}
-              className="text-gray-700 text-sm"
-            />
-            <span className="text-[12px] text-black">23juin | 09h50min</span>
-          </div>
-        </div>
-         <div
-          className="bg-[#ADE8F4]  border-black rounded-2xl shadow-custom px-3 py-5 w-full cursor-pointer transition hover:scale-[1.01]"
-          style={{ minWidth: 0 }}
-          onClick={() => onTripClick && onTripClick(idx)}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserCircle}
-                className="text-[28px] text-black"
-              />
-              <span className="font-bold text-[15px] text-black">
-               Hilal INOUSSA
-              </span>
-              <span className="flex gap-1 ml-1">
-                {[...Array(5)].map((_, i) => (
+                  <span className="font-bold text-[15px] text-black">
+                    {trajet.conducteur_id?.prenom} {trajet.conducteur_id?.nom}
+                  </span>
+                  <span className="flex gap-1 ml-1">
+                    {[...Array(5)].map((_, i) => (
+                      <FontAwesomeIcon
+                        key={i}
+                        icon={faStar}
+                        className="text-gray-400 text-xs"
+                      />
+                    ))}
+                  </span>
+                </div>
+                <span className="font-bold text-[13px] text-black">
+                  PRIX {trajet.prix} xof
+                </span>
+              </div>
+
+              {/* Lieux */}
+              <div className="flex flex-col gap-1 mb-2">
+                <div className="flex items-center gap-2">
                   <FontAwesomeIcon
-                    key={i}
-                    icon={faStar}
-                    className="text-gray-400 text-xs"
+                    icon={faMapMarkerAlt}
+                    className="text-green-600 text-sm"
                   />
-                ))}
-              </span>
-            </div>
-            <span className="font-bold text-[13px] text-black">
-              PRIX 1000 xof
-            </span>
-          </div>
-          {/* Lignes points */}
-          <div className="flex flex-col gap-1 mb-2">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-green-600 text-sm"
-              />
-              <span className="text-[14px] text-black">
-                Akassato 
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-red-600 text-sm"
-              />
-              <span className="text-[14px] text-black">Godomey</span>
-            </div>
-          </div>
-          {/* Infos voiture, places, message */}
-          <div className="flex items-center justify-between border border-black rounded-lg bg-[#FFFFFF] px-2 py-1 mb-1">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faCarSide}
-                className="text-gray-700 text-base"
-              />
-              <span className="text-[13px] text-black">Nissan Turani</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserFriends}
-                className="text-gray-700 text-base"
-              />
-              <span className="text-[13px] text-black">3</span>
-            </div>
-            <button className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
-              Contactez
-            </button>
-          </div>
-          {/* Date/heure */}
-          <div className="flex items-center gap-2 mt-1">
-            <FontAwesomeIcon
-              icon={faCalendarAlt}
-              className="text-gray-700 text-sm"
-            />
-            <span className="text-[12px] text-black">25juin | 06h50min</span>
-          </div>
-        </div>
-          <div
-          className="bg-[#ADE8F4]  border-black rounded-2xl shadow-custom px-3 py-5 w-full cursor-pointer transition hover:scale-[1.01]"
-          style={{ minWidth: 0 }}
-          onClick={() => onTripClick && onTripClick(idx)}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserCircle}
-                className="text-[28px] text-black"
-              />
-              <span className="font-bold text-[15px] text-black">
-               Romeo EKOMI              </span>
-              <span className="flex gap-1 ml-1">
-                {[...Array(5)].map((_, i) => (
+                  <span className="text-[14px] text-black">
+                    {trajet.depart}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
                   <FontAwesomeIcon
-                    key={i}
-                    icon={faStar}
-                    className="text-gray-400 text-xs"
+                    icon={faMapMarkerAlt}
+                    className="text-red-600 text-sm"
                   />
-                ))}
-              </span>
+                  <span className="text-[14px] text-black">
+                    {trajet.destination}
+                  </span>
+                </div>
+              </div>
+
+              {/* Infos voiture, places, bouton */}
+              <div className="flex items-center justify-between border border-black rounded-lg bg-[#FFFFFF] px-2 py-1 mb-1">
+                <div className="flex items-center gap-2">
+                  <FontAwesomeIcon
+                    icon={faCarSide}
+                    className="text-gray-700 text-base"
+                  />
+                  <span className="text-[13px] text-black">
+                    {trajet.preferences || "Pas de précision"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FontAwesomeIcon
+                    icon={faUserFriends}
+                    className="text-gray-700 text-base"
+                  />
+                  <span className="text-[13px] text-black">
+                    {trajet.places}
+                  </span>
+                </div>
+                <button className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
+                  Contactez
+                </button>
+              </div>
+
+              {/* Date/heure */}
+              <div className="flex items-center gap-2 mt-1">
+                <FontAwesomeIcon
+                  icon={faCalendarAlt}
+                  className="text-gray-700 text-sm"
+                />
+                <span className="text-[12px] text-black">
+                  {new Date(trajet.date_depart).toLocaleDateString("fr-FR", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short",
+                  })}{" "}
+                  | {trajet.heure_depart}
+                </span>
+              </div>
             </div>
-            <span className="font-bold text-[13px] text-black">
-              PRIX 1200 xof
-            </span>
-          </div>
-          {/* Lignes points */}
-          <div className="flex flex-col gap-1 mb-2">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-green-600 text-sm"
-              />
-              <span className="text-[14px] text-black">
-                Pahou 
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-red-600 text-sm"
-              />
-              <span className="text-[14px] text-black">Jericho</span>
-            </div>
-          </div>
-          {/* Infos voiture, places, message */}
-          <div className="flex items-center justify-between border border-black rounded-lg bg-[#FFFFFF] px-2 py-1 mb-1">
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faCarSide}
-                className="text-gray-700 text-base"
-              />
-              <span className="text-[13px] text-black">Toyota Prado</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserFriends}
-                className="text-gray-700 text-base"
-              />
-              <span className="text-[13px] text-black">3</span>
-            </div>
-            <button className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
-              Contactez
-            </button>
-          </div>
-          {/* Date/heure */}
-          <div className="flex items-center gap-2 mt-1">
-            <FontAwesomeIcon
-              icon={faCalendarAlt}
-              className="text-gray-700 text-sm"
-            />
-            <span className="text-[12px] text-black">22juin | 11h04min</span>
-          </div>
-        </div>
+          ))
+        )}
       </div>
     </div>
   );
