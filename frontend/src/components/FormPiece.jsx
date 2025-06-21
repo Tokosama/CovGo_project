@@ -59,14 +59,14 @@ export default function FormPiece({
       className="w-full flex flex-col items-center mt-8"
     >
       <div className="w-[90%] text-center items-center justify-center mx-auto text-[21px] font-bold text-[#FF1D1D] mb-12">
-        Vérifiez vos Informations avant de publier des trajets
+        Vérifiez vos Informations avant de réserver des trajets
         <hr className="w-full border-t border-gray-400 mt-7" />
       </div>
         <div className="w-full max-w-[350px] mx-auto">
-          <div className="w-full text-center text-[21px] font-bold text-black mb-2">Rajouter votre piece</div>
+          <div className="w-full text-center text-[21px] font-bold text-black mb-2">Rajoutez votre pièce identificatif</div>
           <form onSubmit={handleSubmit}>
             <div className="mb-2">
-              <label className="block text-[16px] text-gray-600 mb-1">Choix de la piece</label>
+              <label className="block text-[16px] text-gray-600 mb-1 ml-1">Type de la pièce</label>
               <div className="relative">
                 <select
                   className="border border-gray-200 focus:border-blue-400 font-itim  rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white"
@@ -83,9 +83,9 @@ export default function FormPiece({
               {errors.pieceType && <p className="text-red-500 text-sm mb-1">{errors.pieceType}</p>}
             </div>
             <div className="mb-4">
-              <label className="block text-[16px] text-gray-600 mb-1">Ajoutez la piece</label>
+              <label className="block text-[16px] text-gray-600 mb-1">Ajoutez la pièce</label>
               <div
-                className="flex border border-gray-200 focus:border-blue-400 font-itim  rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white"
+                className="flex border border-gray-200 focus:border-blue-400 font-itim  rounded-2xl shadow-custom px-4 py-3 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white"
                 onClick={() => pieceInputRef.current && pieceInputRef.current.click()}
               >
                 <FontAwesomeIcon icon={faIdCard} className="text-gray-500 text-xl mr-2" />
@@ -102,7 +102,7 @@ export default function FormPiece({
             </div>
             <div className="flex justify-center">
               <button
-                className="bg-[#3B82F6] text-white text-[24px] font-bold rounded-md py-2 px-8 shadow-sm border border-black/20 hover:bg-[#bdbdbd] transition"
+                className="bg-[#3B82F6] text-white text-[24px]  rounded-md py-2 px-8 shadow-custom  hover:bg-[#bdbdbd] transition"
                 type="submit"
               >
                 Soumettre

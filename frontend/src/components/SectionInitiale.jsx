@@ -48,7 +48,7 @@ export default function SectionInitiale({
       {/* Bloc permis */}
       <div className="w-[95%] mx-auto flex flex-col gap-2 mb-2">
         <span className="text-[20px] text-center  text-black">Rajouter votre Permis de conduire</span>
-        <div className="flex items-center bg-white shadow-custom rounded-xl border border-gray-300 px-3 py-2 cursor-pointer transition hover:shadow-md" onClick={handlePermisClick}>
+        <div className="flex items-center bg-white shadow-custom rounded-xl border border-gray-300 px-3 py-3 cursor-pointer transition hover:shadow-md" onClick={handlePermisClick}>
           <FontAwesomeIcon icon={faIdCard} className="text-gray-500 text-xl mr-2" />
           <span className="flex-1 text-[16px] text-gray-500 truncate">{permis ? permis : 'Permis de conduire'}</span>
           <input
@@ -64,7 +64,7 @@ export default function SectionInitiale({
       {/* Bloc photo permis */}
       <div className="w-[95%] mx-auto flex flex-col gap-2 mb-2 mt-8">
         <span className="text-[20px] text-center text-black">Rajouter une photo de vous avec le permis de conduire</span>
-        <div className="flex items-center justify-center  rounded-xl shadow-custom border border-gray-300 px-3 py-2 cursor-pointer transition hover:shadow-md" onClick={handlePhotoPermisClick}>
+        <div className="flex items-center justify-center  rounded-xl shadow-custom border border-gray-300 px-3 py-3 cursor-pointer transition hover:shadow-md" onClick={handlePhotoPermisClick}>
           {photoPermis ? (
             <img src={photoPermis} alt="Aperçu" className="w-12 h-12 object-cover rounded-lg" />
           ) : (

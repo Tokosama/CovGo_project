@@ -74,7 +74,7 @@ function App() {
           element={<Profil />}
         />
         <Route
-          path="/publier-trajet"
+          path="/publier"
           element={<PublierTrajet />}
         />
       </Routes>

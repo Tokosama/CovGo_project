@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => { }, onFormChange, formData = {} }) {
   const [localForm, setLocalForm] = useState({
-    nom: formData.nom || '',
+    nom: formData.nom || '',                                                                
     prenom: formData.prenom || '',
     telephone: formData.telephone || '',
     adresse: formData.adresse || '',
@@ -46,7 +46,7 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
       onSubmit={handleUpdate}
     >
       <div className="w-full max-w-[350px] mx-auto">
-        <div className="w-[90%] text-center items-center justify-center mx-auto text-[24px]  text-[#FF1D1D] mt-[-30px] mb-4">
+        <div className="w-[90%] text-center items-center justify-center mx-auto text-[24px]  text-[#FFE082] mt-[-30px] mb-4">
           Renseignez vos nouvelles Informations
         </div>
         <input
@@ -96,7 +96,7 @@ export default function RecapProfil({ onUpdate, errors = {}, setErrors = () => {
         <div className="flex justify-center w-full">
           <button
             type="submit"
-            className="w-[60%] bg-[#FFE082] text-black  text-[24px] rounded-md py-2 mt-2 shadow-custom hover:bg-[#ffe082cc] transition"
+            className="w-[60%] bg-[#FFE082] text-white  text-[24px] rounded-md py-2 mt-2 shadow-custom hover:bg-[#ffe082cc] transition"
           >
             Mettre a jour
           </button>

@@ -88,26 +88,27 @@ export default function PublierTrajet() {
             className="w-full h-[325px] object-contain blur-[2px]"
           />{" "}
         </div>
-        <h2 className="text-center text-[#000000] text-[32px] font-bold mb-2 mt-[-40px] max-[400px]:text-[22px] max-[340px]:text-[18px]">
+        <h2 className="text-center text-[#000000] text-[32px] font-bold mb-2 mt-[-40px] max-[400px]:text-[32px] max-[340px]:text-[18px]">
           Publier un trajet
         </h2>
         <form
           onSubmit={handleSubmit}
-          className="bg-gradient-to-b from-[#00B4D8] to-[#48CAE4] rounded-2xl border border-[#0096C7] shadow-lg px-4 pt-4 pb-6 flex flex-col gap-3
-          max-[400px]:px-2 max-[400px]:pt-2 max-[400px]:pb-4 max-[340px]:px-1 max-[340px]:pt-1 max-[340px]:pb-2"
+          className="w-full bg-gradient-to-b from-[#00B4D8] to-[#48CAE4] rounded-2xl  shadow-custom px-4 pt-4 pb-6 flex flex-col gap-3
+          max-[400px]:px-5 max-[400px]:pt-8 max-[400px]:pb-5 max-[340px]:px-5 max-[340px]:pt-8 max-[340px]:pb-5"
         >
           {/* Ville */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center  bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faMapMarkerAlt}
-              className="text-green-600 mr-2 max-[400px]:mr-1"
+              className="text-green-600 mr-2 max-[400px]:mr-2"
             />
             <input
               name="ville"
               value={form.ville}
               onChange={handleChange}
               placeholder="Ville du trajet"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}
             />
           </div>
           {errors.ville && (
@@ -116,18 +117,18 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Départ */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faMapMarkerAlt}
-              className="text-green-600 mr-2 max-[400px]:mr-1"
+              className="text-green-600 mr-2 max-[400px]:mr-2"
             />
             <input
               name="depart"
               value={form.depart}
               onChange={handleChange}
               placeholder="Point de depart"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.depart && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -135,18 +136,18 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Destination */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faMapMarkerAlt}
-              className="text-red-600 mr-2 max-[400px]:mr-1"
+              className="text-red-600 mr-2 max-[400px]:mr-2"
             />
             <input
               name="destination"
               value={form.destination}
               onChange={handleChange}
               placeholder="Destination"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.destination && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -154,10 +155,10 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Date */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faCalendarAlt}
-              className="text-gray-700 mr-2 max-[400px]:mr-1"
+              className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
               name="date"
@@ -165,8 +166,8 @@ export default function PublierTrajet() {
               onChange={handleChange}
               placeholder="Date du trajet"
               type="date"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.date && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -174,10 +175,10 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Heure */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faClock}
-              className="text-gray-700 mr-2 max-[400px]:mr-1"
+              className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
               name="heure"
@@ -185,8 +186,8 @@ export default function PublierTrajet() {
               onChange={handleChange}
               placeholder="Heure du trajet"
               type="time"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.heure && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -194,10 +195,10 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Nombre de places */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faUserFriends}
-              className="text-gray-700 mr-2 max-[400px]:mr-1"
+              className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
               name="places"
@@ -207,8 +208,8 @@ export default function PublierTrajet() {
               type="number"
               min="1"
               max="10"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.places && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -216,10 +217,10 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Prix par place */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faMoneyBill}
-              className="text-gray-700 mr-2 max-[400px]:mr-1"
+              className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
               name="prix"
@@ -228,8 +229,8 @@ export default function PublierTrajet() {
               placeholder="Prix par place"
               type="number"
               min="0"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.prix && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -237,18 +238,18 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Préférences */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faList}
-              className="text-gray-700 mr-2 max-[400px]:mr-1"
+              className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
               name="preferences"
               value={form.preferences}
               onChange={handleChange}
               placeholder="Renseignez vos preferences"
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            />
+   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            />
           </div>
           {errors.preferences && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -256,17 +257,17 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Véhicule */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon
               icon={faCarSide}
-              className="text-gray-700 mr-2 max-[400px]:mr-1"
+              className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <select
               name="vehicule"
               value={form.vehicule}
               onChange={handleChange}
-              className="flex-1 bg-transparent outline-none text-[15px] text-black max-[400px]:text-[13px] max-[340px]:text-[12px]"
-            >
+   className={`flex-1 bg-transparent outline-none shadow-custom custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                  }`}            >
               <option value="">Selectionner le véhicule</option>
               <option value="Toyota">Toyota</option>
               <option value="Peugeot">Peugeot</option>
@@ -281,8 +282,8 @@ export default function PublierTrajet() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#3B82F6] text-white text-[18px] font-bold rounded-md py-2 mt-2 shadow hover:bg-[#2563eb] transition max-[400px]:text-[15px] max-[400px]:py-1 max-[340px]:text-[13px]"
-          >
+className={`w-full bg-[#3B82F6]  text-white text-[24px] mt-9 rounded-2xl py-2 mb-2 shadow-custom  hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}          >
             {isLoading ? "Publication en cours..." : "Publier le trajet"}
           </button>
         </form>

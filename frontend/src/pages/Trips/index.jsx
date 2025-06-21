@@ -42,7 +42,9 @@ export default function Trips() {
         <div></div>
         <button
           className={`w-[50%] py-4   rounded-t-lg   text-[18px]  ${
-            tab === "reservations" ? "bg-[#00B4D8] shadow-custom" : "bg-transparent"
+            tab === "reservations"
+              ? "bg-[#00B4D8] shadow-custom text-white"
+              : "bg-transparent"
           }`}
           style={{ minWidth: 140 }}
           onClick={() => setTab("reservations")}
@@ -51,7 +53,9 @@ export default function Trips() {
         </button>
         <button
           className={`w-[50%] py-2 rounded-t-lg   text-[21px] ${
-            tab === "historique" ? "bg-[#00B4D8] shadow-custom " : "bg-transparent"
+            tab === "historique"
+              ? "bg-[#00B4D8] shadow-custom text-white"
+              : "bg-transparent"
           }`}
           style={{ minWidth: 120 }}
           onClick={() => setTab("historique")}
@@ -63,130 +67,120 @@ export default function Trips() {
       {tab === "reservations" && (
         <>
           <div
-          className="bg-[#ADE8F4] text-black  shadow-custom rounded-2xl  px-3 py-5 mx-4 mb-4 w-[95%] max-w-[600px]"
-          style={{ minWidth: 0 }}
-        >
-          <div className="flex items-center  justify-between mb-1">
-            <div className="flex  items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserCircle}
-                className="text-[28px] text-black"
-              />
-              <span className=" text-[16px] text-black">toko Sama</span>
-              <span className="flex items-center gap-1 ml-2">
+            className="bg-[#ADE8F4] text-black  shadow-custom rounded-2xl  px-3 py-5 mx-4 mb-4 w-[95%] max-w-[600px]"
+            style={{ minWidth: 0 }}
+          >
+            <div className="flex items-center  justify-between mb-1">
+              <div className="flex  items-center gap-2">
                 <FontAwesomeIcon
-                  icon={faUserFriends}
-                  className="text-gray-700 text-base"
+                  icon={faUserCircle}
+                  className="text-[28px] text-black"
                 />
-                <span className="text-[16px] text-black">2</span>
-              </span>
+                <span className=" text-[16px] text-black">toko Sama</span>
+                <span className="flex items-center gap-1 ml-2">
+                  <FontAwesomeIcon
+                    icon={faUserFriends}
+                    className="text-gray-700 text-base"
+                  />
+                  <span className="text-[16px] text-black">2</span>
+                </span>
+              </div>
+              <span className=" text-[16px] text-black">PRIX 2000 xof</span>
             </div>
-            <span className=" text-[16px] text-black">PRIX 2000 xof</span>
-          </div>
-          <div className="flex flex-col gap-1  py-2  mb-2">
-            <div className="flex items-center gap-2 text-[16px]">
-              <span className="font-bold">Trajet:</span>
-              <FontAwesomeIcon
-                icon={faCalendarAlt}
-                className="text-gray-700 text-xs ml-1"
-              />
-              <span>20juin | 10h10min</span>
-
-             
-            </div>
-          </div>
-          <div className="flex flex-col gap-1   mb-3 ">
-            <div className="flex items-center gap-2 text-[16px]">
-             
-
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-green-600 text-lg "
-              />
-              <span>Calavie</span>
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-red-600 text-lg ml-2"
-              />
-              <span>Cotonou</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 mt-2">
-            <button className="flex text-white items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-3 py-1">
-              Contactez
-            </button>
-            <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#FF1D1D] text-white  text-[16px] m hover:bg-[#f0f0f0] transition">
-              Rejeter
-            </button>
-            <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#10B981] text-white  text-[16px] hover:bg-[#2563eb] transition">
-              Accepter
-            </button>
-          </div>
-        </div>  <div
-          className="bg-[#ADE8F4] text-black  shadow-custom rounded-2xl  px-3 py-5 mx-4 mb-4 w-[95%] max-w-[600px]"
-          style={{ minWidth: 0 }}
-        >
-          <div className="flex items-center  justify-between mb-1">
-            <div className="flex  items-center gap-2">
-              <FontAwesomeIcon
-                icon={faUserCircle}
-                className="text-[28px] text-black"
-              />
-              <span className=" text-[16px] text-black">toko Sama</span>
-              <span className="flex items-center gap-1 ml-2">
+            <div className="flex flex-col gap-1  py-2  mb-2">
+              <div className="flex items-center gap-2 text-[16px]">
+                <span className="font-bold">Trajet:</span>
                 <FontAwesomeIcon
-                  icon={faUserFriends}
-                  className="text-gray-700 text-base"
+                  icon={faCalendarAlt}
+                  className="text-gray-700 text-xs ml-1"
                 />
-                <span className="text-[16px] text-black">2</span>
-              </span>
+                <span>20juin | 10h10min</span>
+              </div>
             </div>
-            <span className=" text-[16px] text-black">PRIX 2000 xof</span>
-          </div>
-          <div className="flex flex-col gap-1  py-2  mb-2">
-            <div className="flex items-center gap-2 text-[16px]">
-              <span className="font-bold">Trajet:</span>
-              <FontAwesomeIcon
-                icon={faCalendarAlt}
-                className="text-gray-700 text-xs ml-1"
-              />
-              <span>20juin | 10h10min</span>
-
-             
+            <div className="flex flex-col gap-1   mb-3 ">
+              <div className="flex items-center gap-2 text-[16px]">
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-green-600 text-lg "
+                />
+                <span>Calavie</span>
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-red-600 text-lg ml-2"
+                />
+                <span>Cotonou</span>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-1   mb-3 ">
-            <div className="flex items-center gap-2 text-[16px]">
-             
-
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-green-600 text-lg "
-              />
-              <span>Calavie</span>
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="text-red-600 text-lg ml-2"
-              />
-              <span>Cotonou</span>
+            <div className="flex items-center gap-2 mt-2">
+              <button className="flex text-white items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-3 py-1">
+                Contactez
+              </button>
+              <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#FF1D1D] text-white  text-[16px] m hover:bg-[#f0f0f0] transition">
+                Rejeter
+              </button>
+              <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#10B981] text-white  text-[16px] hover:bg-[#2563eb] transition">
+                Accepter
+              </button>
             </div>
           </div>
-          <div className="flex items-center gap-2 mt-2">
-            <button className="flex text-white items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-3 py-1">
-              Contactez
-            </button>
-            <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#FF1D1D] text-white  text-[16px] m hover:bg-[#f0f0f0] transition">
-              Rejeter
-            </button>
-            <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#10B981] text-white  text-[16px] hover:bg-[#2563eb] transition">
-              Accepter
-            </button>
+          <div
+            className="bg-[#ADE8F4] text-black  shadow-custom rounded-2xl  px-3 py-5 mx-4 mb-4 w-[95%] max-w-[600px]"
+            style={{ minWidth: 0 }}
+          >
+            <div className="flex items-center  justify-between mb-1">
+              <div className="flex  items-center gap-2">
+                <FontAwesomeIcon
+                  icon={faUserCircle}
+                  className="text-[28px] text-black"
+                />
+                <span className=" text-[16px] text-black">Aurel HODONOU</span>
+                <span className="flex items-center gap-1 ml-2">
+                  <FontAwesomeIcon
+                    icon={faUserFriends}
+                    className="text-gray-700 text-base"
+                  />
+                  <span className="text-[16px] text-black">1</span>
+                </span>
+              </div>
+              <span className=" text-[16px] text-black">PRIX 1500 xof</span>
+            </div>
+            <div className="flex flex-col gap-1  py-2  mb-2">
+              <div className="flex items-center gap-2 text-[16px]">
+                <span className="font-bold">Trajet:</span>
+                <FontAwesomeIcon
+                  icon={faCalendarAlt}
+                  className="text-gray-700 text-xs ml-1"
+                />
+                <span>25juin | 14h01min</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1   mb-3 ">
+              <div className="flex items-center gap-2 text-[16px]">
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-green-600 text-lg "
+                />
+                <span>Calavie</span>
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-red-600 text-lg ml-2"
+                />
+                <span>Cotonou</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 mt-2">
+              <button className="flex text-white items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-3 py-1">
+                Contactez
+              </button>
+              <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#FF1D1D] text-white  text-[16px] m hover:bg-[#f0f0f0] transition">
+                Rejeter
+              </button>
+              <button className="flex-1 rounded-lg py-1 shadow-custom bg-[#10B981] text-white  text-[16px] hover:bg-[#2563eb] transition">
+                Accepter
+              </button>
+            </div>
           </div>
-        </div>
         </>
-      
-        
-        
       )}
       {/* Carte d'historique */}
       {tab === "historique" && (

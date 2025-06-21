@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [showListTrips, setShowListTrips] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -176,7 +176,7 @@ export default function Home() {
             </div>
           </div>
           <h1
-            className="text-[32px] font-extrabold text-center text-black mt-2 mb-20 drop-shadow-lg"
+            className="text-[32px] font-extrabold text-center text-white mt-2 mb-20 drop-shadow-lg"
             style={{
               fontFamily: "Itim, cursive",
               textShadow: "2px 2px 6px #0008",
@@ -188,7 +188,8 @@ export default function Home() {
           </h1>
           {/* Carte de recherche */}
           <form
-            className="w-full  z-50 max-w-[340px] bg-[#00B4D8] rounded-2xl shadow-custom border border-[#0096C7] flex flex-col items-center   pb-6 mb-24
+            className="w-full  z-50 max-w-[340px] bg-[#00B4D8] rounded-2xl shadow-custom
+              flex flex-col items-center   pb-6 mb-24
               sm:max-w-[340px] sm:px-4 sm:pt-4 sm:pb-6
               max-[400px]:max-w-[95vw] max-[400px]:px-5 max-[400px]:pt-8 max-[400px]:pb-5
               max-[340px]:max-w-[98vw] max-[340px]:px-5 max-[340px]:pt-8 max-[340px]:pb-5"
@@ -237,7 +238,7 @@ export default function Home() {
                 value={formData.destination}
                 onChange={handleChange}
                 placeholder="Point de destination"
-                className={`flex-1 bg-transparent outline-none text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
+                className={`flex-1 bg-transparent outline-none text-[20px] text-black  placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
                   }`}
               />
             </div>
@@ -319,7 +320,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full bg-[#3B82F6]  text-white text-[24px] rounded-2xl py-2 mb-2 shadow-custom border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
+              className={`w-full bg-[#3B82F6]  mt- text-white text-[24px] rounded-2xl py-2 mb-2 shadow-custom border border-black/20 hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
             >
               <span className="flex items-center justify-center">
