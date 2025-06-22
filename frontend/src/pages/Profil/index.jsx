@@ -1,136 +1,231 @@
-import React, { useRef, useState } from 'react';
-import Nav from '../../components/Nav';
-import Header from '../../components/Header';
-import SectionInitiale from '../../components/SectionInitiale';
-import FormVehicule from '../../components/FormVehicule';
-import FormPiece from '../../components/FormPiece';
-import RecapProfil from '../../components/RecapProfil';
-import TrajetsAVenir from '../../components/TrajetsAVenir';
+import React, { useState, useEffect } from "react";
+import Nav from "../../components/Nav";
+import Header from "../../components/Header";
+import TrajetsAVenir from "../../components/TrajetsAVenir";
+import EditProfile from "../../components/EditProfile";
+import FormPiece from "../../components/FormPiece";
+import VerificationMessage from "../../components/VerificationMessage";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useProfilStore } from "../../store/useProfilStore";
 
 export default function Profil() {
-  const permisInputRef = useRef(null);
-  const photoPermisInputRef = useRef(null);
-  const [permis, setPermis] = useState(null);
-  const [photoPermis, setPhotoPermis] = useState(null);
-  const [showVehiculeForm, setShowVehiculeForm] = useState(false);
-  const [vehicule, setVehicule] = useState({ marque: '', modele: '', couleur: '', immat: '' });
-  const [showPieceForm, setShowPieceForm] = useState(false);
-  const [pieceType, setPieceType] = useState('CIP');
-  const [pieceFile, setPieceFile] = useState(null);
-  const pieceInputRef = useRef(null);
-  const [showProfileRecap, setShowProfileRecap] = useState(false);
-  const [bio, setBio] = useState(() => localStorage.getItem('bio') || '');
-  const [step, setStep] = useState('piece'); // 'initial', 'vehicule', 'piece', 'recap'
-  const [errors, setErrors] = useState({});
-  const [showTrajets, setShowTrajets] = useState(() => {
-    return localStorage.getItem('showTrajets') === 'true';
-  });
+  const [currentView, setCurrentView] = useState("loading");
+  const [showEditProfile, setShowEditProfile] = useState(false);
+  const [hasCheckedDocuments, setHasCheckedDocuments] = useState(false);
 
-  const handlePermisClick = () => permisInputRef.current && permisInputRef.current.click();
-  const handlePhotoPermisClick = () => photoPermisInputRef.current && photoPermisInputRef.current.click();
+  const { authUser } = useAuthStore();
+  const {
+    justificatifs,
+    fetchJustificatifs,
+    isFetchingJustificatifs,
+    hasRequiredDocuments,
+    documentFile,
+    documentType,
+    setDocumentFile,
+    setDocumentType,
+  } = useProfilStore();
 
-  const handlePermisChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (!['image/png', 'image/jpeg', 'application/pdf'].includes(file.type)) {
-      alert('Format non supporté. PNG, JPG ou PDF uniquement.');
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Fichier trop volumineux (max 2 Mo).');
-      return;
-    }
-    setPermis(file.name);
+  useEffect(() => {
+    const determineUserState = async () => {
+      if (!authUser || hasCheckedDocuments) {
+        return;
+      }
+
+      setHasCheckedDocuments(true);
+
+      if (authUser.verifie === true) {
+        setCurrentView("verified");
+        return;
+      }
+
+      try {
+        const result = await fetchJustificatifs(authUser._id);
+
+        if (result.success) {
+          const hasAllDocs = hasRequiredDocuments(
+            authUser.role,
+            result.data.data
+          );
+
+          console.log("Documents récupérés:", result.data.data);
+
+          if (hasAllDocs) {
+            setCurrentView("pending_verification");
+          } else {
+            setCurrentView("needs_documents");
+            const defaultType =
+              authUser.role === "conducteur" ? "PERMIS DE CONDUIRE" : "CIP";
+            setDocumentType(defaultType);
+          }
+        } else {
+          setCurrentView("needs_documents");
+          const defaultType =
+            authUser.role === "conducteur" ? "PERMIS DE CONDUIRE" : "CIP";
+          setDocumentType(defaultType);
+        }
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des justificatifs:",
+          error
+        );
+        setCurrentView("needs_documents");
+        const defaultType =
+          authUser.role === "conducteur" ? "PERMIS DE CONDUIRE" : "CIP";
+        setDocumentType(defaultType);
+      }
+    };
+
+    determineUserState();
+  }, [
+    authUser,
+    fetchJustificatifs,
+    hasCheckedDocuments,
+    hasRequiredDocuments,
+    setDocumentType,
+  ]);
+
+  const recheckDocuments = () => {
+    setHasCheckedDocuments(false);
   };
 
-  const handlePhotoPermisChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (!['image/png', 'image/jpeg'].includes(file.type)) {
-      alert('Format non supporté. PNG ou JPG uniquement.');
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Fichier trop volumineux (max 2 Mo).');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (ev) => setPhotoPermis(ev.target.result);
-    reader.readAsDataURL(file);
+  const handleDocumentSubmissionSuccess = () => {
+    setCurrentView("pending_verification");
+    recheckDocuments();
   };
 
-  // Fonction pour reset le profil à l'état initial
-  const resetProfil = () => {
-    setShowTrajets(true);
-    localStorage.setItem('showTrajets', 'true');
-    setStep('initial');
-    setVehicule({ marque: '', modele: '', couleur: '', immat: '' });
-    setPieceType('CIP');
-    setPieceFile(null);
-    setPermis(null);
-    setPhotoPermis(null);
-    setErrors({});
+  const handleEditProfile = () => {
+    setShowEditProfile(true);
   };
 
-  const handleBackToInitial = () => {
-    setShowTrajets(false);
-    localStorage.setItem('showTrajets', 'false');
-    setStep('initial');
+  const handleProfileUpdateSuccess = () => {
+    setShowEditProfile(false);
+    recheckDocuments();
   };
+
+  const handleBackToProfile = () => {
+    setShowEditProfile(false);
+  };
+
+  if (!authUser) {
+    return (
+      <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p>Chargement...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto">
-      <Header nom="toko Sama" age={18} tel="+229 0197000000" />
-      {!showTrajets && (
-        <>
-          {step === 'initial' && (
-            <SectionInitiale
-              permis={permis}
-              handlePermisClick={handlePermisClick}
-              permisInputRef={permisInputRef}
-              handlePermisChange={handlePermisChange}
-              photoPermis={photoPermis}
-              handlePhotoPermisClick={handlePhotoPermisClick}
-              photoPermisInputRef={photoPermisInputRef}
-              handlePhotoPermisChange={handlePhotoPermisChange}
-              onSoumettre={() => setStep('vehicule')}
-              errors={errors}
-              setErrors={setErrors}
-            />
-          )}
-          {step === 'vehicule' && (
-            <FormVehicule
-              vehicule={vehicule}
-              setVehicule={setVehicule}
-              onEnregistrer={() => setStep('piece')}
-              errors={errors}
-              setErrors={setErrors}
-            />
-          )}
-          {step === 'piece' && (
-            <FormPiece
-              pieceType={pieceType}
-              setPieceType={setPieceType}
-              pieceFile={pieceFile}
-              pieceInputRef={pieceInputRef}
-              setPieceFile={setPieceFile}
-              onSoumettre={() => setStep('recap')}
-              errors={errors}
-              setErrors={setErrors}
-            />
-          )}
-          {step === 'recap' && (
-            <RecapProfil
-              bio={bio}
-              onUpdate={resetProfil}
-              errors={errors}
-              setErrors={setErrors}
-              onBioChange={setBio}
-            />
-          )}
-        </>
+      <Header
+        nom={
+          authUser?.nom && authUser?.prenom
+            ? `${authUser.nom} ${authUser.prenom}`
+            : "Utilisateur"
+        }
+        age={18}
+        avatar={authUser?.photo || null}
+        tel={authUser?.telephone || "N/A"}
+        role={authUser?.role || "Utilisateur"}
+      />
+
+      {currentView === "verified" && !showEditProfile && (
+        <TrajetsAVenir onBack={handleEditProfile} />
       )}
-      {showTrajets && <TrajetsAVenir onBack={handleBackToInitial} />}
+
+      {currentView === "verified" && showEditProfile && (
+        <div className="p-6">
+          <EditProfile
+            user={authUser}
+            onSuccess={handleProfileUpdateSuccess}
+            onCancel={handleBackToProfile}
+          />
+        </div>
+      )}
+
+      {currentView === "pending_verification" && !showEditProfile && (
+        <div className="p-6">
+          {isFetchingJustificatifs ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
+              <span>Vérification des documents...</span>
+            </div>
+          ) : (
+            <VerificationMessage
+              userRole={authUser.role}
+              onEditProfile={handleEditProfile}
+              justificatifs={justificatifs}
+              isVerified={authUser.verifie}
+            />
+          )}
+        </div>
+      )}
+
+      {currentView === "pending_verification" && showEditProfile && (
+        <div className="p-6">
+          <EditProfile
+            user={authUser}
+            onSuccess={handleProfileUpdateSuccess}
+            onCancel={handleBackToProfile}
+          />
+        </div>
+      )}
+
+      {currentView === "needs_documents" && !showEditProfile && (
+        <div className="p-6">
+          {isFetchingJustificatifs ? (
+            <div className="flex items-center justify-center py-8 text-black">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
+              <span>Vérification des documents...</span>
+            </div>
+          ) : (
+            <>
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                <h3 className="text-lg font-semibold text-orange-800 mb-2">
+                  Documents requis manquants
+                </h3>
+                <p className="text-orange-700 mb-4">
+                  {authUser.role === "conducteur"
+                    ? "Vous devez soumettre votre permis de conduire pour pouvoir utiliser l'application."
+                    : "Vous devez soumettre au moins un document d'identité (CIP, CNI ou Passeport) pour pouvoir utiliser l'application."}
+                </p>
+                <button
+                  onClick={handleEditProfile}
+                  className="text-blue-600 hover:text-blue-800 underline mb-4 block"
+                >
+                  Modifier mes informations personnelles
+                </button>
+              </div>
+
+              <FormPiece
+                pieceType={documentType}
+                setPieceType={setDocumentType}
+                pieceFile={documentFile}
+                pieceInputRef={React.createRef()}
+                setPieceFile={setDocumentFile}
+                onSoumettre={handleDocumentSubmissionSuccess}
+                errors={{}}
+                setErrors={() => {}}
+                isRequired={true}
+                userRole={authUser.role}
+              />
+            </>
+          )}
+        </div>
+      )}
+
+      {currentView === "needs_documents" && showEditProfile && (
+        <div className="p-6">
+          <EditProfile
+            user={authUser}
+            onSuccess={handleProfileUpdateSuccess}
+            onCancel={handleBackToProfile}
+          />
+        </div>
+      )}
+
       <Nav activeMenu="profil" />
     </div>
   );
