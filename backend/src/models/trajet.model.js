@@ -57,7 +57,7 @@ const trajetSchema = new mongoose.Schema(
     type_trajet: {
       type: String,
       enum: ["ponctuel", "reccurent"],
-      required: true,
+      default:"ponctuel",
     },
     status: {
       type: String,

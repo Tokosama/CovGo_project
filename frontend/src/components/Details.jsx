@@ -14,7 +14,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useTrajetStore } from "../store/useTrajetStore"; // adapte le chemin
 
-export default function Details({ onBack, trip }) {
+export default function Details({ onBack, trip, onContactClick }) {
   const [placesToBook, setPlacesToBook] = useState(1);
   const [loading, setLoading] = useState(false);
   const createReservation = useTrajetStore((state) => state.createReservation);
@@ -58,6 +58,8 @@ export default function Details({ onBack, trip }) {
       setLoading(false);
     }
   };
+
+  console.log(trip)
   return (
     <div className="min-h-screen bg-[#F5F5F5] pb-24 font-itim w-full overflow-y-auto">
       {/* En-tête */}
@@ -171,7 +173,13 @@ export default function Details({ onBack, trip }) {
           </div>
         )}
         <div className="flex justify-center w-full">
-          <button className="w-[60%] rounded-lg py-2 bg-[#3B82F6] text-white shadow-custom text-[20px] mt-2 hover:bg-[#2563eb] transition">
+          <button
+            className="w-[60%] rounded-lg py-2 bg-[#3B82F6] text-white shadow-custom text-[20px] mt-2 hover:bg-[#2563eb] transition"
+            onClick={(e) => {
+              e.stopPropagation(); // Empêche la propagation du clic au div parent
+              if (onContactClick) onContactClick(trip.conducteur_id);
+            }}
+          >
             Contactez
           </button>
         </div>

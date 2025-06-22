@@ -1,8 +1,11 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
-export const useAuthStore = create((set, get) => ({
+const BASE_URL = import.meta.env.MODE ==="development" ?"http://localhost:5001" :"/";
+
+export const useAuthStore = create((set) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -11,10 +14,16 @@ export const useAuthStore = create((set, get) => ({
   isVerifying: false,
   isResendingOTP: false,
 
+  onlineUsers: [],
+
+  socket: null,
+
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data, isCheckingAuth: false });
+      get().connectSocket();
+
     } catch (error) {
       console.log("Error in checkAuth:", error);
       set({ authUser: null, isCheckingAuth: false });
@@ -32,6 +41,8 @@ export const useAuthStore = create((set, get) => ({
 
       toast.success("Inscription réussie ! Un code OTP vous a été envoyé.");
       return { success: true, data: res.data };
+      get().connectSocket();
+
     } catch (error) {
       console.error("Erreur lors de l'inscription:", error);
       const errorMessage =
@@ -59,7 +70,7 @@ export const useAuthStore = create((set, get) => ({
           authRes.data.role === "conducteur" ? "conducteur" : "passager";
         toast.success(`Bienvenue ${roleMessage} !`);
       }
-
+ get().connectSocket();
       return { success: true, data: authRes.data };
     } catch (error) {
       console.error("Erreur lors de la connexion:", error);
@@ -151,50 +162,31 @@ export const useAuthStore = create((set, get) => ({
 
       toast.success("Profil mis à jour avec succès !");
       return { success: true, data: res.data.user };
+      get().disconnectSocket();
+
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du profil:", error);
-      const errorMessage =
-        error.response?.data?.message ||
-        "Erreur lors de la mise à jour du profil";
-      toast.error(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      set({ isUpdatingProfile: false });
+      toast.error(error.response.data.message);
     }
   },
-
-  // Méthodes utilitaires
-  isAuthenticated: () => {
-    return get().authUser !== null;
-  },
-
-  isAccountVerified: () => {
-    const authUser = get().authUser;
-    return authUser && authUser.verifie;
-  },
-
-  getUserRole: () => {
-    const authUser = get().authUser;
-    return authUser ? authUser.role : null;
-  },
-
-  isConducteur: () => {
-    const authUser = get().authUser;
-    return authUser && authUser.role === "conducteur";
-  },
-
-  isPassager: () => {
-    const authUser = get().authUser;
-    return authUser && authUser.role === "passager";
-  },
-
-  // Méthode pour nettoyer l'état d'authentification
-  clearAuth: () => {
-    set({
-      authUser: null,
-      isCheckingAuth: false,
-      isVerifying: false,
-      isResendingOTP: false,
+ connectSocket: () => {
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
+    const socket = io(BASE_URL, {
+      query: {
+        userId: authUser._id,
+      },
     });
+    socket.connect();
+    set({ socket: socket });
+    
+    socket.on("getOnlineUsers", (userIds) =>{
+      set({onlineUsers: userIds})
+
+
+    })
   },
+  disconnectSocket: () => {
+    if (get().socket?.connected) get().socket.disconnect();
+  },
+  
 }));
