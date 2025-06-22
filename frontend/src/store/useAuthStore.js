@@ -3,9 +3,10 @@ import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = import.meta.env.MODE ==="development" ?"http://localhost:5001" :"/";
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
-export const useAuthStore = create((set) => ({
+export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -23,7 +24,6 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data, isCheckingAuth: false });
       get().connectSocket();
-
     } catch (error) {
       console.log("Error in checkAuth:", error);
       set({ authUser: null, isCheckingAuth: false });
@@ -40,9 +40,9 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.post("/auth/register", data);
 
       toast.success("Inscription réussie ! Un code OTP vous a été envoyé.");
-      return { success: true, data: res.data };
       get().connectSocket();
 
+      return { success: true, data: res.data };
     } catch (error) {
       console.error("Erreur lors de l'inscription:", error);
       const errorMessage =
@@ -70,7 +70,7 @@ export const useAuthStore = create((set) => ({
           authRes.data.role === "conducteur" ? "conducteur" : "passager";
         toast.success(`Bienvenue ${roleMessage} !`);
       }
- get().connectSocket();
+      get().connectSocket();
       return { success: true, data: authRes.data };
     } catch (error) {
       console.error("Erreur lors de la connexion:", error);
@@ -161,14 +161,14 @@ export const useAuthStore = create((set) => ({
       set({ authUser: res.data.user });
 
       toast.success("Profil mis à jour avec succès !");
-      return { success: true, data: res.data.user };
       get().disconnectSocket();
 
+      return { success: true, data: res.data.user };
     } catch (error) {
       toast.error(error.response.data.message);
     }
   },
- connectSocket: () => {
+  connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
     const socket = io(BASE_URL, {
@@ -178,15 +178,12 @@ export const useAuthStore = create((set) => ({
     });
     socket.connect();
     set({ socket: socket });
-    
-    socket.on("getOnlineUsers", (userIds) =>{
-      set({onlineUsers: userIds})
 
-
-    })
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
   },
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
-  
 }));
