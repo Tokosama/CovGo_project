@@ -374,6 +374,7 @@ export default function Home() {
         <Details
           trip={selectedTrip}
           onBack={handleBackFromDetails}
+          onContactClick={handleContactClick}
         />
       )}
 

@@ -10,6 +10,7 @@ import trajetRoutes from "./routes/trajet.route.js";
 import reservationRoutes from "./routes/reservation.route.js";
 import messageRoutes from "./routes/message.route.js";
 import evaluationRoutes from "./routes/evaluation.route.js";
+import notificationRoutes from "./routes/notification.route.js";
 
 import { connectDB } from "./lib/db.js";
 import session from "express-session";
@@ -44,6 +45,8 @@ app.use("/api/trajet", trajetRoutes);
 app.use("/api/reservation", reservationRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/evaluation", evaluationRoutes);
+app.use("/api/notifications", notificationRoutes);
+
 
 server.listen(PORT, "0.0.0.0", () => {
   console.log("server is running on port:" + PORT);

@@ -150,6 +150,30 @@ export const annulerReservationService = async (reservationId, userId) => {
   reservation.status = "annulee";
   await reservation.save();
 
+  // Récupérer le trajet pour connaître le conducteur
+  const trajet = await Trajet.findById(reservation.trajet_id);
+  if (!trajet) {
+    throw new Error("Trajet associé introuvable.");
+  }
+
+  // Récupérer le nom du passager (optionnel, pour enrichir le message)
+  const passager = await User.findById(userId);
+
+  const contenuNotif = `Le passager ${
+    passager ? `${passager.prenom} ${passager.nom}` : "non passager"
+  } a annulé sa réservation pour le trajet de ${trajet.depart} à ${
+    trajet.destination
+  }.`;
+
+  const notif = new Notification({
+    user_id: trajet.conducteur_id, // destinataire : conducteur
+    type: "reservation_annulee",
+    contenue: contenuNotif,
+    vue: false,
+  });
+
+  await notif.save();
+
   return reservation;
 };
 
@@ -174,6 +198,22 @@ export const confirmerReservationService = async (
 
   reservation.status = "confirme";
   await reservation.save();
+
+  // Récupérer le trajet pour savoir à quel conducteur envoyer la notif
+  const trajet = await Trajet.findById(reservation.trajet_id);
+  if (!trajet) {
+    throw new Error("Trajet associé introuvable.");
+  }
+
+  // Créer la notification pour le conducteur
+  const notif = new Notification({
+    user_id: trajet.conducteur_id, // destinataire = conducteur
+    type: "reservation_confirmee",
+    contenue: `Le passager a confirmé la réservation pour le trajet de ${trajet.depart} à ${trajet.destination}.`,
+    vue: false,
+  });
+
+  await notif.save();
 
   return reservation;
 };
