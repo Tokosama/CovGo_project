@@ -42,7 +42,7 @@ console.log(selectedUser)
 
         {/* Close button */}
         <button onClick={() => setSelectedUser(null)}>
-          <X />
+          <X/>
         </button>
       </div>
     </div>
