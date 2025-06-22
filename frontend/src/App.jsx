@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Welcome from "./pages/Welcome";
 import About from "./pages/About";
@@ -13,72 +14,156 @@ import Trips from "./pages/Trips";
 import Notifs from "./pages/Notifs";
 import Messages from "./pages/Messages";
 import Profil from "./pages/Profil";
-import PublierTrajet from './pages/PublierTrajet';
+import PublierTrajet from "./pages/PublierTrajet";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
-                                                                                                                                                                                                                                                                                                                 
+const ProtectedRoute = ({ children, requiredRole = null }) => {
+  const { authUser } = useAuthStore();
+  const location = useLocation();
+
+  if (!authUser) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (authUser.verifie === false && location.pathname !== "/profil") {
+    toast.error("Veuillez vérifier votre profil avant de continuer.");
+    return <Navigate to="/profil" replace />;
+  }
+
+  if (requiredRole && authUser.role !== requiredRole) {
+    return <Navigate to="/home" replace />;
+  }
+
+  return children;
+};
+
+const PublicRoute = ({ children }) => {
+  const { authUser } = useAuthStore();
+
+  if (authUser) {
+    if (authUser.verifie === false) {
+      return <Navigate to="/profil" replace />;
+    }
+    return <Navigate to="/home" replace />;
+  }
+
+  return children;
+};
+
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  if (isCheckingAuth && !authUser)
+  if (isCheckingAuth) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader className="size-10 animate-spin" />
+        <span className="ml-2 text-gray-600">
+          Vérification de la connexion...
+        </span>
       </div>
     );
-  console.log(authUser);
+  }
 
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={<Welcome />}
-        />
-        <Route
-          path="/about"
-          element={<About />}
-        />
+        <Route path="/" element={<Welcome />} />
+        <Route path="/about" element={<About />} />
         <Route
           path="/register"
-          element={<Register />}
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
         />
         <Route
           path="/login"
-          element={<Login />}
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
         />
+
         <Route
           path="/home"
-          element={authUser ? <Home /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute>
+              {authUser && authUser.role === "conducteur" ? (
+                <Navigate to="/publier" replace />
+              ) : (
+                <Home />
+              )}
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/trips"
-          element={<Trips />}
+          element={
+            <ProtectedRoute>
+              <Trips />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/notifs"
-          element={<Notifs />}
+          element={
+            <ProtectedRoute>
+              <Notifs />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/messages"
-          element={<Messages />}
+          element={
+            <ProtectedRoute>
+              <Messages />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/profil"
-          element={<Profil />}
+          element={
+            <ProtectedRoute>
+              <Profil />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/publier"
-          element={<PublierTrajet />}
+          element={
+            <ProtectedRoute requiredRole="conducteur">
+              <PublierTrajet />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to={
+                authUser
+                  ? authUser.verifie === true
+                    ? "/home"
+                    : authUser.verifie === false
+                    ? "/profil"
+                    : "/home"
+                  : "/"
+              }
+              replace
+            />
+          }
         />
       </Routes>
-     <Toaster/>
+      <Toaster />
     </Router>
   );
 }
