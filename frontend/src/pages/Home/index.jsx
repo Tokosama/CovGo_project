@@ -10,6 +10,7 @@ import ListTrips from "../../components/List-Trips";
 import Details from "../../components/Details";
 import { useNavigate } from "react-router-dom";
 import { useTrajetStore } from "../../store/useTrajetStore"; // Ajuste le chemin
+import { useChatStore } from "../../store/useChatStore";
 
 export default function Home() {
   const [showListTrips, setShowListTrips] = useState(false);
@@ -29,7 +30,10 @@ export default function Home() {
 
   // Zustand store
   const { searchTrajets, trajets, isSearching, error } = useTrajetStore();
+  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
+    useChatStore();
 
+  console.log(selectedUser);
   const validateForm = () => {
     const newErrors = {};
     // if (!formData.depart) {
@@ -122,6 +126,10 @@ export default function Home() {
 
   const handleBackFromList = () => {
     setShowListTrips(false);
+  };
+  const handleContactClick = (user) => {
+    setSelectedUser(user);
+    navigate("/messages");
   };
   console.log(trajets);
   return (
@@ -358,6 +366,7 @@ export default function Home() {
         <ListTrips
           onBack={handleBackFromList}
           onTripClick={handleTripClick}
+          onContactClick={handleContactClick}
           trajets={trajets}
         />
       )}

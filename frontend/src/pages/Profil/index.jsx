@@ -20,7 +20,7 @@ export default function Profil() {
   const pieceInputRef = useRef(null);
   const [showProfileRecap, setShowProfileRecap] = useState(false);
   const [bio, setBio] = useState(() => localStorage.getItem('bio') || '');
-  const [step, setStep] = useState('piece'); // 'initial', 'vehicule', 'piece', 'recap'
+  const [step, setStep] = useState('vehicule'); // 'initial', 'vehicule', 'piece', 'recap'
   const [errors, setErrors] = useState({});
   const [showTrajets, setShowTrajets] = useState(() => {
     return localStorage.getItem('showTrajets') === 'true';

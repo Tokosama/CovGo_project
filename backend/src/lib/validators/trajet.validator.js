@@ -25,11 +25,9 @@ export const trajetValidation = Joi.object({
 
   preferences: Joi.string().allow(""),
 
-  type_trajet: Joi.string()
-    .valid("ponctuel", "reccurent")
-    .required(),
-
+  type_trajet: Joi.string().valid("ponctuel", "reccurent"),
   status: Joi.string()
     .valid("en cours", "termine", "annulee", "disponible", "complet")
     .default("disponible"),
+    vehicule: Joi.string().allow("")
 });

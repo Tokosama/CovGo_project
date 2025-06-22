@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTrajetStore } from "../store/useTrajetStore";
 
-export default function ListTrips({ onBack, onTripClick }) {
+export default function ListTrips({ onBack, onTripClick, onContactClick }) {
   const { trajets } = useTrajetStore();
 
   return (
@@ -114,7 +114,13 @@ export default function ListTrips({ onBack, onTripClick }) {
                     {trajet.places}
                   </span>
                 </div>
-                <button className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // Empêche la propagation du clic au div parent
+                    if (onContactClick) onContactClick(trajet.conducteur_id);
+                  }}
+                  className="flex items-center shadow-custom justify-center bg-[#3B82F6] rounded-lg px-2 py-1"
+                >
                   Contactez
                 </button>
               </div>

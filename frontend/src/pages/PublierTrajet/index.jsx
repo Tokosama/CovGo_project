@@ -7,19 +7,19 @@ import {
   faCarSide,
   faClock,
   faMoneyBill,
-  faChevronDown,
   faList,
 } from "@fortawesome/free-solid-svg-icons";
 import Nav from "../../components/Nav";
 import { useNavigate } from "react-router-dom";
+import { useTrajetStore } from "../../store/useTrajetStore";
 
 export default function PublierTrajet() {
   const [form, setForm] = useState({
     ville: "",
     depart: "",
     destination: "",
-    date: "",
-    heure: "",
+    date_depart: "",
+    heure_depart: "",
     places: "",
     prix: "",
     preferences: "",
@@ -41,8 +41,10 @@ export default function PublierTrajet() {
     if (form.depart === form.destination)
       newErrors.destination =
         "La destination doit être différente du point de départ";
-    if (!form.date) newErrors.date = "La date du trajet est requise";
-    if (!form.heure) newErrors.heure = "L'heure du trajet est requise";
+    if (!form.date_depart)
+      newErrors.date_depart = "La date_depart du trajet est requise";
+    if (!form.heure_depart)
+      newErrors.heure_depart = "L'heure_depart du trajet est requise";
     if (
       !form.places ||
       isNaN(form.places) ||
@@ -63,6 +65,7 @@ export default function PublierTrajet() {
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+  const createTrajet = useTrajetStore((state) => state.createTrajet);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,11 +73,14 @@ export default function PublierTrajet() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      setTimeout(() => {
+      try {
+        await createTrajet(form);
+        navigate("/trips"); // redirection
+      } catch (err) {
+        console.error(err.message);
+      } finally {
         setIsLoading(false);
-        alert("Trajet publié !");
-        navigate("/trips");
-      }, 1500);
+      }
     }
   };
 
@@ -107,8 +113,9 @@ export default function PublierTrajet() {
               value={form.ville}
               onChange={handleChange}
               placeholder="Ville du trajet"
-              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
             />
           </div>
           {errors.ville && (
@@ -127,8 +134,10 @@ export default function PublierTrajet() {
               value={form.depart}
               onChange={handleChange}
               placeholder="Point de depart"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
           {errors.depart && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -146,8 +155,10 @@ export default function PublierTrajet() {
               value={form.destination}
               onChange={handleChange}
               placeholder="Destination"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
           {errors.destination && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -161,17 +172,20 @@ export default function PublierTrajet() {
               className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
-              name="date"
-              value={form.date}
+              name="date_depart"
+               type="date"
+              value={form.date_depart}
               onChange={handleChange}
+              
               placeholder="Date du trajet"
-              type="date"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
-          {errors.date && (
+          {errors.date_depart && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
-              {errors.date}
+              {errors.date_depart}
             </p>
           )}
           {/* Heure */}
@@ -181,17 +195,19 @@ export default function PublierTrajet() {
               className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <input
-              name="heure"
-              value={form.heure}
+              name="heure_depart"
+              value={form.heure_depart}
               onChange={handleChange}
               placeholder="Heure du trajet"
               type="time"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
-          {errors.heure && (
+          {errors.heure_depart && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
-              {errors.heure}
+              {errors.heure_depart}
             </p>
           )}
           {/* Nombre de places */}
@@ -208,8 +224,10 @@ export default function PublierTrajet() {
               type="number"
               min="1"
               max="10"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
           {errors.places && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -229,8 +247,10 @@ export default function PublierTrajet() {
               placeholder="Prix par place"
               type="number"
               min="0"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
           {errors.prix && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -248,8 +268,10 @@ export default function PublierTrajet() {
               value={form.preferences}
               onChange={handleChange}
               placeholder="Renseignez vos preferences"
-   className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            />
+              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            />
           </div>
           {errors.preferences && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
@@ -266,8 +288,10 @@ export default function PublierTrajet() {
               name="vehicule"
               value={form.vehicule}
               onChange={handleChange}
-   className={`flex-1 bg-transparent outline-none shadow-custom custom text-[20px] text-black placeholder:text-gray-400 ${errors.destination ? "border-red-500" : ""
-                  }`}            >
+              className={`flex-1 bg-transparent outline-none shadow-custom custom text-[20px] text-black placeholder:text-gray-400 ${
+                errors.destination ? "border-red-500" : ""
+              }`}
+            >
               <option value="">Selectionner le véhicule</option>
               <option value="Toyota">Toyota</option>
               <option value="Peugeot">Peugeot</option>
@@ -282,8 +306,10 @@ export default function PublierTrajet() {
           <button
             type="submit"
             disabled={isLoading}
-className={`w-full bg-[#3B82F6]  text-white text-[24px] mt-9 rounded-2xl py-2 mb-2 shadow-custom  hover:bg-[#3B82F6]/80 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}          >
+            className={`w-full bg-[#3B82F6]  text-white text-[24px] mt-9 rounded-2xl py-2 mb-2 shadow-custom  hover:bg-[#3B82F6]/80 transition ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
             {isLoading ? "Publication en cours..." : "Publier le trajet"}
           </button>
         </form>

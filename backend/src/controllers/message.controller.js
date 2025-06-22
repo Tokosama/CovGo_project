@@ -1,13 +1,35 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js";
-//import { getReceiverSocketId, io } from "../lib/socket.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
+
 
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
+
+    // Trouver tous les userIds avec qui il y a au moins un message échangé
+    const messages = await Message.find({
+      $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }],
+    }).select("senderId receiverId");
+
+    // Extraire les ids uniques des utilisateurs en conversation avec loggedInUserId
+    const userIdsSet = new Set();
+
+    messages.forEach((msg) => {
+      if (msg.senderId.toString() !== loggedInUserId.toString()) {
+        userIdsSet.add(msg.senderId.toString());
+      }
+      if (msg.receiverId.toString() !== loggedInUserId.toString()) {
+        userIdsSet.add(msg.receiverId.toString());
+      }
+    });
+
+    const userIds = Array.from(userIdsSet);
+
+    // Récupérer les utilisateurs correspondants
     const filteredUsers = await User.find({
-      _id: { $ne: loggedInUserId },
+      _id: { $in: userIds },
     }).select("-password");
 
     res.status(200).json(filteredUsers);
@@ -52,11 +74,11 @@ export const sendMessage = async (req, res) => {
     });
 
     await newMessage.save();
-    //const receiverSocketId = getReceiverSocketId(receiverId);
+    const receiverSocketId = getReceiverSocketId(receiverId);
 
-    // if (receiverSocketId) {
-    //   io.to(receiverSocketId).emit("newMessage", newMessage);
-    // }
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {

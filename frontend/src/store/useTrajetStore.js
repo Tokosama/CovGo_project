@@ -66,20 +66,17 @@ export const useTrajetStore = create((set) => ({
       );
     }
   },
-
-  createReservation: async ({ trajet_id, places }) => {
-  try {
-    const res = await axiosInstance.post("/reservation/create", {
-      trajet_id,
-      places,
-    });
-    toast.success(res.data.message || "Réservation envoyée !");
-    return res.data;
-  } catch (err) {
-    const msg = err.response?.data?.message || "Erreur lors de la réservation";
-    toast.error(msg);
-    throw new Error(msg);
-  }
-},
-
+  createTrajet: async (data) => {
+    try {
+      const res = await axiosInstance.post("/trajet/create", data);
+      toast.success(res.data.message || "Trajet publié avec succès !");
+      return res.data;
+    } catch (err) {
+      const message =
+        err.response?.data?.message ||
+        "Erreur lors de la publication du trajet";
+      toast.error(message);
+      throw new Error(message);
+    }
+  },
 }));

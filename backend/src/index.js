@@ -42,7 +42,7 @@ app.use("/api/justificatif", justificatifRoutes);
 app.use("/api/vehicule", vehiculeRoutes);
 app.use("/api/trajet", trajetRoutes);
 app.use("/api/reservation", reservationRoutes);
-app.use("/api/message", messageRoutes);
+app.use("/api/messages", messageRoutes);
 app.use("/api/evaluation", evaluationRoutes);
 
 server.listen(PORT, "0.0.0.0", () => {
