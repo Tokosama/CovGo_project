@@ -1,5 +1,6 @@
 // services/admin.service.js
 import Justificatif from "../models/justificatif.model.js";
+import Notification from "../models/notification.model.js";
 import User from "../models/user.model.js";
 
 export const getUnverifiedUsersService = async () => {
@@ -27,5 +28,10 @@ export const verifyUserService = async (userId) => {
   user.verifie = true;
   await user.save();
 
+  await Notification.create({
+    user_id: user._id,
+    type: "compte_verifie",
+    contenue: `Félicitations ${user.prenom} ! Votre compte a été vérifié avec succès. Vous pouvez maintenant accéder à toutes les fonctionnalités de notre plateforme.`,
+  });
   return user;
 };

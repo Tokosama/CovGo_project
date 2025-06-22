@@ -97,14 +97,7 @@ export const verifyOTPCode = async (otp, session, res) => {
 
   generateToken(user._id, res);
 
-  return {
-    _id: user._id,
-    nom: user.nom,
-    prenom: user.prenom,
-    email: user.email,
-    telephone: user.telephone,
-    role: user.role,
-  };
+  return user
 };
 
 export const resendOTPCode = async (session) => {

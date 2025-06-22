@@ -83,7 +83,7 @@ const Header = memo(({ nom, age, tel, onBack, avatar }) => {
           whileTap={{ scale: 0.85 }}
           whileHover={{ x: -4 }}
           onClick={logout}
-          className="p-1 rounded-full focus:outline-none text-black"
+          className="py-2 px-3 rounded-xl shadow-custom focus:outline-none bg-[#8957E5] white "
         >
           Logout
         </motion.button>

@@ -8,6 +8,11 @@ import { useNotificationStore } from "../../store/useNotificationStore";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 // Dictionnaire de titres et de couleurs selon le type de notification
 const NOTIF_META = {
+    compte_verifie: {
+    title: "Compte vérifié",
+    color: "border-green-500 bg-green-50 text-green-700",
+  },
+
   reservation_confirmee: {
     title: "Réservation confirmée",
     color: " shadow-lg bg-green-100 text-green-800 border-green-400",
