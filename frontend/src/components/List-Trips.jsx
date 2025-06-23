@@ -50,9 +50,14 @@ export default function ListTrips({ onBack, onTripClick, onContactClick }) {
               {/* Header */}
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
-                  <FontAwesomeIcon
-                    icon={faUserCircle}
-                    className="text-[28px] text-black"
+                  <img
+                    src={
+                      trajet?.conducteur_id?.photo
+                        ? trajet.conducteur_id.photo
+                        : "/avatar.png"
+                    }
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full object-cover border border-gray-300"
                   />
                   <span className="font-bold text-[15px] text-black">
                     {trajet.conducteur_id?.prenom} {trajet.conducteur_id?.nom}

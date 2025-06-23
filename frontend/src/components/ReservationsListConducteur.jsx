@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTrajetStore } from "../store/useTrajetStore";
 import { useEffect } from "react";
+import { Loader } from "lucide-react";
 
 export default function ReservationsListConducteur({ onContactClick }) {
   const {
@@ -50,9 +51,12 @@ export default function ReservationsListConducteur({ onContactClick }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faUserCircle}
-              className="text-[28px] text-black"
+            <img
+              src={
+                passager_id?.photo ? passager_id.photo : "/avatar.png" // image par défaut dans le dossier public
+              }
+              alt="avatar"
+              className="w-8 h-8 rounded-full object-cover border border-gray-300"
             />
             <span className="text-[16px] text-black">
               {passager_id?.prenom} {passager_id?.nom}

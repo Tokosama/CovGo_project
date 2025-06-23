@@ -1,5 +1,6 @@
 import { vehiculeValidator } from "../lib/validators/vehicule.validator.js";
 import { createVehiculeService } from "../services/vehicule.service.js";
+import Vehicule from "../models/vehicule.model.js";
 
 export const createVehicule = async (req, res, next) => {
   try {
@@ -15,7 +16,21 @@ export const createVehicule = async (req, res, next) => {
 
     const vehicule = await createVehiculeService(vehiculeData);
 
-    res.status(201).json({ message: "Véhicule ajouté avec succès", data: vehicule });
+    res
+      .status(201)
+      .json({ message: "Véhicule ajouté avec succès", data: vehicule });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getVehiculesByUser = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+
+    const vehicules = await Vehicule.find({ user_id: userId });
+
+    res.status(200).json({ data: vehicules });
   } catch (err) {
     next(err);
   }

@@ -1,25 +1,36 @@
-import React, { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-  faStar,
-  faMapMarkerAlt,
-  faCarSide,
-  faUserFriends,
-  faCalendarAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { useUpcomingTrajetsStore } from "../store/useUpcomingTrajetsStore";
+import React, { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
+import { useUpcomingTrajetsStore } from "../store/useUpcomingTrajetsStore";
+import DetailsTrajetConducteur from "./DetailsTrajetConducteur"; // <-- importe ta page
+import toast from "react-hot-toast";
+import { faCalendarAlt, faCarSide, faMapMarkerAlt, faStar, faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function TrajetsAVenir({ onBack }) {
   const { trajets, fetchUpcomingTrajets, isLoading } =
     useUpcomingTrajetsStore();
+  const [selectedTrajet, setSelectedTrajet] = useState(null);
 
   useEffect(() => {
     fetchUpcomingTrajets();
-  }, []);
+  }, [fetchUpcomingTrajets]);
 
-  console.log(trajets)
+  // Reviens à la liste
+  const handleBackFromDetails = () => {
+    setSelectedTrajet(null);
+    fetchUpcomingTrajets(); // Recharge la liste au retour
+  };
+
+  // Si un trajet est sélectionné, on affiche la page de détails :
+  if (selectedTrajet) {
+    return (
+      <DetailsTrajetConducteur
+        trajet={selectedTrajet}
+        onBack={handleBackFromDetails}
+      />
+    );
+  }
+
   return (
     <div className="w-full flex flex-col items-center mt-6">
       <button
@@ -36,20 +47,26 @@ export default function TrajetsAVenir({ onBack }) {
       </h2>
 
       {isLoading ? (
-       <Loader className="size-10 text-[#3B82F6] animate-spin" />
+        <Loader className="size-10 text-[#3B82F6] animate-spin" />
       ) : trajets.length === 0 ? (
         <p className="text-gray-400">Aucun trajet à venir.</p>
-      ) : Array.isArray(trajets) && trajets.length > 0 ? (
+      ) : (
         trajets.map((trajet) => (
           <div
             key={trajet._id}
-            className="bg-[#B2EBF2] border border-gray-400 rounded-xl shadow px-3 py-2 mb-4 w-full max-w-[370px]"
+            className="bg-[#B2EBF2] border border-gray-400 rounded-xl shadow px-3 py-2 mb-4 w-full max-w-[370px] cursor-pointer transition hover:scale-[1.01]"
+            onClick={() => setSelectedTrajet(trajet)} // <-- garde le design, ajoute navigation
           >
             <div className="flex items-center justify-between mb-1">
-              <div className="flex items-center gap-2">
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  className="text-[28px] text-black"
+              <div className="flex items-center gap-2 ">
+                <img
+                  src={
+                    trajet.conducteur_id?.photo
+                      ? trajet.conducteur_id.photo
+                      : "/avatar.png"
+                  }
+                  alt="conducteur"
+                  className="w-8 h-8 rounded-full shadow object-cover"
                 />
                 <span className="font-bold text-[15px] text-black">Moi</span>
                 <span className="flex gap-1 ml-1">
@@ -121,8 +138,6 @@ export default function TrajetsAVenir({ onBack }) {
             </div>
           </div>
         ))
-      ) : (
-        <p className="text-gray-400">Aucun trajet à venir.</p>
       )}
     </div>
   );

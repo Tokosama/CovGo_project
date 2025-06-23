@@ -16,7 +16,13 @@ export default function Messages() {
   }, [getUsers]);
 
   const filteredUsers = users;
-
+  useEffect(() => {
+    if (filteredUsers.length > 0) {
+      setIsMessages(true);
+    } else {
+      setIsMessages(false);
+    }
+  }, [filteredUsers]);
   return (
     <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto">
       {/* Si un utilisateur est sélectionné, on affiche ChatContainer */}
@@ -29,7 +35,7 @@ export default function Messages() {
               Messages
             </h1>
           </div>
-          {isMessages ? (
+          {!isMessages ? (
             <div className="flex flex-col items-center justify-center mt-10 text-gray-400 text-[16px]">
               Aucun message pour le moment.
             </div>
@@ -61,8 +67,6 @@ export default function Messages() {
                     </div>
                   </button>
                 ))}
-
-            
               </div>
             </div>
           )}

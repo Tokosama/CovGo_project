@@ -16,7 +16,7 @@ export default function TrajetsAVEnirPassager({ onBack }) {
     useUpcomingTrajetsStore();
 
   useEffect(() => {
-  fetchReservedUpcoming(); // au lieu de fetchUpcomingTrajets()
+    fetchReservedUpcoming(); // au lieu de fetchUpcomingTrajets()
   }, []);
 
   console.log(trajets);
@@ -36,7 +36,8 @@ export default function TrajetsAVEnirPassager({ onBack }) {
       </h2>
 
       {isLoading ? (
-<Loader className="size-10 text-[#3B82F6] animate-spin" />      ) : trajets.length === 0 ? (
+        <Loader className="size-10 text-[#3B82F6] animate-spin" />
+      ) : trajets.length === 0 ? (
         <p className="text-gray-400">Aucun trajet à venir.</p>
       ) : Array.isArray(trajets) && trajets.length > 0 ? (
         trajets.map((trajet) => (
@@ -46,11 +47,20 @@ export default function TrajetsAVEnirPassager({ onBack }) {
           >
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon
-                  icon={faUserCircle}
-                  className="text-[28px] text-black"
-                />
-                <span className="font-bold text-[15px] text-black">Moi</span>
+                <div className="flex items-center gap-2">
+                  <img
+                    src={
+                      trajet.conducteur_id?.photo
+                        ? trajet.conducteur_id.photo
+                        : "/avatar.png"
+                    }
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full object-cover border border-gray-300"
+                  />
+                  <span className="font-bold text-[15px] text-black">
+                    {trajet.conducteur_id?.prenom} {trajet.conducteur_id?.nom}
+                  </span>
+                </div>
                 <span className="flex gap-1 ml-1">
                   {[...Array(5)].map((_, i) => (
                     <FontAwesomeIcon

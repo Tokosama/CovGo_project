@@ -2,11 +2,13 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
-export const useTrajetStore = create((set,get) => ({
+export const useTrajetStore = create((set, get) => ({
   trajets: [],
   isSearching: false,
   error: null,
   isGetting: false,
+  reservationsByTrajet: [],
+  isLoadingReservationsByTrajet: false,
   allReservationForDriver: [],
   statusChangeTrigger: 0,
   searchTrajets: async (filters) => {
@@ -89,8 +91,7 @@ export const useTrajetStore = create((set,get) => ({
       );
       console.log(res);
       set({ allReservationForPassenger: res.data.data });
-    //  toast.success(res.data.message || "Vous avez bien annuler la reservation");
-
+      //  toast.success(res.data.message || "Vous avez bien annuler la reservation");
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -108,7 +109,6 @@ export const useTrajetStore = create((set,get) => ({
       // Tu peux déclencher un rafraîchissement ici
       await get().getAllPassengerReservations();
       toast.success("Vous avez bien annuler la reservation");
-
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Erreur lors de l'annulation"
@@ -124,7 +124,6 @@ export const useTrajetStore = create((set,get) => ({
       await axiosInstance.put(`/reservation/${reservationId}/confirmer`);
       await get().getAllPassengerReservations();
       toast.success("Votre réservation à bien été confirmé");
-
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Erreur lors de la confirmation"
@@ -144,6 +143,70 @@ export const useTrajetStore = create((set,get) => ({
         "Erreur lors de la publication du trajet";
       toast.error(message);
       throw new Error(message);
+    }
+  },
+
+  demarrerTrajet: async (trajetId) => {
+    try {
+      const res = await axiosInstance.put(`/trajet/${trajetId}/demarrer`);
+      // mise à jour local : met à jour le status dans la liste
+      set((state) => ({
+        trajets: state.trajets.map((t) =>
+          t._id === trajetId ? { ...t, status: "en cours" } : t
+        ),
+      }));
+      return res.data;
+    } catch (error) {
+      console.error("Erreur démarrage trajet:", error.response?.data || error);
+      throw error;
+    }
+  },
+
+  annulerTrajet: async (trajetId) => {
+    try {
+      const res = await axiosInstance.put(`/trajet/${trajetId}/annuler`);
+      set((state) => ({
+        trajets: state.trajets.map((t) =>
+          t._id === trajetId ? { ...t, status: "annulee" } : t
+        ),
+      }));
+      return res.data;
+    } catch (error) {
+      console.error("Erreur annulation trajet:", error.response?.data || error);
+      throw error;
+    }
+  },
+
+  terminerTrajet: async (trajetId) => {
+    try {
+      const res = await axiosInstance.put(`/trajet/${trajetId}/terminer`);
+      set((state) => ({
+        trajets: state.trajets.map((t) =>
+          t._id === trajetId ? { ...t, status: "termine" } : t
+        ),
+      }));
+      return res.data;
+    } catch (error) {
+      console.error("Erreur fin trajet:", error.response?.data || error);
+      throw error;
+    }
+  },
+
+  getReservationsByTrajet: async (trajetId) => {
+    set({ isLoadingReservationsByTrajet: true });
+    try {
+      const res = await axiosInstance.get(
+        `/trajet/${trajetId}/reservations`
+      );
+
+      set({ reservationsByTrajet: res.data });
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        "Erreur lors du chargement des réservations du trajet";
+      toast.error(message);
+    } finally {
+      set({ isLoadingReservationsByTrajet: false });
     }
   },
 }));

@@ -223,15 +223,20 @@ export const confirmerReservationService = async (
 export const getMyReservationsService = async (userId) => {
   return await Reservation.find({
     passager_id: userId,
-    status: { $in: ["en attente", "accepte"] }, // filtre les statuts
+    status: { $in: ["en attente", "accepte"] },
   })
     .populate({
       path: "trajet_id",
       populate: {
-        path: "conducteur_id", // Peuplement du conducteur à l'intérieur du trajet
+        path: "conducteur_id",
         model: "User",
-        select: "prenom nom email _id", // Ajoute les champs que tu veux utiliser
+        select: "prenom nom email _id", // facultatif pour conducteur
       },
+    })
+    .populate({
+      path: "passager_id",
+      model: "User",
+      select: "prenom nom photo _id", // ✅ Ajoute photo ici
     })
     .sort({ createdAt: -1 });
 };
@@ -248,7 +253,10 @@ export const getReservationsForConducteur = async (conducteurId) => {
   const trajets = await Trajet.find({
     conducteur_id: conducteurId,
     status: "disponible",
-  }).select("_id");
+  })
+    .select("_id")
+    .populate("conducteur_id", "nom prenom photo") // ajoute photo et autres infos si besoin
+    .sort({ createdAt: -1 });
 
   const trajetIds = trajets.map((t) => t._id);
 

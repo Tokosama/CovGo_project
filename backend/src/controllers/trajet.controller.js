@@ -67,16 +67,21 @@ export const getMyUpcomingTrajets = async (req, res) => {
   }
 };
 
-export const getMyReservedUpcoming= async (req, res) => {
+export const getMyReservedUpcoming = async (req, res) => {
   try {
     const userId = req.user.id;
 
     const reservations = await Reservation.find({
       passager_id: userId,
       status: { $in: ["accepte", "confirme"] },
-    }).populate("trajet_id");
+    }).populate({
+      path: "trajet_id",
+      populate: {
+        path: "conducteur_id", // ceci popule les données du conducteur dans le trajet
+        select: "prenom nom photo",
+      },
+    });
 
-    console.log(reservations)
     const trajets = reservations
       .map((r) => r.trajet_id)
       .filter((trajet) => trajet !== null);

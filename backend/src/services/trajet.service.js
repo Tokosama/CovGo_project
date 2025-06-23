@@ -23,7 +23,9 @@ export const getUpcomingTrajetsByUserId = async (userId) => {
     conducteur_id: userId,
     date_depart: { $gte: maintenant },
     status: { $in: ["disponible", "en cours", "complet"] },
-  }).sort({ date_depart: 1 }); // facultatif : trie par date proche
+  })
+    .populate("conducteur_id", "nom prenom photo") // on récupère aussi les infos du conducteur
+    .sort({ date_depart: 1 });
 };
 
 export const getTrajetByIdService = async (trajetId) => {
@@ -113,10 +115,17 @@ export const demarrerTrajetService = async (trajetId, userId) => {
   }
 
   const now = new Date();
-  const dateTrajet = new Date(trajet.date_depart);
 
-  if (now < dateTrajet) {
-    throw new Error("Le trajet ne peut pas encore être démarré");
+  const [hours, minutes] = trajet.heure_depart.split(":").map(Number);
+  const dateHeureDepart = new Date(trajet.date_depart);
+  dateHeureDepart.setHours(hours, minutes, 0, 0);
+
+  const dateAutorisee = new Date(dateHeureDepart.getTime() - 10 * 60 * 1000);
+
+  if (now < dateAutorisee) {
+    throw new Error(
+      "Le trajet ne peut être démarré qu'à partir de  10 minutes avant l'heure prévue."
+    );
   }
 
   trajet.status = "en cours";
@@ -187,22 +196,21 @@ export const terminerTrajetService = async (trajetId, userId) => {
 
   return trajet;
 };
-
 export const getReservationsByTrajetService = async (trajetId, userId) => {
-  // Vérifier que le trajet existe
   const trajet = await Trajet.findById(trajetId);
   if (!trajet) {
     throw new Error("Trajet introuvable");
   }
 
-  // Vérifier que l'utilisateur connecté est le conducteur
   if (trajet.conducteur_id.toString() !== userId.toString()) {
     throw new Error("Accès non autorisé aux réservations de ce trajet");
   }
 
-  // Récupérer les réservations liées à ce trajet
-  const reservations = await Reservation.find({ trajet_id: trajetId })
-    .populate("passager_id", "nom email telephone") // limiter les champs
+  const reservations = await Reservation.find({
+    trajet_id: trajetId,
+    status: { $in: ["accepte", "confirme"] },
+  })
+    .populate("passager_id", "nom email telephone photo") // ajoute photo si nécessaire
     .sort({ createdAt: -1 });
 
   return reservations;

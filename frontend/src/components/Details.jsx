@@ -134,10 +134,15 @@ export default function Details({ onBack, trip, onContactClick }) {
       {/* Profil Conducteur */}
       <div className="bg-[#ADE8F4] mt-4 px-4 py-4 border-b shadow-custom border-gray-300">
         <div className="flex items-center gap-2 mb-1">
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            className="text-[38px] text-black"
-          />
+        <img
+  src={
+    trip?.conducteur_id?.photo
+      ? trip.conducteur_id.photo
+      : "/avatar.png"
+  }
+  alt="avatar"
+  className="w-8 h-8 rounded-full object-cover border border-gray-300"
+/>
           <div className="flex flex-col flex-1">
             <div className="flex items-center gap-2">
               <span className="font-bold text-[16px] text-black">

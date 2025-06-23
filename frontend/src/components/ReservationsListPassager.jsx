@@ -53,11 +53,19 @@ export default function ReservationsListPassager({ onContactClick }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-2">
-            <FontAwesomeIcon
-              icon={faUserCircle}
-              className="text-[28px] text-black"
+            <img
+              src={
+                reservation?.passager_id?.photo
+                  ? reservation.passager_id.photo
+                  : "/avatar.png"
+              }
+              alt="avatar"
+              className="w-8 h-8 rounded-full object-cover border border-gray-300"
             />
-            <span className="text-[16px] text-black">Vous</span>
+
+            <span className="font-bold text-[15px] text-black">
+              {reservation.passager_id.prenom} {reservation.passager_id.nom}
+            </span>
             <span className="flex items-center gap-1 ml-2">
               <FontAwesomeIcon
                 icon={faUserFriends}
