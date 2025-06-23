@@ -6,6 +6,7 @@ import {
   faUserFriends,
   faCarSide,
   faStar,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -40,7 +41,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] pb-24 font-itim w-full overflow-y-auto">
+<div className="w-full h-full min-h-screen bg-[#F5F5F5] overflow-y-auto font-itim">
       {/* En-tête */}
       <div className="w-full bg-[#00B4D8] shadow-custom flex items-center justify-center px-2 h-[90px] relative">
         <motion.button
@@ -55,7 +56,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack }) {
             className="text-[22px] text-black"
           />
         </motion.button>
-        <h1 className="text-[24px] text-black font-bold">Trajet à venir</h1>
+        <h1 className="text-[24px] text-black font-bold">Details du trajet</h1>
       </div>
 
       {/* Infos trajet */}
@@ -107,21 +108,54 @@ export default function DetailsTrajetConducteur({ trajet, onBack }) {
           reservationsByTrajet.map((r) => (
             <div
               key={r._id}
-              className="flex items-center gap-3 bg-[#ADE8F4] px-3 py-2 rounded-lg mb-2 shadow-custom"
+              className="bg-[#ADE8F4] mt-4 px-4 py-4 border-b shadow-custom border-gray-300 rounded-lg"
             >
-              <img
-                src={r.passager_id?.photo || "/avatar.png"}
-                alt="avatar"
-                className="w-8 h-8 rounded-full object-cover border"
-              />
-              <div className="flex flex-col">
-                <span className="text-black font-bold">
-                  {r.passager_id?.prenom} {r.passager_id?.nom}
-                </span>
-                <span className="text-sm text-gray-700">
-                  Places : {r.places}
-                </span>
+              <div className="flex items-center gap-2 mb-1">
+                <img
+                  src={r.passager_id?.photo || "/avatar.png"}
+                  alt="avatar"
+                  className="w-8 h-8 rounded-full object-cover border border-gray-300"
+                />
+                <div className="flex flex-col flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[16px] text-black">
+                      {r.passager_id?.prenom} {r.passager_id?.nom}
+                    </span>
+                    <span className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <FontAwesomeIcon
+                          key={i}
+                          icon={faStar}
+                          className="text-gray-400 text-xs"
+                        />
+                      ))}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-gray-600">
+                    Téléphone :{" "}
+                    <span className="font-bold">
+                      {r.passager_id?.telephone}
+                    </span>
+                  </span>
+                </div>
+                <FontAwesomeIcon
+                  icon={faChevronRight}
+                  className="text-gray-500 text-base"
+                />
               </div>
+
+              <div className="text-[16px] text-black mb-2">
+                Nombre de places réservées :{" "}
+                <span className="font-bold">{r.places}</span>
+              </div>
+
+              {r.message && (
+                <div className="text-[16px] text-gray-700 mb-2">
+                  <span className="font-bold">Message du passager :</span>
+                  <br />
+                  {r.message}
+                </div>
+              )}
             </div>
           ))
         )}

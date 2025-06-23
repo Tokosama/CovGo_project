@@ -19,6 +19,7 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import DetailsTrajetConducteur from "./components/DetailsTrajetConducteur";
 
 const ProtectedRoute = ({ children, requiredRole = null }) => {
   const { authUser } = useAuthStore();
@@ -148,6 +149,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Trips />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trajets/:trajetId"
+          element={
+            <ProtectedRoute>
+              <DetailsTrajetConducteur />{" "}
             </ProtectedRoute>
           }
         />

@@ -1,5 +1,6 @@
 import { trajetValidation } from "../lib/validators/trajet.validator.js";
 import Reservation from "../models/reservation.model.js";
+import Trajet from "../models/trajet.model.js";
 import {
   annulerTrajetService,
   createTrajetService,
@@ -166,5 +167,41 @@ export const getReservationsByTrajet = async (req, res) => {
     res.status(200).json(reservations);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+
+export const getHistoriqueConducteur = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const trajets = await Trajet.find({
+      conducteur_id: userId,
+      status: { $in: ["termine", "annulee"] },
+    }).sort({ date_depart: -1 });
+    res.status(200).json(trajets);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getHistoriquePassager = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const reservations = await Reservation.find({
+      passager_id: userId,
+      status: "acceptee",
+    }).populate({
+      path: "trajet_id",
+      match: { status: { $in: ["termine", "annulee"] } },
+    });
+
+    // Ne garder que les trajets valides
+    const trajets = reservations
+      .filter((r) => r.trajet_id)
+      .map((r) => r.trajet_id);
+
+    res.status(200).json(trajets);
+  } catch (error) {
+    next(error);
   }
 };

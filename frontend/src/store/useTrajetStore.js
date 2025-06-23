@@ -195,9 +195,7 @@ export const useTrajetStore = create((set, get) => ({
   getReservationsByTrajet: async (trajetId) => {
     set({ isLoadingReservationsByTrajet: true });
     try {
-      const res = await axiosInstance.get(
-        `/trajet/${trajetId}/reservations`
-      );
+      const res = await axiosInstance.get(`/trajet/${trajetId}/reservations`);
 
       set({ reservationsByTrajet: res.data });
     } catch (error) {
@@ -207,6 +205,27 @@ export const useTrajetStore = create((set, get) => ({
       toast.error(message);
     } finally {
       set({ isLoadingReservationsByTrajet: false });
+    }
+  },
+
+  fetchHistoriqueTrajets: async (role) => {
+    set({ isLoadingHistorique: true, errorHistorique: null });
+    try {
+      let url = "";
+      if (role === "conducteur") {
+        url = "/trajet/conducteur/historique";
+      } else {
+        url = "/trajet/passager/historique";
+      }
+      const res = await axiosInstance.get(url);
+      set({ historiqueTrajets: res.data });
+    } catch (error) {
+      set({
+        errorHistorique:
+          error.response?.data?.message || "Erreur chargement historique",
+      });
+    } finally {
+      set({ isLoadingHistorique: false });
     }
   },
 }));

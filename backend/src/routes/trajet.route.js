@@ -4,6 +4,8 @@ import {
   createTrajetController,
   demarrerTrajet,
   getAllTrajets,
+  getHistoriqueConducteur,
+  getHistoriquePassager,
   getMyReservedUpcoming,
   getMyTrajets,
   getMyUpcomingTrajets,
@@ -69,5 +71,7 @@ router.post(
   isPassenger,
   createEvaluationController
 );
+router.get("/conducteur/historique", protectRoute, getHistoriqueConducteur);
+router.get("/passager/historique", protectRoute, getHistoriquePassager);
 
 export default router;
