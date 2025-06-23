@@ -43,7 +43,11 @@ export default function Login() {
 
         console.log("Login result:", result);
         toast.success("Connexion réussie !");
-        navigate("/home");
+
+        if (result.data.role === "conducteur") {
+          return navigate("/publier");
+        }
+        return navigate("/home");
       } catch (error) {
         console.error("Erreur:", error);
         setAlertMessage("Erreur lors de la connexion.");
@@ -142,8 +146,7 @@ export default function Login() {
           <span className="flex items-center justify-center">
             {isLoading ? (
               <>
-                Connexion en cours{" "}
-                <span className="spinner ml-2"></span>
+                Connexion en cours <span className="spinner ml-2"></span>
               </>
             ) : (
               "Se connecter"
