@@ -15,7 +15,7 @@ export default function FormPiece({
   errors = {},
   setErrors = () => {},
   isRequired = false,
-  userRole = "passager", 
+  userRole = "passager",
 }) {
   const { submitJustificatifs } = useProfilStore();
 
@@ -179,7 +179,10 @@ export default function FormPiece({
                   }}
                 >
                   {documentOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
                       {option.label}
                     </option>
                   ))}

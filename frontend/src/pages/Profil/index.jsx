@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../../components/Nav";
 import Header from "../../components/Header";
-import TrajetsAVenir from "../../components/TrajetsAVenir";
 import EditProfile from "../../components/EditProfile";
 import FormPiece from "../../components/FormPiece";
 import VerificationMessage from "../../components/VerificationMessage";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useProfilStore } from "../../store/useProfilStore";
+import TrajetsAVEnirConducteur from "../../components/TrajetsAVenirConducteur";
+import TrajetsAVEnirPassager from "../../components/TrajetsAVenirPassager";
 
 export default function Profil() {
   const [currentView, setCurrentView] = useState("loading");
@@ -27,10 +28,6 @@ export default function Profil() {
 
   useEffect(() => {
     const determineUserState = async () => {
-      if (!authUser || hasCheckedDocuments) {
-        return;
-      }
-
       setHasCheckedDocuments(true);
 
       if (authUser.verifie === true) {
@@ -130,10 +127,13 @@ export default function Profil() {
         tel={authUser?.telephone || "N/A"}
         role={authUser?.role || "Utilisateur"}
       />
-
-      {currentView === "verified" && !showEditProfile && (
-        <TrajetsAVenir onBack={handleEditProfile} />
-      )}
+      {currentView === "verified" &&
+        !showEditProfile &&
+        (authUser.role === "conducteur" ? (
+          <TrajetsAVEnirConducteur onBack={handleEditProfile} />
+        ) : (
+          <TrajetsAVEnirPassager onBack={handleEditProfile} />
+        ))}
 
       {currentView === "verified" && showEditProfile && (
         <div className="p-6">

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 
-export const useTrajetStore = create((set) => ({
+export const useTrajetStore = create((set,get) => ({
   trajets: [],
   isSearching: false,
   error: null,
@@ -79,6 +79,58 @@ export const useTrajetStore = create((set) => ({
         err.response?.data?.message || "Erreur lors de la réservation";
       toast.error(msg);
       throw new Error(msg);
+    }
+  },
+  getAllPassengerReservations: async () => {
+    set({ isGetting: true, error: null });
+    try {
+      const res = await axiosInstance.get(
+        "/reservation/mes-reservations-passager"
+      );
+      console.log(res);
+      set({ allReservationForPassenger: res.data.data });
+    //  toast.success(res.data.message || "Vous avez bien annuler la reservation");
+
+    } catch (error) {
+      const message =
+        error.response?.data?.message ||
+        "Erreur lors de la récupération des réservations";
+      set({ error: message });
+      toast.error(message);
+    } finally {
+      set({ isGetting: false });
+    }
+  },
+  annulerReservation: async (reservationId) => {
+    try {
+      set({ isGetting: true });
+      await axiosInstance.put(`/reservation/${reservationId}/annuler`);
+      // Tu peux déclencher un rafraîchissement ici
+      await get().getAllPassengerReservations();
+      toast.success("Vous avez bien annuler la reservation");
+
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Erreur lors de l'annulation"
+      );
+    } finally {
+      set({ isGetting: false });
+    }
+  },
+
+  confirmerReservation: async (reservationId) => {
+    try {
+      set({ isGetting: true });
+      await axiosInstance.put(`/reservation/${reservationId}/confirmer`);
+      await get().getAllPassengerReservations();
+      toast.success("Votre réservation à bien été confirmé");
+
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Erreur lors de la confirmation"
+      );
+    } finally {
+      set({ isGetting: false });
     }
   },
   createTrajet: async (data) => {

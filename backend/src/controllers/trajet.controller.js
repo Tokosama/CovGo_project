@@ -1,5 +1,17 @@
 import { trajetValidation } from "../lib/validators/trajet.validator.js";
-import { annulerTrajetService, createTrajetService, demarrerTrajetService, getAllTrajetsService,  getFilteredTrajetsService, getTrajetByIdService, getTrajetsByUserId, getReservationsByTrajetService, terminerTrajetService } from "../services/trajet.service.js";
+import Reservation from "../models/reservation.model.js";
+import {
+  annulerTrajetService,
+  createTrajetService,
+  demarrerTrajetService,
+  getAllTrajetsService,
+  getFilteredTrajetsService,
+  getTrajetByIdService,
+  getTrajetsByUserId,
+  getReservationsByTrajetService,
+  terminerTrajetService,
+  getUpcomingTrajetsByUserId,
+} from "../services/trajet.service.js";
 
 export const createTrajetController = async (req, res) => {
   try {
@@ -16,17 +28,21 @@ export const createTrajetController = async (req, res) => {
     const trajet = await createTrajetService(trajetData);
     return res.status(201).json({ message: "Trajet créé avec succès", trajet });
   } catch (err) {
-    return res.status(500).json({ message: "Erreur serveur", error: err.message });
+    return res
+      .status(500)
+      .json({ message: "Erreur serveur", error: err.message });
   }
 };
 
 export const getAllTrajets = async (req, res) => {
   try {
-    const trajets = await getAllTrajetsService()
+    const trajets = await getAllTrajetsService();
     res.status(200).json(trajets);
   } catch (error) {
     console.error("Erreur lors de la récupération des trajets :", error);
-    res.status(500).json({ message: "Erreur serveur lors de la récupération des trajets" });
+    res
+      .status(500)
+      .json({ message: "Erreur serveur lors de la récupération des trajets" });
   }
 };
 
@@ -38,6 +54,37 @@ export const getMyTrajets = async (req, res) => {
   } catch (error) {
     console.error("Erreur récupération trajets utilisateur :", error);
     res.status(500).json({ message: "Erreur serveur." });
+  }
+};
+export const getMyUpcomingTrajets = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const trajets = await getUpcomingTrajetsByUserId(userId);
+    res.status(200).json(trajets);
+  } catch (error) {
+    console.error("Erreur récupération trajets à venir :", error);
+    res.status(500).json({ message: "Erreur serveur." });
+  }
+};
+
+export const getMyReservedUpcoming= async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const reservations = await Reservation.find({
+      passager_id: userId,
+      status: { $in: ["accepte", "confirme"] },
+    }).populate("trajet_id");
+
+    console.log(reservations)
+    const trajets = reservations
+      .map((r) => r.trajet_id)
+      .filter((trajet) => trajet !== null);
+
+    res.status(200).json(trajets);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des trajets:", error);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 };
 
@@ -57,11 +104,10 @@ export const getTrajetById = async (req, res) => {
   }
 };
 
-
 export const getTrajetsWithFilters = async (req, res) => {
   try {
     const filters = req.query;
-    console.log(filters)
+    console.log(filters);
     const trajets = await getFilteredTrajetsService(filters);
     res.status(200).json(trajets);
   } catch (error) {
@@ -75,7 +121,9 @@ export const annulerTrajet = async (req, res) => {
     const trajetId = req.params.id;
     const updatedTrajet = await annulerTrajetService(trajetId);
 
-    res.status(200).json({ message: "Trajet annulé avec succès", trajet: updatedTrajet });
+    res
+      .status(200)
+      .json({ message: "Trajet annulé avec succès", trajet: updatedTrajet });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

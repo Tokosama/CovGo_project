@@ -18,7 +18,7 @@ const NavItem = memo(({ icon, label, isActive, onClick, children }) => (
     <span className="relative rounded-xl p-0.5">
       <FontAwesomeIcon
         icon={icon}
-        className={`text-2xl transition ${
+        className={`text-2xl transition sha ${
           isActive ? "text-[#3B82F6]" : "hover:text-white text-white"
         }`}
       />

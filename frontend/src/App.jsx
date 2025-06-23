@@ -25,16 +25,31 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
   const location = useLocation();
 
   if (!authUser) {
-    return <Navigate to="/login" replace />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
   }
 
   if (authUser.verifie === false && location.pathname !== "/profil") {
     toast.error("Veuillez vérifier votre profil avant de continuer.");
-    return <Navigate to="/profil" replace />;
+    return (
+      <Navigate
+        to="/profil"
+        replace
+      />
+    );
   }
 
   if (requiredRole && authUser.role !== requiredRole) {
-    return <Navigate to="/home" replace />;
+    return (
+      <Navigate
+        to="/home"
+        replace
+      />
+    );
   }
 
   return children;
@@ -45,9 +60,19 @@ const PublicRoute = ({ children }) => {
 
   if (authUser) {
     if (authUser.verifie === false) {
-      return <Navigate to="/profil" replace />;
+      return (
+        <Navigate
+          to="/profil"
+          replace
+        />
+      );
     }
-    return <Navigate to="/home" replace />;
+    return (
+      <Navigate
+        to="/home"
+        replace
+      />
+    );
   }
 
   return children;
@@ -74,8 +99,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/about" element={<About />} />
+        <Route
+          path="/"
+          element={<Welcome />}
+        />
+        <Route
+          path="/about"
+          element={<About />}
+        />
         <Route
           path="/register"
           element={
@@ -97,8 +128,15 @@ function App() {
           path="/home"
           element={
             <ProtectedRoute>
-              {authUser && authUser.role === "conducteur" ? (
-                <Navigate to="/publier" replace />
+              {authUser === null ? (
+                <div className="flex items-center justify-center h-screen">
+                  <Loader className="size-10 animate-spin text-[#00B4D8]" />
+                </div>
+              ) : authUser.role === "conducteur" ? (
+                <Navigate
+                  to="/publier"
+                  replace
+                />
               ) : (
                 <Home />
               )}

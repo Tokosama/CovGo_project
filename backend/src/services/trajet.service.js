@@ -16,6 +16,16 @@ export const getTrajetsByUserId = async (userId) => {
   return await Trajet.find({ conducteur_id: userId });
 };
 
+export const getUpcomingTrajetsByUserId = async (userId) => {
+  const maintenant = new Date();
+
+  return await Trajet.find({
+    conducteur_id: userId,
+    date_depart: { $gte: maintenant },
+    status: { $in: ["disponible", "en cours", "complet"] },
+  }).sort({ date_depart: 1 }); // facultatif : trie par date proche
+};
+
 export const getTrajetByIdService = async (trajetId) => {
   const trajet = await Trajet.findById(trajetId).populate(
     "conducteur_id",

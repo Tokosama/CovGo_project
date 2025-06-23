@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useNotificationStore } from "../../store/useNotificationStore";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { Loader } from "lucide-react";
 // Dictionnaire de titres et de couleurs selon le type de notification
 const NOTIF_META = {
     compte_verifie: {
@@ -141,8 +142,7 @@ export default function Notifs() {
       {/* Liste des notifications */}
       <div className="flex flex-col items-center w-full mt-2 px-4">
         {isLoading ? (
-          <p className="text-gray-500">Chargement...</p>
-        ) : (
+<Loader className="size-10 text-[#3B82F6] animate-spin" />        ) : (
           <>
             {tab === "nonlu" && notifsNonLues.length === 0 && (
               <p className="text-gray-400">Aucune notification</p>

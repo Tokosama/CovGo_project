@@ -1,6 +1,8 @@
 import Notification from "../models/notification.model.js";
 import Reservation from "../models/reservation.model.js";
 import Trajet from "../models/trajet.model.js";
+import User from "../models/user.model.js";
+
 export const createReservationService = async ({
   trajet_id,
   passager_id,
@@ -134,13 +136,14 @@ export const annulerReservationService = async (reservationId, userId) => {
   if (!reservation) {
     throw new Error("Réservation introuvable.");
   }
+  console.log(userId);
 
   if (!reservation.passager_id.equals(userId)) {
     throw new Error("Vous n'êtes pas autorisé à annuler cette réservation.");
   }
 
   if (reservation.status === "confirme") {
-    throw new Error("Une réservation confirmée ne peut pas être annulée.");
+    throw new Error("Une réservation confirmée ne peut plus être annulée.");
   }
 
   if (["annulee", "rejete"].includes(reservation.status)) {
@@ -217,10 +220,19 @@ export const confirmerReservationService = async (
 
   return reservation;
 };
-
 export const getMyReservationsService = async (userId) => {
-  return await Reservation.find({ passager_id: userId })
-    .populate("trajet_id") // facultatif
+  return await Reservation.find({
+    passager_id: userId,
+    status: { $in: ["en attente", "accepte"] }, // filtre les statuts
+  })
+    .populate({
+      path: "trajet_id",
+      populate: {
+        path: "conducteur_id", // Peuplement du conducteur à l'intérieur du trajet
+        model: "User",
+        select: "prenom nom email _id", // Ajoute les champs que tu veux utiliser
+      },
+    })
     .sort({ createdAt: -1 });
 };
 

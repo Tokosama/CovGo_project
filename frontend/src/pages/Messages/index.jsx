@@ -29,7 +29,7 @@ export default function Messages() {
               Messages
             </h1>
           </div>
-          {!isMessages ? (
+          {isMessages ? (
             <div className="flex flex-col items-center justify-center mt-10 text-gray-400 text-[16px]">
               Aucun message pour le moment.
             </div>

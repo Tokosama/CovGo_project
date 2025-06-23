@@ -5,9 +5,9 @@ import SectionInitiale from "../../components/SectionInitiale";
 import FormVehicule from "../../components/FormVehicule";
 import FormPiece from "../../components/FormPiece";
 import RecapProfil from "../../components/RecapProfil";
-import TrajetsAVenir from "../../components/TrajetsAVenir";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useProfilStore } from "../../store/useProfilStore";
+import TrajetsAVEnirConducteur from "../../components/TrajetsAVenirConducteur";
 
 export default function Profil() {
   const permisInputRef = useRef(null);
@@ -34,8 +34,9 @@ export default function Profil() {
   });
 
   const { authUser } = useAuthStore();
-  const { justificatifs, fetchJustificatifs, isFetchingJustificatifs } = useProfilStore();
-  
+  const { justificatifs, fetchJustificatifs, isFetchingJustificatifs } =
+    useProfilStore();
+
   const handlePermisClick = () =>
     permisInputRef.current && permisInputRef.current.click();
   const handlePhotoPermisClick = () =>
@@ -93,7 +94,11 @@ export default function Profil() {
   return (
     <div className="min-h-screen bg-white pb-24 font-itim w-full overflow-y-auto">
       <Header
-        nom={(authUser?.nom && authUser?.prenom) ? `${authUser.nom} ${authUser.prenom}` : "Utilisateur"}
+        nom={
+          authUser?.nom && authUser?.prenom
+            ? `${authUser.nom} ${authUser.prenom}`
+            : "Utilisateur"
+        }
         age={18}
         avatar={authUser?.photo || null}
         tel={authUser?.telephone || "N/A"}
@@ -148,7 +153,7 @@ export default function Profil() {
           )}
         </>
       )}
-      {showTrajets && <TrajetsAVenir onBack={handleBackToInitial} />}
+      {showTrajets && <TrajetsAVEnirConducteur onBack={handleBackToInitial} />}
       <Nav activeMenu="profil" />
     </div>
   );

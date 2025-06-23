@@ -4,7 +4,9 @@ import {
   createTrajetController,
   demarrerTrajet,
   getAllTrajets,
+  getMyReservedUpcoming,
   getMyTrajets,
+  getMyUpcomingTrajets,
   getReservationsByTrajet,
   getTrajetById,
   getTrajetsWithFilters,
@@ -25,6 +27,10 @@ router.post("/create", protectRoute, isDriver, createTrajetController);
 router.get("/all", protectRoute, getAllTrajets);
 //recupere tous les trajets du connecteur connectee
 router.get("/me", protectRoute, isDriver, getMyTrajets); // accessible uniquement à l'utilisateur connecté
+
+router.get("/me/upcoming", protectRoute, isDriver, getMyUpcomingTrajets);
+
+router.get("/me/reservedUpcoming", protectRoute, getMyReservedUpcoming);
 router.get("/filter", protectRoute, getTrajetsWithFilters); // 🌟 nouvelle route
 //recuperer un trajet precis
 router.get("/:id", protectRoute, getTrajetById); // accessible uniquement à l'utilisateur connecté

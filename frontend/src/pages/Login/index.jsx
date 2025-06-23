@@ -40,10 +40,14 @@ export default function Login() {
       try {
         setIsLoading(true);
         const result = await login(formData);
-
         console.log("Login result:", result);
+
         toast.success("Connexion réussie !");
-        navigate("/home");
+
+        if (result.data.role === "conducteur") {
+          return navigate("/publier");
+        }
+        return navigate("/home");
       } catch (error) {
         console.error("Erreur:", error);
         setAlertMessage("Erreur lors de la connexion.");
@@ -142,8 +146,7 @@ export default function Login() {
           <span className="flex items-center justify-center">
             {isLoading ? (
               <>
-                Connexion en cours{" "}
-                <span className="spinner ml-2"></span>
+                Connexion en cours <span className="spinner ml-2"></span>
               </>
             ) : (
               "Se connecter"
@@ -166,24 +169,28 @@ export default function Login() {
         </div>
       </form>
 
-      <style jsx>{`
-        .spinner {
-          width: 20px;
-          height: 20px;
-          border: 3px solid #ffffff;
-          border-radius: 50%;
-          border-top-color: transparent;
-          animation: spin 1s linear infinite;
-          display: inline-block;
-          margin-left: 8px;
-        }
+      <div className="spinner"></div>
 
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
+      <style>
+        {`
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`}
+      </style>
     </div>
   );
 }
