@@ -7,6 +7,11 @@ const trajetSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    vehicule_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicule",
+      required: true,
+    },
     ville: {
       type: String,
       enum: ["Cotonou", "Porto-Novo", "Abomey", "Parakou"],
