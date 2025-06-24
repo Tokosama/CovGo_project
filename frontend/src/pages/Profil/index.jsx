@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import EditProfile from "../../components/EditProfile";
 import FormPiece from "../../components/FormPiece";
 import VerificationMessage from "../../components/VerificationMessage";
+import GestionVehicules from "../../components/GestionVehicules";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useProfilStore } from "../../store/useProfilStore";
 import TrajetsAVEnirConducteur from "../../components/TrajetsAVenirConducteur";
@@ -12,6 +13,7 @@ import TrajetsAVEnirPassager from "../../components/TrajetsAVenirPassager";
 export default function Profil() {
   const [currentView, setCurrentView] = useState("loading");
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showVehicules, setShowVehicules] = useState(false);
   const [hasCheckedDocuments, setHasCheckedDocuments] = useState(false);
 
   const { authUser } = useAuthStore();
@@ -101,6 +103,15 @@ export default function Profil() {
 
   const handleBackToProfile = () => {
     setShowEditProfile(false);
+    setShowVehicules(false);
+  };
+
+  const handleShowVehicules = () => {
+    setShowVehicules(true);
+  };
+
+  const handleBackFromVehicules = () => {
+    setShowVehicules(false);
   };
 
   if (!authUser) {
@@ -127,103 +138,135 @@ export default function Profil() {
         tel={authUser?.telephone || "N/A"}
         role={authUser?.role || "Utilisateur"}
       />
-      {currentView === "verified" &&
-        !showEditProfile &&
-        (authUser.role === "conducteur" ? (
-          <TrajetsAVEnirConducteur onBack={handleEditProfile} />
-        ) : (
-          <TrajetsAVEnirPassager onBack={handleEditProfile} />
-        ))}
 
-      {currentView === "verified" && showEditProfile && (
-        <div className="p-6">
-          <EditProfile
-            user={authUser}
-            onSuccess={handleProfileUpdateSuccess}
-            onCancel={handleBackToProfile}
-          />
-        </div>
-      )}
+      {/* Affichage de la gestion des véhicules */}
+      {showVehicules && <GestionVehicules onBack={handleBackFromVehicules} />}
 
-      {currentView === "pending_verification" && !showEditProfile && (
-        <div className="p-6">
-          {isFetchingJustificatifs ? (
-            <div className="flex items-center justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
-              <span>Vérification des documents...</span>
-            </div>
-          ) : (
-            <VerificationMessage
-              userRole={authUser.role}
-              onEditProfile={handleEditProfile}
-              justificatifs={justificatifs}
-              isVerified={authUser.verifie}
-            />
-          )}
-        </div>
-      )}
-
-      {currentView === "pending_verification" && showEditProfile && (
-        <div className="p-6">
-          <EditProfile
-            user={authUser}
-            onSuccess={handleProfileUpdateSuccess}
-            onCancel={handleBackToProfile}
-          />
-        </div>
-      )}
-
-      {currentView === "needs_documents" && !showEditProfile && (
-        <div className="p-6">
-          {isFetchingJustificatifs ? (
-            <div className="flex items-center justify-center py-8 text-black">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
-              <span>Vérification des documents...</span>
-            </div>
-          ) : (
-            <>
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-                <h3 className="text-lg font-semibold text-orange-800 mb-2">
-                  Documents requis manquants
-                </h3>
-                <p className="text-orange-700 mb-4">
-                  {authUser.role === "conducteur"
-                    ? "Vous devez soumettre votre permis de conduire pour pouvoir utiliser l'application."
-                    : "Vous devez soumettre au moins un document d'identité (CIP, CNI ou Passeport) pour pouvoir utiliser l'application."}
-                </p>
-                <button
-                  onClick={handleEditProfile}
-                  className="text-blue-600 hover:text-blue-800 underline mb-4 block"
-                >
-                  Modifier mes informations personnelles
-                </button>
-              </div>
-
-              <FormPiece
-                pieceType={documentType}
-                setPieceType={setDocumentType}
-                pieceFile={documentFile}
-                pieceInputRef={React.createRef()}
-                setPieceFile={setDocumentFile}
-                onSoumettre={handleDocumentSubmissionSuccess}
-                errors={{}}
-                setErrors={() => {}}
-                isRequired={true}
-                userRole={authUser.role}
+      {/* Affichage normal du profil si pas de gestion véhicules */}
+      {!showVehicules && (
+        <>
+          {currentView === "verified" &&
+            !showEditProfile &&
+            (authUser.role === "conducteur" ? (
+              <TrajetsAVEnirConducteur
+                onBack={handleEditProfile}
+                onShowVehicules={handleShowVehicules}
               />
-            </>
-          )}
-        </div>
-      )}
+            ) : (
+              <TrajetsAVEnirPassager onBack={handleEditProfile} />
+            ))}
 
-      {currentView === "needs_documents" && showEditProfile && (
-        <div className="p-6">
-          <EditProfile
-            user={authUser}
-            onSuccess={handleProfileUpdateSuccess}
-            onCancel={handleBackToProfile}
-          />
-        </div>
+          {currentView === "verified" && showEditProfile && (
+            <div className="p-6">
+              <EditProfile
+                user={authUser}
+                onSuccess={handleProfileUpdateSuccess}
+                onCancel={handleBackToProfile}
+              />
+            </div>
+          )}
+
+          {currentView === "pending_verification" && !showEditProfile && (
+            <div className="p-6">
+              {isFetchingJustificatifs ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
+                  <span>Vérification des documents...</span>
+                </div>
+              ) : (
+                <>
+                  <VerificationMessage
+                    userRole={authUser.role}
+                    onEditProfile={handleEditProfile}
+                    justificatifs={justificatifs}
+                    isVerified={authUser.verifie}
+                  />
+
+                  {/* Bouton pour gérer les véhicules (conducteurs seulement) */}
+                  {authUser.role === "conducteur" && (
+                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <h3 className="text-lg font-semibold text-blue-800 mb-2">
+                        Gérer mes véhicules
+                      </h3>
+                      <p className="text-blue-700 mb-4">
+                        Ajoutez et gérez vos véhicules pour vos trajets.
+                      </p>
+                      <button
+                        onClick={handleShowVehicules}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                      >
+                        Mes véhicules
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          {currentView === "pending_verification" && showEditProfile && (
+            <div className="p-6">
+              <EditProfile
+                user={authUser}
+                onSuccess={handleProfileUpdateSuccess}
+                onCancel={handleBackToProfile}
+              />
+            </div>
+          )}
+
+          {currentView === "needs_documents" && !showEditProfile && (
+            <div className="p-6">
+              {isFetchingJustificatifs ? (
+                <div className="flex items-center justify-center py-8 text-black">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
+                  <span>Vérification des documents...</span>
+                </div>
+              ) : (
+                <>
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+                    <h3 className="text-lg font-semibold text-orange-800 mb-2">
+                      Documents requis manquants
+                    </h3>
+                    <p className="text-orange-700 mb-4">
+                      {authUser.role === "conducteur"
+                        ? "Vous devez soumettre votre permis de conduire pour pouvoir utiliser l'application."
+                        : "Vous devez soumettre au moins un document d'identité (CIP, CNI ou Passeport) pour pouvoir utiliser l'application."}
+                    </p>
+                    <button
+                      onClick={handleEditProfile}
+                      className="text-blue-600 hover:text-blue-800 underline mb-4 block"
+                    >
+                      Modifier mes informations personnelles
+                    </button>
+                  </div>
+
+                  <FormPiece
+                    pieceType={documentType}
+                    setPieceType={setDocumentType}
+                    pieceFile={documentFile}
+                    pieceInputRef={React.createRef()}
+                    setPieceFile={setDocumentFile}
+                    onSoumettre={handleDocumentSubmissionSuccess}
+                    errors={{}}
+                    setErrors={() => {}}
+                    isRequired={true}
+                    userRole={authUser.role}
+                  />
+                </>
+              )}
+            </div>
+          )}
+
+          {currentView === "needs_documents" && showEditProfile && (
+            <div className="p-6">
+              <EditProfile
+                user={authUser}
+                onSuccess={handleProfileUpdateSuccess}
+                onCancel={handleBackToProfile}
+              />
+            </div>
+          )}
+        </>
       )}
 
       <Nav activeMenu="profil" />

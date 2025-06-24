@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader } from "lucide-react";
+import { Car, Loader } from "lucide-react";
 import { useUpcomingTrajetsStore } from "../store/useUpcomingTrajetsStore";
 import DetailsTrajetConducteur from "./DetailsTrajetConducteur"; // <-- importe ta page
 import toast from "react-hot-toast";
@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function TrajetsAVenir({ onBack }) {
+export default function TrajetsAVenir({ onBack, onShowVehicules }) {
   const { trajets, fetchUpcomingTrajets, isLoading } =
     useUpcomingTrajetsStore();
   const [selectedTrajet, setSelectedTrajet] = useState(null);
@@ -51,6 +51,16 @@ export default function TrajetsAVenir({ onBack }) {
             onClick={onBack}
           >
             Modifier vos informations
+          </button>
+
+          <button
+            onClick={onShowVehicules}
+            className="flex items-center justify-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors"
+          >
+            <Car className="w-5 h-5 text-green-600 mr-2" />
+            <span className="text-green-700 font-medium">
+              Gérer mes véhicules
+            </span>
           </button>
 
           <hr className="w-[90%] border-t border-gray-400 mt-2" />
