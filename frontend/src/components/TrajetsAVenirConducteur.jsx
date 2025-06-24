@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Car, Loader } from "lucide-react";
 import { useUpcomingTrajetsStore } from "../store/useUpcomingTrajetsStore";
 import DetailsTrajetConducteur from "./DetailsTrajetConducteur"; // <-- importe ta page
-import toast from "react-hot-toast";
 import {
   faCalendarAlt,
   faCarSide,

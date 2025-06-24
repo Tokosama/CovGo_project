@@ -8,7 +8,6 @@ export const useVehiculeStore = create((set, get) => ({
   isSubmitting: false,
   isFetching: false,
 
-  // Récupérer tous les véhicules de l'utilisateur connecté
   fetchVehicules: async () => {
     set({ isFetching: true });
     try {
@@ -33,9 +32,8 @@ export const useVehiculeStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/vehicule", vehiculeData);
 
-      // Ajouter le nouveau véhicule à la liste existante
       const currentVehicules = get().vehicules;
-      set({ vehicules: [...currentVehicules, res.data.vehicule] });
+      set({ vehicules: [...currentVehicules, res.data.data] });
 
       toast.success("Véhicule ajouté avec succès !");
       return { success: true, data: res.data };
@@ -50,13 +48,11 @@ export const useVehiculeStore = create((set, get) => ({
     }
   },
 
-  // Supprimer un véhicule (si vous avez l'endpoint DELETE)
   removeVehicule: async (vehiculeId) => {
     set({ isLoading: true });
     try {
       await axiosInstance.delete(`/vehicule/${vehiculeId}`);
 
-      // Retirer le véhicule de la liste
       const currentVehicules = get().vehicules;
       const updatedVehicules = currentVehicules.filter(
         (v) => v._id !== vehiculeId
@@ -78,36 +74,34 @@ export const useVehiculeStore = create((set, get) => ({
   },
 
   // Mettre à jour un véhicule (si vous avez l'endpoint PUT/PATCH)
-  updateVehicule: async (vehiculeId, vehiculeData) => {
-    set({ isSubmitting: true });
-    try {
-      const res = await axiosInstance.patch(
-        `/vehicule/${vehiculeId}`,
-        vehiculeData
-      );
+  // updateVehicule: async (vehiculeId, vehiculeData) => {
+  //   set({ isSubmitting: true });
+  //   try {
+  //     const res = await axiosInstance.patch(
+  //       `/vehicule/${vehiculeId}`,
+  //       vehiculeData
+  //     );
 
-      // Mettre à jour le véhicule dans la liste
-      const currentVehicules = get().vehicules;
-      const updatedVehicules = currentVehicules.map((v) =>
-        v._id === vehiculeId ? res.data.vehicule : v
-      );
-      set({ vehicules: updatedVehicules });
+  //     const currentVehicules = get().vehicules;
+  //     const updatedVehicules = currentVehicules.map((v) =>
+  //       v._id === vehiculeId ? res.data.vehicule : v
+  //     );
+  //     set({ vehicules: updatedVehicules });
 
-      toast.success("Véhicule mis à jour avec succès !");
-      return { success: true, data: res.data };
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour du véhicule:", error);
-      const errorMessage =
-        error.response?.data?.message ||
-        "Erreur lors de la mise à jour du véhicule";
-      toast.error(errorMessage);
-      return { success: false, error: errorMessage };
-    } finally {
-      set({ isSubmitting: false });
-    }
-  },
+  //     toast.success("Véhicule mis à jour avec succès !");
+  //     return { success: true, data: res.data };
+  //   } catch (error) {
+  //     console.error("Erreur lors de la mise à jour du véhicule:", error);
+  //     const errorMessage =
+  //       error.response?.data?.message ||
+  //       "Erreur lors de la mise à jour du véhicule";
+  //     toast.error(errorMessage);
+  //     return { success: false, error: errorMessage };
+  //   } finally {
+  //     set({ isSubmitting: false });
+  //   }
+  // },
 
-  // Réinitialiser les véhicules (utile lors de la déconnexion)
   resetVehicules: () => {
     set({
       vehicules: [],

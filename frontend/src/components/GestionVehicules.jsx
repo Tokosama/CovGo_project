@@ -4,7 +4,7 @@ import { ChevronLeft, Plus, Car, Edit, Trash2, Loader } from "lucide-react";
 
 export default function GestionVehicules({ onBack }) {
   const [showAddForm, setShowAddForm] = useState(false);
-  const [editingVehicule, setEditingVehicule] = useState(null);
+  // const [editingVehicule, setEditingVehicule] = useState(null);
   const [formData, setFormData] = useState({
     immatriculation: "",
     marque: "",
@@ -19,7 +19,7 @@ export default function GestionVehicules({ onBack }) {
     isSubmitting,
     fetchVehicules,
     addVehicule,
-    updateVehicule,
+    // updateVehicule,
     removeVehicule,
   } = useVehiculeStore();
 
@@ -60,11 +60,11 @@ export default function GestionVehicules({ onBack }) {
     };
 
     let result;
-    if (editingVehicule) {
-      result = await updateVehicule(editingVehicule._id, vehiculeData);
-    } else {
-      result = await addVehicule(vehiculeData);
-    }
+    // if (editingVehicule) {
+    //   result = await updateVehicule(editingVehicule._id, vehiculeData);
+    // } else {
+    result = await addVehicule(vehiculeData);
+    // }
 
     if (result.success) {
       resetForm();
@@ -80,19 +80,19 @@ export default function GestionVehicules({ onBack }) {
     });
     setErrors({});
     setShowAddForm(false);
-    setEditingVehicule(null);
+    // setEditingVehicule(null);
   };
 
-  const handleEdit = (vehicule) => {
-    setFormData({
-      immatriculation: vehicule.immatriculation,
-      marque: vehicule.marque,
-      model: vehicule.model,
-      couleur: vehicule.couleur,
-    });
-    setEditingVehicule(vehicule);
-    setShowAddForm(true);
-  };
+  // const handleEdit = (vehicule) => {
+  //   setFormData({
+  //     immatriculation: vehicule.immatriculation,
+  //     marque: vehicule.marque,
+  //     model: vehicule.model,
+  //     couleur: vehicule.couleur,
+  //   });
+  //   // setEditingVehicule(vehicule);
+  //   setShowAddForm(true);
+  // };
 
   const handleDelete = async (vehiculeId) => {
     if (window.confirm("Êtes-vous sûr de vouloir supprimer ce véhicule ?")) {
@@ -120,7 +120,6 @@ export default function GestionVehicules({ onBack }) {
 
   return (
     <div className="p-6 text-black">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <button
@@ -135,19 +134,18 @@ export default function GestionVehicules({ onBack }) {
         {!showAddForm && (
           <button
             onClick={() => setShowAddForm(true)}
-            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="flex items-center p-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Ajouter
+            <Plus className="w-4 h-4" />
           </button>
         )}
       </div>
 
-      {/* Formulaire d'ajout/modification */}
       {showAddForm && (
         <div className="bg-gray-50 rounded-lg p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">
-            {editingVehicule ? "Modifier le véhicule" : "Ajouter un véhicule"}
+            {/* {editingVehicule ? "Modifier le véhicule" : "Ajouter un véhicule"} */}
+            Ajouter un véhicule
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -237,8 +235,8 @@ export default function GestionVehicules({ onBack }) {
               >
                 {isSubmitting
                   ? "Enregistrement..."
-                  : editingVehicule
-                  ? "Modifier"
+                 // : editingVehicule
+                  //? "Modifier"
                   : "Ajouter"}
               </button>
               <button
@@ -295,12 +293,12 @@ export default function GestionVehicules({ onBack }) {
                 </div>
 
                 <div className="flex space-x-2">
-                  <button
+                  {/* <button
                     onClick={() => handleEdit(vehicule)}
                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => handleDelete(vehicule._id)}
                     className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
