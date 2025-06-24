@@ -11,6 +11,10 @@ export const useTrajetStore = create((set, get) => ({
   isLoadingReservationsByTrajet: false,
   allReservationForDriver: [],
   statusChangeTrigger: 0,
+  historiqueTrajets: [],
+  isLoadingHistorique: false,
+  errorHistorique: null,
+
   searchTrajets: async (filters) => {
     set({ isSearching: true, error: null });
     try {

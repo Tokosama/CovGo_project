@@ -115,7 +115,7 @@ export default function Login() {
             placeholder="Email"
             className={`w-full border ${
               errors.email ? "border-red-500" : "border-black"
-            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black placeholder:text-gray-400 bg-white`}
+            } rounded-2xl shadow-custom px-4 py-2 text-[20px] outline-none mb-1 text-black  bg-white`}
           />
           {errors.email && (
             <p className="text-red-500 text-sm mb-2">{errors.email}</p>

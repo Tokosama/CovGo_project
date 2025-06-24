@@ -12,6 +12,9 @@ import {
 import Nav from "../../components/Nav";
 import { useNavigate } from "react-router-dom";
 import { useTrajetStore } from "../../store/useTrajetStore";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./CustomDatepicker.css"; // fichier CSS custom
 
 export default function PublierTrajet() {
   const [form, setForm] = useState({
@@ -166,28 +169,29 @@ export default function PublierTrajet() {
             </p>
           )}
           {/* Date */}
-          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
+          <div className="flex items-center bg-white border border-gray-300 rounded-xl px-4 py-2 shadow-md max-w-xs w-full">
             <FontAwesomeIcon
               icon={faCalendarAlt}
-              className="text-gray-700 mr-2 max-[400px]:mr-2"
+              className="text-gray-500 mr-3 text-lg"
             />
-            <input
-              name="date_depart"
-               type="date"
-              value={form.date_depart}
-              onChange={handleChange}
-              
-              placeholder="Date du trajet"
-              className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
-                errors.destination ? "border-red-500" : ""
-              }`}
+            <DatePicker
+              selected={form.date_depart ? new Date(form.date_depart) : null}
+              onChange={(date) =>
+                setForm((prev) => ({
+                  ...prev,
+                  date_depart: date ? date.toISOString().split("T")[0] : "",
+                }))
+              }
+              placeholderText="Date du trajet"
+              className={`flex-1 bg-transparent outline-none text-gray-700 text-lg placeholder-gray-400
+          ${errors.date_depart ? "border-red-500" : ""}
+        `}
+              dateFormat="yyyy-MM-dd"
+              calendarClassName="custom-datepicker-calendar"
+              popperPlacement="bottom-start"
             />
           </div>
-          {errors.date_depart && (
-            <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
-              {errors.date_depart}
-            </p>
-          )}
+
           {/* Heure */}
           <div className="flex items-center bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-custom max-[400px]:px-2 max-[400px]:py-1 max-[340px]:px-1 max-[340px]:py-1">
             <FontAwesomeIcon

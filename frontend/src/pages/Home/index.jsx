@@ -185,7 +185,7 @@ export default function Home() {
                 value={formData.ville}
                 onChange={handleChange}
                 placeholder="Ville"
-                className={`flex-1 bg-transparent outline-none text-[20px] text-black placeholder:text-gray-400 ${
+                className={`flex-1  outline-none text-[20px] text-black placeholder:text-gray-400 ${
                   errors.ville ? "border-red-500" : ""
                 }`}
               />

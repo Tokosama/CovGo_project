@@ -1,0 +1,43 @@
+/* Change background and border radius */
+.custom-datepicker-calendar {
+  background: #fefefe;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Highlight selected day */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #00B4D8 !important; /* Bleu Tailwind */
+  color: white !important;
+  border-radius: 50% !important;
+}
+
+/* Hover effect on days */
+.react-datepicker__day:hover {
+  background-color: #93c5fd !important; /* Bleu clair */
+  border-radius: 50% !important;
+}
+
+/* Header styles */
+.react-datepicker__header {
+  background-color: #00B4D8;
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+/* Navigation arrows */
+.react-datepicker__navigation-icon::before {
+  border-color: white;
+}
+
+/* Weekday names */
+.react-datepicker__day-name {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+/* Input focus shadow */
+
