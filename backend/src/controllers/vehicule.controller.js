@@ -35,3 +35,27 @@ export const getVehiculesByUser = async (req, res, next) => {
     next(err);
   }
 };
+
+export const deleteVehicule = async (req, res, next) => {
+  try {
+    const { vehiculeId } = req.params;
+
+    // Vérifie d'abord que le véhicule appartient bien à l'utilisateur
+    const vehicule = await Vehicule.findOne({
+      _id: vehiculeId,
+      user_id: req.user._id,
+    });
+
+    if (!vehicule) {
+      return res
+        .status(404)
+        .json({ message: "Véhicule introuvable ou non autorisé" });
+    }
+
+    await Vehicule.findByIdAndDelete(vehiculeId);
+
+    res.status(200).json({ message: "Véhicule supprimé avec succès" });
+  } catch (err) {
+    next(err);
+  }
+};
