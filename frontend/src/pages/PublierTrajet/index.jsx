@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMapMarkerAlt,
@@ -12,6 +12,7 @@ import {
 import Nav from "../../components/Nav";
 import { useNavigate } from "react-router-dom";
 import { useTrajetStore } from "../../store/useTrajetStore";
+import { useVehiculeStore } from "../../store/useVehiculeStore";
 
 export default function PublierTrajet() {
   const [form, setForm] = useState({
@@ -23,11 +24,18 @@ export default function PublierTrajet() {
     places: "",
     prix: "",
     preferences: "",
-    vehicule: "",
+    vehicule_id: "",
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  
+  const createTrajet = useTrajetStore((state) => state.createTrajet);
+  const { vehicules, isFetching, fetchVehicules } = useVehiculeStore();
+
+  useEffect(() => {
+    fetchVehicules();
+  }, [fetchVehicules]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -56,7 +64,7 @@ export default function PublierTrajet() {
       newErrors.prix = "Prix par place requis";
     if (!form.preferences)
       newErrors.preferences = "Veuillez renseigner vos préférences";
-    if (!form.vehicule) newErrors.vehicule = "Sélectionnez un véhicule";
+    if (!form.vehicule_id) newErrors.vehicule_id = "Sélectionnez un véhicule";
     return newErrors;
   };
 
@@ -65,7 +73,6 @@ export default function PublierTrajet() {
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-  const createTrajet = useTrajetStore((state) => state.createTrajet);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -173,10 +180,9 @@ export default function PublierTrajet() {
             />
             <input
               name="date_depart"
-               type="date"
+              type="date"
               value={form.date_depart}
               onChange={handleChange}
-              
               placeholder="Date du trajet"
               className={`flex-1 bg-transparent outline-none custom text-[20px] text-black placeholder:text-gray-400 ${
                 errors.destination ? "border-red-500" : ""
@@ -285,32 +291,56 @@ export default function PublierTrajet() {
               className="text-gray-700 mr-2 max-[400px]:mr-2"
             />
             <select
-              name="vehicule"
-              value={form.vehicule}
+              name="vehicule_id"
+              value={form.vehicule_id}
               onChange={handleChange}
+              disabled={isFetching}
               className={`flex-1 bg-transparent outline-none shadow-custom custom text-[20px] text-black placeholder:text-gray-400 ${
-                errors.destination ? "border-red-500" : ""
-              }`}
+                errors.vehicule ? "border-red-500" : ""
+              } ${isFetching ? "opacity-50" : ""}`}
             >
-              <option value="">Selectionner le véhicule</option>
-              <option value="Toyota">Toyota</option>
-              <option value="Peugeot">Peugeot</option>
-              <option value="Renault">Renault</option>
+              <option value="">
+                {isFetching ? "Chargement..." : "Sélectionner le véhicule"}
+              </option>
+              {vehicules.map((vehicule) => (
+                <option key={vehicule._id} value={vehicule._id}>
+                  {vehicule.marque} {vehicule.modele} -{" "}
+                  {vehicule.immatriculation}
+                </option>
+              ))}
+              {!isFetching && vehicules.length === 0 && (
+                <option value="" disabled>
+                  Aucun véhicule disponible
+                </option>
+              )}
             </select>
           </div>
-          {errors.vehicule && (
+          {errors.vehicule_id && (
             <p className="text-red-500 text-sm mb-1 max-[400px]:text-xs">
-              {errors.vehicule}
+              {errors.vehicule_id}
+            </p>
+          )}
+          {!isFetching && vehicules.length === 0 && (
+            <p className="text-yellow-600 text-sm text-center bg-yellow-100 rounded-lg p-2">
+              Vous devez d'abord ajouter un véhicule pour publier un trajet.
             </p>
           )}
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || isFetching || vehicules.length === 0}
             className={`w-full bg-[#3B82F6]  text-white text-[24px] mt-9 rounded-2xl py-2 mb-2 shadow-custom  hover:bg-[#3B82F6]/80 transition ${
-              isLoading ? "opacity-50 cursor-not-allowed" : ""
+              isLoading || isFetching || vehicules.length === 0
+                ? "opacity-50 cursor-not-allowed"
+                : ""
             }`}
           >
-            {isLoading ? "Publication en cours..." : "Publier le trajet"}
+            {isLoading
+              ? "Publication en cours..."
+              : isFetching
+              ? "Chargement des véhicules..."
+              : vehicules.length === 0
+              ? "Aucun véhicule disponible"
+              : "Publier le trajet"}
           </button>
         </form>
       </div>
