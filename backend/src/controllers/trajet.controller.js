@@ -189,7 +189,7 @@ export const getHistoriquePassager = async (req, res, next) => {
     const userId = req.user._id;
     const reservations = await Reservation.find({
       passager_id: userId,
-      status: "acceptee",
+  status: { $in: ["accepte", "confirme"] },
     }).populate({
       path: "trajet_id",
       match: { status: { $in: ["termine", "annulee"] } },
