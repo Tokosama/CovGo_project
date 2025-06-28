@@ -59,10 +59,10 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed inset-x-4 top-4 bottom-20 bg-[#F5F5F5] rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-w-lg mx-auto"
+            className="fixed inset-x-4 top-4 bottom-20 bg-[#F5F5F5] rounded-2xl shadow-customl z-50 overflow-hidden flex flex-col max-w-lg mx-auto"
           >
             {/* En-tête de la modal */}
-            <div className="bg-[#00B4D8] shadow-lg flex items-center justify-center px-4 py-4 relative flex-shrink-0">
+            <div className="bg-[#00B4D8] shadow-custom flex items-center justify-center px-4 py-4 relative flex-shrink-0">
               <motion.button
                 whileTap={{ scale: 0.85 }}
                 whileHover={{ scale: 1.05 }}
@@ -84,7 +84,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
             <div className="flex-1 overflow-y-auto">
               {/* Infos trajet */}
               <div className="p-4">
-                <div className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden">
+                <div className="bg-white rounded-lg shadow-custom mb-4 overflow-hidden">
                   <div className="bg-[#ADE8F4] px-4 py-3 border-b border-gray-200">
                     <div className="flex items-start gap-2 mb-2">
                       <FontAwesomeIcon
@@ -92,7 +92,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
                         className="text-green-600 mt-1"
                       />
                       <div>
-                        <span className="font-semibold text-gray-700">
+                        <span className=" text-gray-700">
                           De :
                         </span>
                         <div className="text-gray-900">{trajet.depart}</div>
@@ -104,7 +104,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
                         className="text-red-600 mt-1"
                       />
                       <div>
-                        <span className="font-semibold text-gray-700">À :</span>
+                        <span className=" text-gray-700">À :</span>
                         <div className="text-gray-900">
                           {trajet.destination}
                         </div>
@@ -172,7 +172,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
                           key={r._id}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-white rounded-lg p-4 shadow-sm border border-gray-200"
+                          className="bg-white rounded-lg p-4 shadow-custom border border-gray-200"
                         >
                           <div className="flex items-center gap-3 mb-3">
                             <img
@@ -182,7 +182,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
                             />
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
-                                <span className="font-semibold text-gray-900">
+                                <span className=" text-gray-900">
                                   {r.passager_id?.prenom} {r.passager_id?.nom}
                                 </span>
                                 <div className="flex gap-1">
@@ -196,7 +196,7 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
                                 </div>
                               </div>
                               <span className="text-sm text-gray-600">
-                                📞 {r.passager_id?.telephone}
+                                 {r.passager_id?.telephone}
                               </span>
                             </div>
                             <FontAwesomeIcon
@@ -241,25 +241,25 @@ export default function DetailsTrajetConducteur({ trajet, onBack, isOpen }) {
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleAction("demarrer")}
-                className="w-full rounded-lg px-4 py-3 bg-green-500 text-white font-semibold shadow-lg hover:bg-green-600 transition-colors"
+                className="w-full rounded-lg px-4 py-3 bg-green-500 text-white  shadow-custom hover:bg-green-600 transition-colors"
               >
-                🚀 Démarrer le trajet
+                 Démarrer le trajet
               </motion.button>
 
               <div className="grid grid-cols-2 gap-3">
                 <motion.button
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleAction("terminer")}
-                  className="rounded-lg px-4 py-3 bg-blue-500 text-white font-semibold shadow-lg hover:bg-blue-600 transition-colors"
+                  className="rounded-lg px-4 py-3 bg-blue-500 text-white  shadow-custom hover:bg-blue-600 transition-colors"
                 >
-                  ✅ Terminer
+                   Terminer
                 </motion.button>
                 <motion.button
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleAction("annuler")}
-                  className="rounded-lg px-4 py-3 bg-red-500 text-white font-semibold shadow-lg hover:bg-red-600 transition-colors"
+                  className="rounded-lg px-4 py-3 bg-red-500 text-white  sshadow-custom hover:bg-red-600 transition-colors"
                 >
-                  ❌ Annuler
+                   Annuler
                 </motion.button>
               </div>
             </div>

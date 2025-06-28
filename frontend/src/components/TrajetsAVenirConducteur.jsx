@@ -72,7 +72,7 @@ export default function TrajetsAVenir({ onBack, onShowVehicules }) {
           trajets.map((trajet) => (
             <div
               key={trajet._id}
-              className="bg-[#B2EBF2] border border-gray-400 rounded-xl shadow px-3 py-2 mb-4 w-full max-w-[370px] cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+              className="bg-[#B2EBF2] rounded-xl shadow-custom px-3 py-2 mb-4 w-full max-w-[370px] cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
               onClick={() => handleTrajetClick(trajet)}
             >
               <div className="flex items-center justify-between mb-1">
